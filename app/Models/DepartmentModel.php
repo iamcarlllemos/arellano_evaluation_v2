@@ -17,8 +17,13 @@ class DepartmentModel extends Model
         'date_updated'
     ];
 
-    public function branch() {
-        return $this->belongsTo(BranchModel::class, 'department_id', 'id');
+    public function branches() {
+        return $this->belongsTo(BranchModel::class, 'branch_id', 'id');
     }
+
+    public function courses() {
+        return $this->hasMany(CourseModel::class, 'department_id', 'id');
+    }
+
 
 }

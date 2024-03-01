@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BranchModel extends Model
+class CourseModel extends Model
 {
     use HasFactory;
-    
-    protected $table = 'afears_branch';
+
+    protected $table = 'afears_course';
     protected $fillable = [
+        'department_id',
         'name',
-        'image'
+        'code'
     ];
 
     public function departments() {
-        return $this->hasMany(DepartmentModel::class, 'branch_id', 'id');
+        return $this->belongsTo(DepartmentModel::class, 'department_id', 'id');
     }
-
+  
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FacultyController;
 
@@ -34,14 +35,10 @@ Route::prefix('/')->middleware([
     'verified',
 ])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
+    Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
+    Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
 
-    Route::prefix('branches')->group(function() {
-        Route::get('/', [BranchController::class, 'index'])->name('programs.branches');
-    });
-
-    Route::prefix('departments')->group(function() {
-        Route::get('/', [DepartmentController::class, 'index'])->name('programs.departments');
-    });
 
     Route::prefix('accounts')->group(function() {
         Route::prefix('student')->group(function() {

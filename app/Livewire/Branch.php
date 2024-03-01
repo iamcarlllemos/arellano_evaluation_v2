@@ -70,6 +70,9 @@ class Branch extends Component
                 'message' => 'Branch `' . ucwords($this->name) . '` created successfully'
             ]);
 
+            $this->name = '';
+            $this->image = '';
+
         } catch (\Exception $e) {
 
             session()->flash('flash', [
@@ -114,6 +117,7 @@ class Branch extends Component
                 $this->image->storeAs('public/images/branches', $filename);
                 $this->image = $filename;
                 $model->image = $filename;
+
             }
     
             try {
@@ -125,6 +129,9 @@ class Branch extends Component
                     'status' => 'success',
                     'message' => 'Branch `' . ucwords($this->name) . '` updated successfully'
                 ]);
+
+                $this->image = '';
+                $this->name = '';   
     
             } catch (\Exception $e) {
     

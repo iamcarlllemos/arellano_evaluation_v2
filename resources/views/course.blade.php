@@ -22,32 +22,37 @@
                 </li>
             </ol>
         </nav>
-        @livewire('branch', [
+        @livewire('course', [
             'lazy' => false,
             'form' => [
                 'title' => [
-                    'index' => 'All Branches',
-                    'create' => 'Create Branch',
-                    'update' => 'Update Branch',
-                    'delete' => 'Delete Branch'
+                    'index' => 'All Course',
+                    'create' => 'Create Course',
+                    'update' => 'Update Course',
+                    'delete' => 'Delete Course'
                 ],
                 'subtitle' => [
-                    'index' => 'List of all branches created.',
-                    'create' => 'Create or add new branches.',
-                    'update' => 'Apply changed to selected branch.',
-                    'delete' => 'Permanently delete selected branch'
+                    'index' => 'List of all courses created.',
+                    'create' => 'Create or add new courses.',
+                    'update' => 'Apply changed to selected course.',
+                    'delete' => 'Permanently delete selected course'
                 ],
                 'action' => $data['action'],
                 'data' => [
-                    'name' => [
-                        'label' => 'Branch Name',
+                    'department_id' => [
+                        'label' => 'Department Name',
+                        'type' => 'select',
+                        'placeholder' => 'Type...',
+                    ],
+                    'code' => [
+                        'label' => 'Code',
                         'type' => 'text',
                         'placeholder' => 'Type...',
                     ],
-                    'image' => [
-                        'label' => 'Image',
-                        'type' => 'file',
-                        'placeholder' => 'Upload Image',
+                    'name' => [
+                        'label' => 'Name',
+                        'type' => 'text',
+                        'placeholder' => 'Type...',
                     ],
                 ]
             ],

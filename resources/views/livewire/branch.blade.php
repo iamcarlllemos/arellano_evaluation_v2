@@ -180,19 +180,21 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2">
-            <div class="mt-5">
+        <div class="w-100 flex justify-between items-center gap-2 mt-5">
+            <div>
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
             <div>
                 <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md" placeholder="Search here...">
             </div>
         </div>
-        <div class="mt-3 mb-3">
-            @if($errors->any())
-                @include('components.alert')
-            @endif
+
+        @if(session()->has('flash'))
+        <div class="mt-10">
+            @include('components.alert')
         </div>
+        @endif
+
         {{-- DISPLAY --}}
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
             @if (count($data) > 0)
@@ -207,6 +209,9 @@
                             <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                     <li>
+                                        <a wire:navigate href="{{url('departments?action=open&view=departments&id='.$collection->id.'')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View Departments</a>
+                                    </li>
+                                    <li>
                                         <a wire:navigate href="?action=update&id={{$collection->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                     </li>
                                     <li>
@@ -217,6 +222,11 @@
                         </div>
                         <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
                             <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $collection->image)}}" alt="" />
+                            <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 ">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"></path>
+                                </svg>
+                            </div>
                             <div class="p-5 absolute bottom-0 left-0">
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces">{{$collection->name}}</h5>
                             </div>

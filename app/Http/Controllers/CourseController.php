@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DepartmentModel;
+use App\Models\CourseModel;
 use Illuminate\Http\Request;
 
-class DepartmentController extends Controller
+class CourseController extends Controller
 {
     public function index(Request $request) {
 
@@ -17,8 +17,8 @@ class DepartmentController extends Controller
 
             $id = $request->input('id');
 
-            $data = DepartmentModel::where('id', $id);
-            
+            $data = CourseModel::where('id', $id);
+
             if(!$data->exists()) {
                 return redirect()->route('programs.departments');
             }
@@ -31,6 +31,6 @@ class DepartmentController extends Controller
             'active' => '',
         ];
 
-        return view('departments', compact('data'));
+        return view('course', compact('data'));
     }
 }

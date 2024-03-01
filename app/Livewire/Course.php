@@ -4,35 +4,33 @@ namespace App\Livewire;
 
 use App\Models\BranchModel;
 use App\Models\DepartmentModel;
+use App\Models\CourseModel;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Livewire\WithFileUploads;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 
 
-class Department extends Component
+class Course extends Component
 {
-
-    use WithFileUploads;
 
     public $form;
     public $select;
     public $search;
 
     public $id;
-    public $status;
-
-    public $branch_id;
+    public $department_id;
+    public $code;
     public $name;
 
     public function mount(Request $request) {
+
         $id = $request->input('id');
-        $data = DepartmentModel::find($id);
+
+        $data = CourseModel::find($id);
 
         $this->id = $id;
-        $this->branch_id = $data->branch_id ?? '';
+        $this->department_id = $data->department_id ?? '';
+        $this->code = $data->code ?? '';
         $this->name = $data->name ?? '';
     }
 
@@ -42,41 +40,38 @@ class Department extends Component
 
     public function create() {
 
-        $branch_id = $this->branch_id;
-
         $rules = [
-            'branch_id' => 'required|integer|exists:afears_branch,id',
+            'department_id' => 'required|integer|exists:afears_department,id',
+            'code' => 'required|min:4',
             'name' => [
                 'required',
                 'string',
                 'min:4',
-                Rule::unique('afears_department')->where(function ($query) use ($branch_id) {
-                    return $query->where('branch_id', $branch_id);
+                Rule::unique('afears_course')->where(function ($query) {
+                    return $query->where('department_id', $this->department_id);
                 })
             ]
         ];
 
-
-        $this->status = 'failed';
-
         $this->validate($rules);
 
-
         $data = [
-            'branch_id' => htmlspecialchars($this->branch_id),
-            'name' =>  $this->name
+            'department_id' => htmlspecialchars($this->department_id),
+            'code' => htmlspecialchars($this->code),
+            'name' =>  htmlspecialchars($this->name)
         ];
 
         try {
 
-            DepartmentModel::create($data);
+            CourseModel::create($data);
 
             session()->flash('flash', [
                 'status' => 'success',
-                'message' => 'Department `' . ucwords($this->name) . '` created successfully'
+                'message' => 'Course `' . ucwords($this->name) . '` created successfully'
             ]);
 
-            $this->branch_id = '';
+            $this->department_id = '';
+            $this->code = '';
             $this->name = '';
 
         } catch (\Exception $e) {
@@ -90,18 +85,19 @@ class Department extends Component
 
     public function update() {
 
-        $model = DepartmentModel::where('id', $this->id)->first();
+        $model = CourseModel::where('id', $this->id)->first();
     
         if ($model) {
 
             $rules = [
-                'branch_id' => 'required|integer|exists:afears_branch,id',
+                'department_id' => 'required|integer|exists:afears_department,id',
+                'code' => 'required|min:4',
                 'name' => [
                     'required',
                     'string',
                     'min:4',
-                    Rule::unique('afears_department')->where(function ($query) {
-                        return $query->where('branch_id', $this->id);
+                    Rule::unique('afears_course')->where(function ($query) {
+                        return $query->where('department_id', $this->id);
                     })->ignore($this->id)
                 ]
             ];
@@ -110,14 +106,15 @@ class Department extends Component
             
             try {
 
-                $model->branch_id = $this->branch_id;
-                $model->name = $this->name;
+                $model->department_id = $this->department_id;
+                $model->code = htmlspecialchars($this->code);
+                $model->name = htmlspecialchars($this->name);
 
                 $model->save();
     
                 session()->flash('flash', [
                     'status' => 'success',
-                    'message' => 'Department `' . ucwords($this->name) . '` updated successfully'
+                    'message' => 'Course `' . ucwords($this->name) . '` updated successfully'
                 ]);
     
             } catch (\Exception $e) {
@@ -132,15 +129,15 @@ class Department extends Component
 
     public function delete() {
 
-        $model = DepartmentModel::where('id', $this->id)->first();
+        $model = CourseModel::where('id', $this->id)->first();
 
         if($model) {
             $model->delete();
             session()->flash('flash', [
                 'status' => 'success',
-                'message' => 'Department `'.$model->name.'` deleted successfully'
+                'message' => 'Course `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.departments');
+            return redirect()->route('programs.courses');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',
@@ -154,29 +151,30 @@ class Department extends Component
 
         if($action == 'open') {
             $view = $request->input('view');
-            if(in_array($view, ['departments'])) {
+            if(in_array($view, ['courses'])) {
                 $id = $request->input('id');
                 $this->select = $id;
             }
         }
 
-        $departments = DepartmentModel::with(['branches'])
+
+        $courses = CourseModel::with(['departments.branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->when($this->select != '', function ($query) {
-                $query->where('branch_id', $this->select);
+                $query->where('department_id', $this->select);
             })
             ->get();
     
-        $departments = $departments->isEmpty() ? [] : $departments;
+        $courses = $courses->isEmpty() ? [] : $courses;
 
         $data = [
             'branches' => BranchModel::with('departments')->get(),
-            'departments' => $departments
+            'departments' => DepartmentModel::all(),
+            'courses' => $courses
         ];
 
-
-        return view('livewire.department', compact('data'));
+        return view('livewire.course', compact('data'));
     }
 }
