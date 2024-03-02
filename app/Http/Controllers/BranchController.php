@@ -25,10 +25,42 @@ class BranchController extends Controller
 
         $data = [
             'title' => 'All Branches',
-            'action' => $action,
             'active' => '',
+            'livewire' => [
+                'component' => 'branch',
+                'data' => [
+                    'lazy' => false,
+                    'form' => [
+                        'title' => [
+                            'index' => 'All Branches',
+                            'create' => 'Create Branch',
+                            'update' => 'Update Branch',
+                            'delete' => 'Delete Branch'
+                        ],
+                        'subtitle' => [
+                            'index' => 'List of all branches created.',
+                            'create' => 'Create or add new branches.',
+                            'update' => 'Apply changed to selected branch.',
+                            'delete' => 'Permanently delete selected branch'
+                        ],
+                        'action' => $action,
+                        'data' => [
+                            'name' => [
+                                'label' => 'Branch Name',
+                                'type' => 'text',
+                                'placeholder' => 'Type...',
+                            ],
+                            'image' => [
+                                'label' => 'Image',
+                                'type' => 'file',
+                                'placeholder' => 'Upload Image',
+                            ],
+                        ]
+                    ],
+                ]
+            ],
         ];
 
-        return view('branches', compact('data'));
+        return view('template', compact('data'));
     }
 }

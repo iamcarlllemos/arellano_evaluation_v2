@@ -29,14 +29,21 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        @if(count($data['courses_select']) > 0)
-                                            <option value=""> - CHOOSE - </option>
-                                            @foreach($data['courses_select'] as $courses)
-                                                <option value="{{$courses->id}}">{{ucwords($courses->name . ' (' . $courses->code . ') - [' . $courses['departments']['branches']->name .']' )}}</option>                                            
-                                            @endforeach
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
+                                        @if(count($item['options']['data']) > 0)
+                                            @if($item['options']['is_from_db'])
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$option_key}}">{{$options}}</option>
+                                                @endforeach
+                                            @endif
                                         @else
-                                            <option value="">Create a course first.</option>
+                                            <option value=""> - {{$item['options']['no_data']}} - </option>
                                         @endif
                                     </select>
                                     @error($key)
@@ -103,14 +110,21 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        @if(count($data['courses_select']) > 0)
-                                            <option value=""> - CHOOSE - </option>
-                                            @foreach($data['courses_select'] as $courses)
-                                                <option value="{{$courses->id}}">{{ucwords($courses->name . ' (' . $courses->code . ') - [' . $courses['departments']['branches']->name .']' )}}</option>                                            
-                                            @endforeach
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
+                                        @if(count($item['options']['data']) > 0)
+                                            @if($item['options']['is_from_db'])
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$option_key}}">{{$options}}</option>
+                                                @endforeach
+                                            @endif
                                         @else
-                                            <option value="">Create a course first.</option>
+                                            <option value=""> - {{$item['options']['no_data']}} - </option>
                                         @endif
                                     </select>
                                     @error($key)

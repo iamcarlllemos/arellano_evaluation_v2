@@ -22,36 +22,7 @@
                 </li>
             </ol>
         </nav>
-        @livewire('branch', [
-            'lazy' => false,
-            'form' => [
-                'title' => [
-                    'index' => 'All Branches',
-                    'create' => 'Create Branch',
-                    'update' => 'Update Branch',
-                    'delete' => 'Delete Branch'
-                ],
-                'subtitle' => [
-                    'index' => 'List of all branches created.',
-                    'create' => 'Create or add new branches.',
-                    'update' => 'Apply changed to selected branch.',
-                    'delete' => 'Permanently delete selected branch'
-                ],
-                'action' => $data['action'],
-                'data' => [
-                    'name' => [
-                        'label' => 'Branch Name',
-                        'type' => 'text',
-                        'placeholder' => 'Type...',
-                    ],
-                    'image' => [
-                        'label' => 'Image',
-                        'type' => 'file',
-                        'placeholder' => 'Upload Image',
-                    ],
-                ]
-            ],
-        ],)
+        @livewire($data['livewire']['component'], $data['livewire']['data'])
     </div>
     
 </div>

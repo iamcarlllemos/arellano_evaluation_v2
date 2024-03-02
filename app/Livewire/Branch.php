@@ -165,13 +165,9 @@ class Branch extends Component
     }
     public function render() {
         
-        $data = [];
-
-        if(strlen($this->search) >= 1) {
-            $data = BranchModel::where('name', 'like', '%' . $this->search . '%')->limit(7)->get();
-        } else {
-            $data = BranchModel::orderBy('created_at', 'desc')->get();
-        }
+        $data = BranchModel::when(strlen($this->search >= 1), function($query) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        })->get();
 
         return view('livewire.branch', compact('data'));
     }

@@ -157,7 +157,6 @@ class Course extends Component
             }
         }
 
-
         $courses = CourseModel::with(['departments.branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')

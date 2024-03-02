@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseModel;
+use App\Models\DepartmentModel;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -25,12 +26,56 @@ class CourseController extends Controller
 
         }
 
+        $departments = DepartmentModel::with('branches')->get();
+
         $data = [
             'title' => 'All Departments',
-            'action' => $action,
             'active' => '',
+            'livewire' => [
+                'component' => 'course',
+                'data' => [
+                    'lazy' => false,
+                    'form' => [
+                        'title' => [
+                            'index' => 'All Course',
+                            'create' => 'Create Course',
+                            'update' => 'Update Course',
+                            'delete' => 'Delete Course'
+                        ],
+                        'subtitle' => [
+                            'index' => 'List of all courses created.',
+                            'create' => 'Create or add new courses.',
+                            'update' => 'Apply changed to selected course.',
+                            'delete' => 'Permanently delete selected course'
+                        ],
+                        'action' => $action,
+                        'data' => [
+                            'department_id' => [
+                                'label' => 'Department Name',
+                                'type' => 'select',
+                                'placeholder' => 'Type...',
+                                'options' => [
+                                    'is_from_db' => true,
+                                    'data' => $departments,
+                                    'no_data' => 'Creat department first.'
+                                ]
+                            ],
+                            'code' => [
+                                'label' => 'Course Code',
+                                'type' => 'text',
+                                'placeholder' => 'Type...',
+                            ],
+                            'name' => [
+                                'label' => 'Course Name',
+                                'type' => 'text',
+                                'placeholder' => 'Type...',
+                            ],
+                        ]
+                    ],
+                ]
+            ]
         ];
 
-        return view('course', compact('data'));
+        return view('template', compact('data'));
     }
 }

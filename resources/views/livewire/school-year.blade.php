@@ -30,10 +30,21 @@
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        <option value=""> - CHOOSE - </option>
-                                        @foreach($item['options'] as $option_key => $options)
-                                            <option value="{{$option_key}}">{{$options}}</option>
-                                        @endforeach
+                                        @if(count($item['options']['data']) > 0)
+                                            @if($item['options']['is_from_db'])
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$option_key}}">{{$options}}</option>
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            <option value=""> - {{$item['options']['no_data']}} - </option>
+                                        @endif
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -100,14 +111,21 @@
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        <option value=""> - CHOOSE - </option>
-                                        <option value="2024">2024</option>
-                                        <option value="2025">2025</option>
-                                        <option value="2026">2026</option>
-                                        <option value="2027">2027</option>
-                                        <option value="2028">2028</option>
-                                        <option value="2029">2029</option>
-                                        <option value="2030">2030</option>
+                                        @if(count($item['options']['data']) > 0)
+                                            @if($item['options']['is_from_db'])
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$option_key}}">{{$options}}</option>
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            <option value=""> - {{$item['options']['no_data']}} - </option>
+                                        @endif
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -184,15 +202,22 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        <option value=""> - CHOOSE - </option>
-                                        <option value="2024">2024</option>
-                                        <option value="2025">2025</option>
-                                        <option value="2026">2026</option>
-                                        <option value="2027">2027</option>
-                                        <option value="2028">2028</option>
-                                        <option value="2029">2029</option>
-                                        <option value="2030">2030</option>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
+                                        @if(count($item['options']['data']) > 0)
+                                            @if($item['options']['is_from_db'])
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value=""> - CHOOSE - </option>
+                                                @foreach($item['options']['data'] as $option_key => $options)
+                                                    <option value="{{$option_key}}">{{$options}}</option>
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            <option value=""> - {{$item['options']['no_data']}} - </option>
+                                        @endif
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -237,8 +262,8 @@
             </div>
         @endif
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
-            @if (count($data['subjects']) > 0)
-                @foreach($data['subjects'] as $subjects)
+            @if (count($data['school_year']) > 0)
+                @foreach($data['school_year'] as $school_year)
                 <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
                     <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
                         <button id="dropdown-button" >
@@ -252,23 +277,25 @@
                                     <a wire:navigate href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</a>
                                 </li>
                                 <li>
-                                    <a wire:navigate href="?action=update&id={{$subjects->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
+                                    <a wire:navigate href="?action=update&id={{$school_year->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                 </li>
                                 <li>
-                                    <a wire:navigate href="?action=delete&id={{$subjects->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                    <a wire:navigate href="?action=delete&id={{$school_year->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
                                 </li>
                             </ul>
                         </div>             
                     </div>
-                    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
-                        <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $subjects['courses']['departments']['branches']->image)}}" alt="" />
+                    <div class="max-w-sms border h-56 border-gray-200 rounded-lg shadow bg-slate-800 dark:border-gray-700 relative">
                         <div class="p-5 absolute bottom-0 left-0">
-                            <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-1">{{$subjects->code}}</h5>
-                            <p class="text-sm text-white font-bold line-clamp-2">{{$subjects->name}}</p>
+                            <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-1">{{$school_year->name}}</h5>
+                            <p class="text-sm text-white font-bold line-clamp-2">{{$school_year->start_year . '-' . $school_year->end_year . ' ('.to_ordinal($school_year->semester, 'year').')'}}</p>
+                            <div class="mt-2">
+                                {!!to_status($school_year->status)!!}
+                            </div>
                         </div>
                         <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"></path>
                             </svg>
                         </div>
                     </div>
