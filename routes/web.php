@@ -5,6 +5,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SchoolYearController;
+
+
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FacultyController;
 
@@ -38,7 +42,8 @@ Route::prefix('/')->middleware([
     Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
     Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
     Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
-
+    Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
+    Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
 
     Route::prefix('accounts')->group(function() {
         Route::prefix('student')->group(function() {

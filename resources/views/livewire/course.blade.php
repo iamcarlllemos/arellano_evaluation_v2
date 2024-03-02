@@ -9,7 +9,7 @@
         </div>
         @include('components.alert')
         <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-wslate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
@@ -32,10 +32,8 @@
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
                                         @if(count($data['departments']) > 0)
                                             <option value=""> - CHOOSE - </option>
-                                            @foreach($data['branches'] as $branches)
-                                                @foreach($branches['departments'] as $departments)
-                                                    <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $branches->name . ')')}}</option>
-                                                @endforeach
+                                            @foreach($data['departments'] as $departments)
+                                                <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $departments['branches']->name . ')')}}</option>
                                             @endforeach
                                         @else
                                             <option value="">Create a department first.</option>
@@ -84,8 +82,8 @@
             </div>
         </div>
         @include('components.alert')
-        <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-slate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
@@ -108,10 +106,8 @@
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
                                         @if(count($data['departments']) > 0)
                                             <option value=""> - CHOOSE - </option>
-                                            @foreach($data['branches'] as $branches)
-                                                @foreach($branches['departments'] as $departments)
-                                                    <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $branches->name . ')')}}</option>
-                                                @endforeach
+                                            @foreach($data['departments'] as $departments)
+                                                <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $departments['branches']->name . ')')}}</option>
                                             @endforeach
                                         @else
                                             <option value="">Create a department first.</option>
@@ -237,13 +233,11 @@
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
             <div class="w-full md:flex justify-end md:gap-3">
-                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[30%]">
-                    @if(count($data['branches']) > 0)
+                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[30%]">
+                    @if(count($data['departments']) > 0)
                         <option value=""> - All - </option>
-                        @foreach($data['branches'] as $branches)
-                            @foreach($branches['departments'] as $departments)
-                                <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $branches->name . ')')}}</option>
-                            @endforeach
+                        @foreach($data['departments'] as $departments)
+                            <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $departments['branches']->name . ')')}}</option>
                         @endforeach
                     @else
                         <option value="">Create a department first.</option>
@@ -282,7 +276,7 @@
                         </div>             
                     </div>
                     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
-                        <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $branches->image)}}" alt="" />
+                        <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $courses['departments']['branches']->image)}}" alt="" />
                         <div class="p-5 absolute bottom-0 left-0">
                             <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-1">{{$courses->code}}</h5>
                             <p class="text-sm text-white font-bold line-clamp-2">{{$courses->name}}</p>

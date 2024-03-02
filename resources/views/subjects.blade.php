@@ -22,35 +22,35 @@
                 </li>
             </ol>
         </nav>
-        @livewire('course', [
+        @livewire('subject', [
             'lazy' => false,
             'form' => [
                 'title' => [
-                    'index' => 'All Course',
-                    'create' => 'Create Course',
-                    'update' => 'Update Course',
-                    'delete' => 'Delete Course'
+                    'index' => 'All Subjects',
+                    'create' => 'Create Subject',
+                    'update' => 'Update Subject',
+                    'delete' => 'Delete Subject'
                 ],
                 'subtitle' => [
-                    'index' => 'List of all courses created.',
-                    'create' => 'Create or add new courses.',
-                    'update' => 'Apply changed to selected course.',
-                    'delete' => 'Permanently delete selected course'
+                    'index' => 'List of all subjects created.',
+                    'create' => 'Create or add new subject.',
+                    'update' => 'Apply changed to selected subject.',
+                    'delete' => 'Permanently delete selected subject'
                 ],
                 'action' => $data['action'],
                 'data' => [
-                    'department_id' => [
-                        'label' => 'Department Name',
+                    'course_id' => [
+                        'label' => 'Course Name',
                         'type' => 'select',
                         'placeholder' => 'Type...',
                     ],
                     'code' => [
-                        'label' => 'Course Code',
+                        'label' => 'Subject Code',
                         'type' => 'text',
                         'placeholder' => 'Type...',
                     ],
                     'name' => [
-                        'label' => 'Course Name',
+                        'label' => 'Subject Name',
                         'type' => 'text',
                         'placeholder' => 'Type...',
                     ],

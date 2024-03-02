@@ -160,7 +160,8 @@ class Course extends Component
 
         $courses = CourseModel::with(['departments.branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('code', 'like', '%' . $this->search . '%');
             })
             ->when($this->select != '', function ($query) {
                 $query->where('department_id', $this->select);
@@ -170,10 +171,10 @@ class Course extends Component
         $courses = $courses->isEmpty() ? [] : $courses;
 
         $data = [
-            'branches' => BranchModel::with('departments')->get(),
-            'departments' => DepartmentModel::all(),
+            'departments' => DepartmentModel::with('branches')->get(),
             'courses' => $courses
         ];
+
 
         return view('livewire.course', compact('data'));
     }

@@ -4,7 +4,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('programs.departments')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('programs.school-year')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -30,14 +30,10 @@
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        @if(count($data['branches']) > 0)
-                                            <option value=""> - CHOOSE - </option>
-                                            @foreach($data['branches'] as $branches)
-                                                <option value="{{$branches->id}}">{{$branches->name}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">Create a branch first.</option>
-                                        @endif
+                                        <option value=""> - CHOOSE - </option>
+                                        @foreach($item['options'] as $option_key => $options)
+                                            <option value="{{$option_key}}">{{$options}}</option>
+                                        @endforeach
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -58,11 +54,6 @@
                                             <input id="dropzone-file" wire:model="{{$key}}" type="{{$item['type']}}" class="hidden" />
                                         </label>
                                     </div>                  
-                                    <div wire:loading wire:target="{{$key}}">Uploading...</div>
-                                    @if ($image && in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg']))
-                                        <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase mt-5" style="font-size: 12px">Image Preview</label>
-                                        <img src="{{ $image->temporaryUrl() }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">    
-                                    @endif
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
@@ -83,11 +74,11 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['update']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('programs.departments')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('programs.school-year')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
-        <div class="m-auto relative max-h-full">
+        <div class="relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
@@ -109,14 +100,14 @@
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        @if(count($data['branches']) > 0)
-                                            <option value=""> - CHOOSE - </option>
-                                            @foreach($data['branches'] as $branches)
-                                                <option value="{{$branches->id}}">{{$branches->name}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">Create a branch first.</option>
-                                        @endif
+                                        <option value=""> - CHOOSE - </option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                        <option value="2030">2030</option>
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -167,12 +158,12 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['delete']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('programs.departments')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('programs.school-year')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
-        <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
+        <div class="m-auto relative max-h-full mt-[50px]">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <h3 class="text-2xl font-extrabold">Are you sure to delete?</h3>
@@ -193,15 +184,15 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
-                                        @if(count($data['branches']) > 0)
-                                            <option value=""> - CHOOSE - </option>
-                                            @foreach($data['branches'] as $branches)
-                                                <option value="{{$branches->id}}">{{$branches->name}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">Create a branch first.</option>
-                                        @endif
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
+                                        <option value=""> - CHOOSE - </option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                        <option value="2030">2030</option>
                                     </select>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
@@ -231,21 +222,12 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5">
+        <div class="w-full flex justify-between items-center gap-2 mt-5">
             <div>
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
-            <div class="w-15 md:flex md:gap-3">
-                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    @if(count($data['branches']) > 0)
-                        <option value=""> - All - </option>
-                        @foreach($data['branches'] as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    @else
-                        <option value="">Create a branch first.</option>
-                    @endif
-                </select>
+            <div class="w-full md:flex justify-end md:gap-3">
+                
                 <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md" placeholder="Search here...">
             </div>
         </div>
@@ -254,43 +236,42 @@
                 @include('components.alert')
             </div>
         @endif
-        {{-- DISPLAY --}}
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
-            @if (count($data['departments']) > 0)
-                @foreach($data['departments'] as $departments)
-                    <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
-                        <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
-                            <button id="dropdown-button" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                </svg>      
-                            </button>       
-                            <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                    <li>
-                                        <a wire:navigate href="#s" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</a>
-                                    </li>
-                                    <li>
-                                        <a wire:navigate href="?action=update&id={{$departments->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
-                                    </li>
-                                    <li>
-                                        <a wire:navigate href="?action=delete&id={{$departments->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                                    </li>
-                                </ul>
-                            </div>             
+            @if (count($data['subjects']) > 0)
+                @foreach($data['subjects'] as $subjects)
+                <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
+                    <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
+                        <button id="dropdown-button" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>      
+                        </button>       
+                        <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a wire:navigate href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</a>
+                                </li>
+                                <li>
+                                    <a wire:navigate href="?action=update&id={{$subjects->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
+                                </li>
+                                <li>
+                                    <a wire:navigate href="?action=delete&id={{$subjects->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                </li>
+                            </ul>
+                        </div>             
+                    </div>
+                    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
+                        <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $subjects['courses']['departments']['branches']->image)}}" alt="" />
+                        <div class="p-5 absolute bottom-0 left-0">
+                            <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-1">{{$subjects->code}}</h5>
+                            <p class="text-sm text-white font-bold line-clamp-2">{{$subjects->name}}</p>
                         </div>
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
-                            <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $departments['branches']->image)}}" alt="" />
-                            <div class="p-5 absolute bottom-0 left-0">
-                                <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-2">{{$departments->name}}</h5>
-                                <p class="text-sm text-white font-bold">{{$departments->name}}</p>
-                            </div>
-                            <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                                </svg>
-                            </div>
+                        <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"></path>
+                            </svg>
                         </div>
+                    </div>
                 </div>
                 @endforeach
             @else

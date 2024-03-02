@@ -2,14 +2,14 @@
     @if($form['action'] === 'create')
         <h1 class="text-3xl font-semibold">{{$form['title']['create']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5 mb-10">
-            <div>
+        <div class="w-100 flex justify-between items-center gap-2 mb-10">
+            <div class="mt-[29px]">
                 <a wire:navigate href="{{route('programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
         <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-wslate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
@@ -64,14 +64,14 @@
     @elseif($form['action'] === 'update') 
         <h1 class="text-3xl font-semibold">{{$form['title']['update']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['update']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5 mb-10">
-            <div>
-                <a wire:navigate href="{{route('programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+        <div class="w-100 flex justify-between items-center gap-2 mb-10">
+            <div class="mt-[29px]">
+                <a wire:navigate href="{{route('programs.courses')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
-        <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-slate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
@@ -131,14 +131,14 @@
     @elseif($form['action'] === 'delete')
         <h1 class="text-3xl font-semibold">{{$form['title']['delete']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['delete']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5 mb-10">
-            <div>
+        <div class="w-100 flex justify-between items-center gap-2 mb-10">
+            <div class="mt-[29px]">
                 <a wire:navigate href="{{route('programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
         <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <h3 class="text-2xl font-extrabold">Are you sure to delete?</h3>

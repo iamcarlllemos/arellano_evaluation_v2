@@ -22,37 +22,50 @@
                 </li>
             </ol>
         </nav>
-        @livewire('course', [
+        @livewire('school-year', [
             'lazy' => false,
             'form' => [
                 'title' => [
-                    'index' => 'All Course',
-                    'create' => 'Create Course',
-                    'update' => 'Update Course',
-                    'delete' => 'Delete Course'
+                    'index' => 'All School Years',
+                    'create' => 'Create School Year',
+                    'update' => 'Update School Year',
+                    'delete' => 'Delete School Year'
                 ],
                 'subtitle' => [
-                    'index' => 'List of all courses created.',
-                    'create' => 'Create or add new courses.',
-                    'update' => 'Apply changed to selected course.',
-                    'delete' => 'Permanently delete selected course'
+                    'index' => 'List of all school years created.',
+                    'create' => 'Create or add new school year.',
+                    'update' => 'Apply changed to selected school year.',
+                    'delete' => 'Permanently delete selected school year'
                 ],
                 'action' => $data['action'],
                 'data' => [
-                    'department_id' => [
-                        'label' => 'Department Name',
+                    'name' => [
+                        'label' => 'Description',
+                        'type' => 'text',
+                        'placeholder' => 'Type...',
+                    ],
+                    'start_year' => [
+                        'label' => 'Start Year',
                         'type' => 'select',
                         'placeholder' => 'Type...',
+                        'options' => [
+                            '2024' => 2024,
+                            '2025' => 2025,
+                            '2026' => 2026,
+                            '2027' => 2027,
+                            '2028' => 2028,
+                            '2029' => 2029,
+                            '2030' => 2030,
+                        ]
                     ],
-                    'code' => [
-                        'label' => 'Course Code',
-                        'type' => 'text',
+                    'semester' => [
+                        'label' => 'Semester',
+                        'type' => 'select',
                         'placeholder' => 'Type...',
-                    ],
-                    'name' => [
-                        'label' => 'Course Name',
-                        'type' => 'text',
-                        'placeholder' => 'Type...',
+                        'options' => [
+                            '1' => '1st Semester',
+                            '2' => '2nd Semester'
+                        ]
                     ],
                 ]
             ],

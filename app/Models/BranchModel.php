@@ -19,4 +19,8 @@ class BranchModel extends Model
         return $this->hasMany(DepartmentModel::class, 'branch_id', 'id');
     }
 
+    public function courses() {
+        return $this->hasMany(CourseModel::class, 'department_id', 'id');
+    }
+
 }
