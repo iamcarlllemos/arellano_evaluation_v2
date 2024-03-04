@@ -7,6 +7,10 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\CriteriaController;
+use App\Http\Controllers\QuestionnaireController;
+use App\Http\Controllers\QuestionnaireItemController;
+
 
 
 use App\Http\Controllers\StudentController;
@@ -44,6 +48,10 @@ Route::prefix('/')->middleware([
     Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
     Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
     Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
+    Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
+    Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');
+    Route::get('/questionnaire/{slug}', [QuestionnaireItemController::class, 'index'])->name('programs.questionnaire.item');
+
 
     Route::prefix('accounts')->group(function() {
         Route::prefix('student')->group(function() {

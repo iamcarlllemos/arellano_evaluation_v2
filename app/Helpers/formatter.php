@@ -80,3 +80,24 @@ if(!function_exists('to_status')) {
 
     }
 }
+
+if(!function_exists('read_more')) {
+    function read_more($text) {
+        $length = 250;
+        $first = '';
+        $last = '';
+    
+        if (strlen($text) > $length) {
+            $first = substr($text, 0, $length);
+            $last = substr($text, $length);
+            echo '
+                <div wire:ignore>
+                    <p class="mb-0 parent-text">' . $first . '<span class="read-more-ellipsis">...</span><span class="hidden">' . $last . '</span> <a href="javascript:void(0)" class="text-blue-500 text-xs font-bold hover:underline see-more">Read More</a></p>
+                </div>
+            ';
+        } else {
+            echo '<p class="mb-0 parent-text">' . $text . '</p>';
+        }
+    }
+    
+}

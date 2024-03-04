@@ -71,7 +71,7 @@
                 <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Survey</label>
                 <ul class="mt-2">
                     <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
-                        <a wire-navigate href="#" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
+                        <a wire-navigate href="{{route('programs.criteria')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
                             <div class="p-2 rounded-lg bg-slate-800">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
@@ -81,7 +81,7 @@
                         </a>
                     </li>
                     <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
-                        <a wire-navigate href="#" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
+                        <a wire-navigate href="{{route('programs.questionnaire')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
                             <div class="p-2 rounded-lg bg-slate-800">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />

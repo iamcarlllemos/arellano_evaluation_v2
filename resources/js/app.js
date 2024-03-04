@@ -4,6 +4,8 @@ import '@selectize/selectize/dist/js/selectize.min.js'
 import '/node_modules/flowbite/dist/flowbite.min.js'
 import $ from 'jquery';
 
+window.$ = $;
+window.read_more = read_more;
 
 $(function () { 
     dropdown();
@@ -21,8 +23,27 @@ $(function () {
     });
 
     $('.selectize-input').addClass('bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500');
-
 });
+
+
+function read_more(elem) {
+    $(document).on('click', elem, function() {
+        const $prevElement = $(this).prev();
+        $prevElement.toggleClass('hidden');
+    
+        const readMoreEllipsis = $(this).prevAll('.read-more-ellipsis').first();
+        
+        if (!$prevElement.hasClass('hidden')) {
+            readMoreEllipsis.addClass('hidden');
+            $(this).text('Read Less');
+        } else {
+            readMoreEllipsis.removeClass('hidden');
+            $(this).text('Read More');
+        }
+    });
+    
+    
+}
 
 function scrollTopError() {
     $('#form-button').on('click', () => {
