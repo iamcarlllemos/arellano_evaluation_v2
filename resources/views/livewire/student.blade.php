@@ -113,17 +113,23 @@
                 <form wire:submit="update" class="p-4 md:p-5">
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         @foreach($form['data'] as $key => $item) 
-                            @if(in_array($item['type'], ['text', 'email', 'password']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
-                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}" value="{{$name}}">
+                            @if(in_array($item['type'], ['text', 'email', 'date', 'password']))
+                                <div class="col-span-{{$item['col-span']}}">
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}} 
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
+                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}">
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-2"  wire:ignore.self>
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
+                                <div class="col-span-{{$item['col-span']}}"  wire:ignore.self>
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}}
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
                                         @if(count($item['options']['data']) > 0)
                                             @if($item['options']['is_from_db'])
@@ -146,12 +152,15 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
+                                <div class="col-span-{{$item['col-span']}}">
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}}
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
                                     @if ($image && !method_exists($image, 'getClientOriginalExtension'))
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                        <img src="{{ asset('storage/images/students/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
                                     @elseif(session()->has('flash') && session('flash')['status'] == 'success')
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                        <img src="{{ asset('storage/images/students/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
                                     @endif       
                                     <div class="flex items-center justify-center w-full mt-3">
                                         <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -169,7 +178,7 @@
                                     @if ($image && method_exists($image, 'getClientOriginalExtension') && in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg']))
                                         <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase mt-5" style="font-size: 12px">Image Preview</label>
                                         <img src="{{ $image->temporaryUrl() }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">    
-                                    @endif                                
+                                    @endif                
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
@@ -205,17 +214,23 @@
                 <form wire:submit="delete" class="p-4 md:p-5">
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         @foreach($form['data'] as $key => $item) 
-                            @if(in_array($item['type'], ['text', 'email', 'password']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
-                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}" value="{{$name}}" disabled>
+                            @if(in_array($item['type'], ['text', 'email', 'date']))
+                                <div class="col-span-{{$item['col-span']}}">
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}} 
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
+                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}" disabled>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-2"  wire:ignore.self>
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
+                                <div class="col-span-{{$item['col-span']}}"  wire:ignore.self>
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}}
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
                                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
                                         @if(count($item['options']['data']) > 0)
                                             @if($item['options']['is_from_db'])
@@ -238,11 +253,12 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}}</label>
-                                    @if ($image && !method_exists($image, 'getClientOriginalExtension'))
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
-                                    @endif       
+                                <div class="col-span-{{$item['col-span']}}">
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                        {{$item['label']}}
+                                        {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
+                                    </label>
+                                    <img src="{{ asset('storage/images/students/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg" disabled>
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
@@ -312,12 +328,12 @@
                         <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relatives">
                             <img class="rounded-lg w-full h-56 object-cover brightness-50" src="{{asset('storage/images/branches/' . $students['courses']['departments']['branches']->image)}}" alt="" />
                             <div class="p-5 absolute bottom-0 left-0">
-                                <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-2">{{ucwords($students->firstname . ' ' . $students->lastname)}}</h5>
+                                <h5 class="text-2xl font-black tracking-tight text-white uppercase whitespace-break-spaces line-clamp-2">{{ucwords($students->firstname . ' ' . $students->lastname)}}</h5>
                                 <p class="text-sm text-white font-bold">{{'@' . $students->username}}</p>
                                 <p class="text-sm text-white font-bold">{{$students->email}}</p>
                             </div>
                             <div class="absolute top-6 border-2 border-sky-500 left-5 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
-                                <img src="{{asset('storage/images/students/' . $students->image)}}" class="rounded-full w-[100px]">
+                                <img src="{{asset('storage/images/students/' . $students->image)}}" class="rounded-full w-[100px] h-[100px]">
                             </div>
                         </div>
                 </div>

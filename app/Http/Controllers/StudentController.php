@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseModel;
-use App\Models\DepartmentModel;
+use App\Models\StudentModel;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -18,7 +18,7 @@ class StudentController extends Controller
 
             $id = $request->input('id');
 
-            $data = CourseModel::where('id', $id);
+            $data = StudentModel::where('id', $id);
 
             if(!$data->exists()) {
                 return redirect()->route('accounts.student');
@@ -26,7 +26,16 @@ class StudentController extends Controller
 
         }
 
-        $courses = CourseModel::all();
+        $dirty = CourseModel::with('departments.branches')->get();
+
+        $courses = [];
+        
+        foreach($dirty as $item) {
+            $courses[] = (object)[
+                'id' => $item->id,
+                'name' => $item->name . ' - (' . $item['departments']['branches']->name . ')',
+            ];
+        }
 
         $data = [
             'title' => 'All Students',
@@ -63,7 +72,7 @@ class StudentController extends Controller
                                 'options' => [
                                     'is_from_db' => true,
                                     'data' => $courses,
-                                    'no_data_found' => 'Create course first'
+                                    'no_data' => 'Create course first'
                                 ],
                                 'is_required' => true,
                                 'col-span' => '3',
@@ -79,7 +88,7 @@ class StudentController extends Controller
                                         '3' => '(3rd) Third Year',
                                         '4' => '(4th) Fourth Year'
                                     ],
-                                    'no_data_found' => 'No data found'
+                                    'no_data' => 'No data found'
                                 ],
                                 'is_required' => true,
                                 'col-span' => '3',
@@ -115,7 +124,7 @@ class StudentController extends Controller
                                         '2' => 'Female',
                                         '3' => 'Prefer not to say'
                                     ],
-                                    'no_data_found' => 'No data'
+                                    'no_data' => 'No data'
                                 ],
                                 'is_required' => true,
                                 'col-span' => '6',
@@ -138,7 +147,7 @@ class StudentController extends Controller
                                 'type' => 'email',
                                 'placeholder' => 'Type ...',
                                 'is_required' => true,
-                                'col-span' => '4',
+                                'col-span' => '6',
                             ],
                             'username' => [
                                 'label' => 'Username',

@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 
 class Student extends Component
@@ -38,6 +39,7 @@ class Student extends Component
     public $password_repeat;
 
     public function mount(Request $request) {
+
         $id = $request->input('id');
         $data = StudentModel::find($id);
 
@@ -53,8 +55,6 @@ class Student extends Component
         $this->image = $data->image ?? '';
         $this->email = $data->email ?? '';
         $this->username = $data->username ?? '';
-        $this->password = $data->password ?? '';
-        $this->password_repeat = $data->password_repeat ?? '';
     }
 
     public function placeholder() {
@@ -65,7 +65,7 @@ class Student extends Component
 
         $rules = [
             'course_id' => 'required|integer|exists:afears_course,id',
-            'student_number' => 'required',
+            'student_number' => 'required|unique:afears_student,student_number',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'middlename' => 'string|min:8',
@@ -101,8 +101,7 @@ class Student extends Component
             'image' => $filename,
             'email' => $this->email,
             'username' => $this->username,
-            'password' => $this->password,
-            'password_repeat' => $this->password_repeat,
+            'password' => Hash::make($this->password),
         ];
 
         try {
@@ -140,34 +139,106 @@ class Student extends Component
 
     public function update() {
 
-        $model = DepartmentModel::where('id', $this->id)->first();
+        $model = StudentModel::where('id', $this->id)->first();
     
         if ($model) {
 
             $rules = [
-                'branch_id' => 'required|integer|exists:afears_branch,id',
-                'name' => [
+                'course_id' => 'required|integer|exists:afears_course,id',
+                'student_number' => [
+                    'required',
+                    Rule::unique('afears_student')->where(function($query) {
+                        return $query->where('student_number', $this->student_number);
+                    })->ignore($this->id)
+                ],
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
+                'middlename' => 'string|min:8',
+                'gender' => 'required|integer|in:1,2,3,4',
+                'birthday' => 'required',
+                'year_level' => 'required|integer|in:1,2',
+                'email' =>  [
                     'required',
                     'string',
-                    'min:4',
-                    Rule::unique('afears_department')->where(function ($query) {
-                        return $query->where('branch_id', $this->id);
+                    'email',
+                    Rule::unique('afears_student')->where(function($query) {
+                        return $query->where('email', $this->email);
                     })->ignore($this->id)
-                ]
+                ],
+                'username' => [
+                    'required',
+                    'string',
+                    Rule::unique('afears_student')->where(function($query) {
+                        return $query->where('username', $this->username);
+                    })->ignore($this->id)
+                ],
             ];
     
             $this->validate($rules);
             
+            if($this->image instanceof TemporaryUploadedFile) {
+
+                $rules = [
+                    'image' => 'required|image|mimes:jpeg,png,jpg|max:5000'
+                ];
+
+                $this->validate($rules);
+
+                Storage::disk('public')->delete('images/students/' . $model->image);
+        
+                $temp_filename = time();
+                $extension = $this->image->getClientOriginalExtension();
+        
+                $filename = $temp_filename . '.' . $extension;
+        
+                $this->image->storeAs('public/images/students', $filename);
+                $this->image = $filename;
+                $model->image = $filename;
+
+            }
+
+            if(!empty($this->password && !empty($this->password_repeat))) {
+
+                $rules = [
+                    'password' => 'required|string|min:8|same:password_repeat',
+                    'password_repeat' => 'required|string|min:8|same:password'
+                ];
+
+                $this->validate($rules);
+
+                try {
+                    $model->password = Hash::make($this->password);
+                    $model->save();
+                    $this->password = '';
+                    $this->password_repeat = '';
+                } catch (\Exception $e) {
+    
+                    session()->flash('flash', [
+                        'status' => 'failed',
+                        'message' => $e->getMessage()
+                    ]);
+                }    
+
+            }
+
+
             try {
 
-                $model->branch_id = $this->branch_id;
-                $model->name = $this->name;
-
+                $model->course_id = $this->course_id;
+                $model->student_number = $this->student_number;
+                $model->firstname = $this->firstname;
+                $model->lastname = $this->lastname;
+                $model->middlename = $this->middlename;
+                $model->gender = $this->gender;
+                $model->birthday = $this->birthday;
+                $model->year_level = $this->year_level;
+                $model->email = $this->email;
+                $model->username = $this->username;
                 $model->save();
     
                 session()->flash('flash', [
                     'status' => 'success',
-                    'message' => 'Department `' . ucwords($this->name) . '` updated successfully'
+                    'message' => 'Student `' . ucwords($this->firstname . ' ' . $this->lastname) . '` updated successfully'
                 ]);
     
             } catch (\Exception $e) {
@@ -182,15 +253,15 @@ class Student extends Component
 
     public function delete() {
 
-        $model = DepartmentModel::where('id', $this->id)->first();
+        $model = StudentModel::where('id', $this->id)->first();
 
         if($model) {
             $model->delete();
             session()->flash('flash', [
                 'status' => 'success',
-                'message' => 'Department `'.$model->name.'` deleted successfully'
+                'message' => 'Student `' . ucwords($this->firstname . ' ' . $this->lastname) . '` deleted successfully'
             ]);
-            return redirect()->route('programs.departments');
+            return redirect()->route('accounts.student');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',
@@ -202,20 +273,33 @@ class Student extends Component
         
         $action = $request->input('action') ?? '';
 
-        if($action == 'open') {
-            $view = $request->input('view');
-            if(in_array($view, ['departments'])) {
-                $id = $request->input('id');
-                $this->select = $id;
-            }
-        }
+        $students = StudentModel::with(['courses.departments.branches'])
+            ->when(strlen($this->search) >= 1, function ($sQuery) {
+                $sQuery->where(function($query) {
+                    $query->where('firstname', 'like', '%' . $this->search . '%');
+                });
+                $sQuery->orWhereHas('courses', function ($cQuery) {
+                    $cQuery->where(function ($query) {
+                        $query->where('name', 'like', '%' . $this->search . '%')
+                            ->orWhere('code', 'like', '%' . $this->search . '%');
+                    })->orWhereHas('departments', function ($dQuery) {
+                        $dQuery->where('name', 'like', '%' . $this->search . '%');
+                        $dQuery->orWhereHas('branches', function ($bQuery) {
+                            $bQuery->where('name', 'like', '%' . $this->search . '%');
+                        });
+                    });
+                });
+            })
+            ->when($this->select != '', function ($query) {
+                $query->whereHas('courses.departments.branches', function ($subQuery) {
+                    $subQuery->where('branch_id', $this->select);
+                });
+            })
+            ->get();
+       
 
-        $students = StudentModel::with(['courses.departments.branches'])->get();
-
-        // dd($departments->toArray());
     
         $students = $students->isEmpty() ? [] : $students;
-
         $data = [
             'branches' => BranchModel::with('departments')->get(),
             'students' => $students
@@ -223,5 +307,6 @@ class Student extends Component
 
 
         return view('livewire.student', compact('data'));
+       
     }
 }

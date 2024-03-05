@@ -34,7 +34,7 @@
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
                                                 @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                    <option value="{{$options->id}}">{{$options->name . ' (' . $options['branches']->name . ')'}}</option>
                                                 @endforeach
                                             @else
                                                 <option value=""> - CHOOSE - </option>
