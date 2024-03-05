@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('start_year');
             $table->unsignedInteger('end_year');
             $table->unsignedInteger('semester');
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->enum('status', ['0', '1', '2', '3'])->default('0');
             $table->timestamps();
         });
     }

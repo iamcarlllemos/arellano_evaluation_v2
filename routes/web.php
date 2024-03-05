@@ -42,32 +42,23 @@ Route::prefix('/')->middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function() {
+    
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
-    Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
-    Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
-    Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
-    Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
-    Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');
-    Route::get('/questionnaire/{slug}', [QuestionnaireItemController::class, 'index'])->name('programs.questionnaire.item');
-
+   
+    Route::prefix('programs')->group(function() {
+        Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
+        Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
+        Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
+        Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
+        Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
+        Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
+        Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');
+        Route::get('/questionnaire/{slug}', [QuestionnaireItemController::class, 'index'])->name('programs.questionnaire.item');
+    });
 
     Route::prefix('accounts')->group(function() {
-        Route::prefix('student')->group(function() {
-            Route::get('/', [StudentController::class, 'index'])->name('students.index');
-            Route::get('/{type}/form/{id?}', [StudentController::class, 'form'])->name('students.form');
-            Route::post('/{type}/form', [StudentController::class, 'store'])->name('students.add.form');
-            Route::put('/{type}/form/{op}/{id}', [StudentController::class, 'update'])->name('students.update.form');
-            Route::delete('/delete/form/{id}', [StudentController::class, 'destroy'])->name('students.delete.form');
-        });
-        Route::prefix('faculty')->group(function() {
-            Route::get('/', [FacultyController::class, 'index'])->name('faculty.index');
-            Route::get('/{type}/form/{id?}', [FacultyController::class, 'form'])->name('faculty.form');
-            Route::post('/{type}/form', [FacultyController::class, 'store'])->name('faculty.add.form');
-            Route::put('/{type}/form/{op}/{id}', [FacultyController::class, 'update'])->name('faculty.update.form');
-            Route::delete('/delete/form/{id}', [FacultyController::class, 'destroy'])->name('faculty.delete.form');
-        });
+        Route::get('/students', [StudentController::class, 'index'])->name('accounts.student');
+        Route::get('/faculty', [FacultyController::class, 'index'])->name('accounts.faculty');
     });
 
 });

@@ -226,7 +226,6 @@ class QuestionnaireItem extends Component
             'data' => $this->items
         ];
 
-
         return view('livewire.questionnaire-item', compact('data'));
     }
 }

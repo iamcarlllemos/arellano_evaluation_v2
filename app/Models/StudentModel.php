@@ -23,8 +23,10 @@ class StudentModel extends Model
         'email',
         'username',
         'password',
-        'date_added',
-        'date_updated'
     ];
+
+    public function courses() {
+        return $this->belongsTo(CourseModel::class, 'course_id', 'id');
+    }
 
 }

@@ -99,6 +99,11 @@
         </div>
         <div class="w-full md:w-7/12" wire:poll.5500ms='loadItems'>
             <div>
+                <script type="module">
+                    $(document).on('livewire:init', function() {
+                        read_more('.see-more');
+                    });
+                </script>
                 @if(count($items) > 0)
                     <div id="accordion-open" data-accordion="close">
                         @php $count = 0;  @endphp
@@ -152,8 +157,3 @@
         </div>
     </div>
 </div>
-<script type="module">
-    $(document).on('livewire:init', function() {
-        read_more('.see-more');
-    });
-</script>
