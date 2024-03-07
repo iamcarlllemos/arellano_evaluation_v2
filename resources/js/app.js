@@ -49,13 +49,6 @@ function jstree_init() {
             "items": function (node) {
                 if (node.data.contextmenu == 'curriculum_template' && node.children.length === 0) {
                     var menu = {
-                        'update': {
-                            'label': 'Update',
-                            'action': function (data) {
-                                const template_id = node.data.template_id;
-                                window.location = `?action=update&id=${template_id}`
-                            }
-                        },
                         'delete': {
                             'label': 'Delete',
                             'action': function (data) {

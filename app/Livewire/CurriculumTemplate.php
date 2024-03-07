@@ -84,15 +84,39 @@ class CurriculumTemplate extends Component
 
         $this->loadDepartments();
 
+        $action = $request->input('action');
         $id = $request->input('id');
-        $data = CurriculumTemplateModel::find($id);
+        $data = CurriculumTemplateModel::first();
 
-        $this->id = $id;
-        $this->department_id = $data->department_id ?? '';
-        $this->course_id = $data->course_id ?? '';
-        $this->subject_id = $data->subject_id ?? '';
-        $this->subject_sem = $data->subject_sem ?? '';
-        $this->year_level = $data->year_level ?? '';
+        if($data) {
+
+            $this->id = $id;
+            $this->department_id = $data->department_id ?? '';
+            $this->course_id = $data->course_id ?? '';
+            $this->subject_id = $data->subject_id ?? '';
+            $this->subject_sem = $data->subject_sem ?? '';
+            $this->year_level = $data->year_level ?? '';
+
+            if(in_array($action, ['update', 'delete'])) {
+                $dirty = DepartmentModel::with('branches')->get();
+                
+                $clean = [];
+
+                foreach($dirty as $item) {
+                    $clean[] = (object)[
+                        'id' => $item->id,
+                        'name' => $item->name . ' - (' . $item['branches']->name .  ')'
+                    ];
+                }
+                $this->departments = $clean;
+                $this->courses = CourseModel::all();
+                $this->subjects = SubjectModel::all();
+            } 
+        }
+
+ 
+
+        
     }
 
     public function placeholder() {

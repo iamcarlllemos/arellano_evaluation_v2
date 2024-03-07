@@ -132,98 +132,7 @@
                     </div>
                 </form>
             </div>
-        </div>
-    @elseif($form['action'] === 'update') 
-        <h1 class="text-3xl font-semibold">{{$form['title']['update']}}</h1>
-        <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['update']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mb-10">
-            <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
-            </div>
-        </div>
-        @include('components.alert')
-        <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
-                    <div class="block">
-                        <p class="text-sm text-slate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
-                    </div>
-                </div>
-                <form wire:submit="update" class="p-4 md:p-5">
-                    <div class="grid gap-4 mb-4 grid-cols-2">
-                        @foreach($form['data'] as $key => $item) 
-                            @if(in_array($item['type'], ['text', 'email', 'password']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}" value="{{$name}}">
-                                    @error($key)
-                                        <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
-                                    @enderror
-                                </div>
-                            @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-2"  wire:ignore.self>
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
-                                        @if(count($item['options']['data']) > 0)
-                                            @if($item['options']['is_from_db'])
-                                                <option value=""> - CHOOSE - </option>
-                                                @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$options->id}}">{{$options->name}}</option>
-                                                @endforeach
-                                            @else
-                                                <option value=""> - CHOOSE - </option>
-                                                @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$option_key}}">{{$options}}</option>
-                                                @endforeach
-                                            @endif
-                                        @else
-                                            <option value=""> - {{$item['options']['no_data']}} - </option>
-                                        @endif
-                                    </select>
-                                    @error($key)
-                                        <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
-                                    @enderror
-                                </div>
-                            @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-2">
-                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    @if ($image && !method_exists($image, 'getClientOriginalExtension'))
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
-                                    @elseif(session()->has('flash') && session('flash')['status'] == 'success')
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
-                                    @endif       
-                                    <div class="flex items-center justify-center w-full mt-3">
-                                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                                </svg>
-                                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or GIF (MAX. 5MB)</p>
-                                            </div>
-                                            <input id="dropzone-file" wire:model="{{$key}}" type="{{$item['type']}}" class="hidden" />
-                                        </label>
-                                    </div>                  
-                                    <div wire:loading wire:target="{{$key}}">Uploading...</div>
-                                    @if ($image && method_exists($image, 'getClientOriginalExtension') && in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg']))
-                                        <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase mt-5" style="font-size: 12px">Image Preview</label>
-                                        <img src="{{ $image->temporaryUrl() }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">    
-                                    @endif                                
-                                    @error($key)
-                                        <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
-                                    @enderror
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="flex justify-end mt-10">
-                        <button id="form-button" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Proceed
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        </div>  
     @elseif($form['action'] === 'delete')
         <h1 class="text-3xl font-semibold">{{$form['title']['delete']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['delete']}}</p>
@@ -243,11 +152,59 @@
                 </div>
                 <form wire:submit="delete" class="p-4 md:p-5">
                     <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2"  wire:ignore.self>
+                            <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Department <span class="text-red-900">*</span></label>
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='department_id' wire:change='loadDepartments($event.target.value)'>
+                                @if(count($departments) > 0)
+                                    <option value=""> - CHOOSE - </option>
+                                    @foreach($departments as $department)
+                                        <option value="{{$department->id}}">{{$department->name}}</option>
+                                    @endforeach
+                                @else
+                                    <option value=""> - CREATE DEPARTMENT FIRST - </option>
+                                @endif
+                            </select>
+                            @error($department_id)
+                                <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                            @enderror
+                        </div>
+                        <div class="col-span-2"  wire:ignore.self>
+                            <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Course <span class="text-red-900">*</span></label>
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='course_id' wire:change='loadCourses($event.target.value)'>
+                                @if(count($courses) > 0)
+                                    <option value=""> - CHOOSE - </option>
+                                    @foreach($courses as $course)
+                                        <option value="{{$course->id}}">{{'(' . $course->code . ') - ' . $course->name}}</option>
+                                    @endforeach
+                                @else
+                                    <option value=""> - CHOOSE DEPARTMENT FIRST - </option>
+                                @endif
+                            </select>
+                            @error($course_id)
+                                <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                            @enderror
+                        </div>
+                        <div class="col-span-2"  wire:ignore.self>
+                            <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Subject <span class="text-red-900">*</span></label>
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='subject_id' wire:change='loadCourses($event.target.value)'>
+                                @if(count($subjects) > 0)
+                                    <option value=""> - CHOOSE - </option>
+                                    @foreach($subjects as $subject)
+                                        <option value="{{$subject->id}}">{{'(' . $subject->code . ') - ' . $subject->name}}</option>
+                                    @endforeach
+                                @else
+                                    <option value=""> - CHOOSE DEPARTMENT, COURSE FIRST - </option>
+                                @endif
+                            </select>
+                            @error($subject_id)
+                                <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                            @enderror
+                        </div>
                         @foreach($form['data'] as $key => $item) 
                             @if(in_array($item['type'], ['text', 'email', 'password']))
                                 <div class="col-span-2">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}" value="{{$name}}" disabled>
+                                    <input type="{{$item['type']}}" wire:model="{{$key}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{$item['placeholder']}}">
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
@@ -255,7 +212,7 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model.live="{{$key}}" wire:change='{{$item['on_change']}}($event.target.value)'>
                                         @if(count($item['options']['data']) > 0)
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
@@ -279,9 +236,23 @@
                             @elseif(in_array($item['type'], ['file']))
                                 <div class="col-span-2">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    @if ($image && !method_exists($image, 'getClientOriginalExtension'))
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
-                                    @endif       
+                                    <div class="flex items-center justify-center w-full">
+                                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                                </svg>
+                                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or GIF (MAX. 5MB)</p>
+                                            </div>
+                                            <input id="dropzone-file" wire:model="{{$key}}" type="{{$item['type']}}" class="hidden" />
+                                        </label>
+                                    </div>                  
+                                    <div wire:loading wire:target="{{$key}}">Uploading...</div>
+                                    @if ($image && in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg']))
+                                        <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase mt-5" style="font-size: 12px">Image Preview</label>
+                                        <img src="{{ $image->temporaryUrl() }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">    
+                                    @endif
                                     @error($key)
                                         <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
                                     @enderror
