@@ -11,10 +11,10 @@ use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\QuestionnaireItemController;
 
-
-
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FacultyController;
+
+use App\Http\Controllers\CurriculumTemplateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +54,10 @@ Route::prefix('/')->middleware([
         Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
         Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');
         Route::get('/questionnaire/{slug}', [QuestionnaireItemController::class, 'index'])->name('programs.questionnaire.item');
+    });
+
+    Route::prefix('linking')->group(function() {
+        Route::get('/curriculum-template', [CurriculumTemplateController::class, 'index'])->name('linking.curriculum-template');
     });
 
     Route::prefix('accounts')->group(function() {

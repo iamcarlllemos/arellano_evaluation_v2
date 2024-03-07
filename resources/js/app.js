@@ -1,8 +1,11 @@
-import './bootstrap';
-import '@selectize/selectize/dist/css/selectize.default.css';
+import './bootstrap'
+import 'jstree'
+import '@selectize/selectize/dist/css/selectize.default.css'
 import '@selectize/selectize/dist/js/selectize.min.js'
 import '/node_modules/flowbite/dist/flowbite.min.js'
+
 import $ from 'jquery';
+
 
 window.$ = $;
 window.read_more = read_more;
@@ -11,7 +14,8 @@ $(function () {
     dropdown();
     hideAlert();
     scrollTopError();
-
+    jstree_init();
+    
     $('.selectize').each(function () {
         const dataMaxItems = $(this).data('max-items');
         $(this).selectize({
@@ -25,6 +29,50 @@ $(function () {
     $('.selectize-input').addClass('bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500');
 });
 
+function jstree_init() {
+    $('.jstree').jstree({
+        "core" : {
+            "themes" : {
+                "variant" : "large",
+                "responsive": false,
+                "stripes": true,
+            },
+            "check_callback" : true,
+        },
+        "types": {
+            "default": {
+                "icon": false
+            },
+        },
+        "plugins" : ["contextmenu", "state", "search", "types", "search"],
+        "contextmenu": {
+            "items": function (node) {
+                if (node.data.contextmenu == 'curriculum_template' && node.children.length === 0) {
+                    var menu = {
+                        'update': {
+                            'label': 'Update',
+                            'action': function (data) {
+                                const template_id = node.data.template_id;
+                                window.location = `?action=update&id=${template_id}`
+                            }
+                        },
+                        'delete': {
+                            'label': 'Delete',
+                            'action': function (data) {
+                                const template_id = node.data.template_id;
+                                window.location = `?action=delete&id=${template_id}`
+                            }
+                        }
+                    };
+                    return menu;
+                }
+            }
+        }
+    }).on('ready.jstree', function() {
+        $(this).jstree('open_all');
+    });
+
+}
 
 function read_more(elem) {
     $(document).on('click', elem, function() {

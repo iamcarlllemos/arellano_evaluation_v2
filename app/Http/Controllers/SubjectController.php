@@ -26,7 +26,16 @@ class SubjectController extends Controller
 
         }
 
-        $courses = CourseModel::with(['departments.branches'])->get();
+        $dirty = CourseModel::with(['departments.branches'])->get();
+
+        $courses = [];
+        
+        foreach($dirty as $item) {
+            $courses[] = (object)[
+                'id' => $item->id,
+                'name' => $item->name . ' - (' . $item['departments']['branches']->name . ')',
+            ];
+        }
 
         $data = [
             'title' => 'All Departments',

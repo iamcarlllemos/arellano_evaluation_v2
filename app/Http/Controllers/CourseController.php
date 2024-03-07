@@ -26,8 +26,17 @@ class CourseController extends Controller
 
         }
 
-        $departments = DepartmentModel::with('branches')->get();
+        $dirty = DepartmentModel::with('branches')->get();
 
+        $departments = [];
+        
+        foreach($dirty as $item) {
+            $departments[] = (object)[
+                'id' => $item->id,
+                'name' => $item->name . ' - (' . $item['branches']->name . ')',
+            ];
+        }
+        
         $data = [
             'title' => 'All Departments',
             'active' => '',

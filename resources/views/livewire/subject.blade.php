@@ -110,7 +110,7 @@
                             @elseif(in_array($item['type'], ['select']))
                                 <div class="col-span-2"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">{{$item['label']}} <span class="text-red-900">*</span></label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}" disabled>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="{{$key}}">
                                         @if(count($item['options']['data']) > 0)
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
@@ -247,7 +247,7 @@
             <div class="w-full md:flex justify-end md:gap-3">
                 <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[30%]">
                     @if(count($data['courses_select']) > 0)
-                        <option value=""> - CHOOSE - </option>
+                        <option value=""> - ALL - </option>
                         @foreach($data['courses_select'] as $courses)
                             <option value="{{$courses->id}}">{{ucwords($courses->name . ' (' . $courses->code . ') - [' . $courses['departments']['branches']->name .']' )}}</option>                                            
                         @endforeach
