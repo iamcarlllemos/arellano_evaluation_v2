@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacultyTemplateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BranchController;
@@ -58,6 +59,7 @@ Route::prefix('/')->middleware([
 
     Route::prefix('linking')->group(function() {
         Route::get('/curriculum-template', [CurriculumTemplateController::class, 'index'])->name('linking.curriculum-template');
+        Route::get('/faculty-template', [FacultyTemplateController::class, 'index'])->name('linking.faculty-template');
     });
 
     Route::prefix('accounts')->group(function() {

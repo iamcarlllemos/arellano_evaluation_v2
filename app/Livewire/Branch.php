@@ -129,9 +129,6 @@ class Branch extends Component
                     'status' => 'success',
                     'message' => 'Branch `' . ucwords($this->name) . '` updated successfully'
                 ]);
-
-                $this->image = '';
-                $this->name = '';   
     
             } catch (\Exception $e) {
     

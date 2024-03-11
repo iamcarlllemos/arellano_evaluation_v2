@@ -9,6 +9,7 @@ import $ from 'jquery';
 
 window.$ = $;
 window.read_more = read_more;
+window.jstree_init = jstree_init;
 
 $(function () { 
     dropdown();

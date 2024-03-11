@@ -89,15 +89,15 @@ class CurriculumTemplate extends Component
         $data = CurriculumTemplateModel::first();
 
         if($data) {
-
-            $this->id = $id;
-            $this->department_id = $data->department_id ?? '';
-            $this->course_id = $data->course_id ?? '';
-            $this->subject_id = $data->subject_id ?? '';
-            $this->subject_sem = $data->subject_sem ?? '';
-            $this->year_level = $data->year_level ?? '';
-
             if(in_array($action, ['update', 'delete'])) {
+
+                $this->id = $id;
+                $this->department_id = $data->department_id;
+                $this->course_id = $data->course_id;
+                $this->subject_id = $data->subject_id;
+                $this->subject_sem = $data->subject_sem;
+                $this->year_level = $data->year_level;
+
                 $dirty = DepartmentModel::with('branches')->get();
                 
                 $clean = [];
@@ -111,7 +111,27 @@ class CurriculumTemplate extends Component
                 $this->departments = $clean;
                 $this->courses = CourseModel::all();
                 $this->subjects = SubjectModel::all();
-            } 
+            }  elseif(in_array($action, ['create'])) {
+                $this->id = $id;
+                $this->department_id = '';
+                $this->course_id = '';
+                $this->subject_id =  '';
+                $this->subject_sem = '';
+                $this->year_level = '';
+            } else {
+                $courses_dirty = CourseModel::with('departments.branches')->get();
+
+                $courses = [];
+
+                foreach($courses_dirty as $item) {
+                    $courses[] = (object)[
+                        'id' => $item->id,
+                        'name' => '[' . strtoupper($item->code) . '] ' . $item->name . ' - (' . $item['departments']['branches']->name . ')'
+                    ];
+                }
+
+                $this->courses = $courses;
+            }
         }
 
  
@@ -125,11 +145,21 @@ class CurriculumTemplate extends Component
 
     public function create() {
 
-
         $rules = [
             'department_id' => 'required|integer|exists:afears_department,id',
             'course_id' => 'required|integer|exists:afears_course,id',
-            'subject_id' => 'required|integer|exists:afears_subject,id',
+            'subject_id' => [
+                'required',
+                'integer',
+                'exists:afears_subject,id',
+                Rule::unique('afears_curriculum_template')->where(function($query) {
+                    $query->where('department_id', $this->department_id)
+                        ->where('course_id', $this->course_id)
+                        ->where('subject_id', $this->subject_id)
+                        ->where('subject_sem', $this->subject_sem)
+                        ->where('year_level', $this->year_level);
+                })
+            ],
             'subject_sem' => 'required|integer|in:1,2',
             'year_level' => 'required|integer|in:1,2,3,4',
         ];
@@ -168,65 +198,27 @@ class CurriculumTemplate extends Component
         }       
     }
 
-    public function update() {
-
-        $model = DepartmentModel::where('id', $this->id)->first();
-    
-        if ($model) {
-
-            $rules = [
-                'branch_id' => 'required|integer|exists:afears_branch,id',
-                'name' => [
-                    'required',
-                    'string',
-                    'min:4',
-                    Rule::unique('afears_department')->where(function ($query) {
-                        return $query->where('branch_id', $this->id);
-                    })->ignore($this->id)
-                ]
-            ];
-    
-            $this->validate($rules);
-            
-            try {
-
-                $model->branch_id = $this->branch_id;
-                $model->name = $this->name;
-
-                $model->save();
-    
-                session()->flash('flash', [
-                    'status' => 'success',
-                    'message' => 'Department `' . ucwords($this->name) . '` updated successfully'
-                ]);
-    
-            } catch (\Exception $e) {
-    
-                session()->flash('flash', [
-                    'status' => 'failed',
-                    'message' => $e->getMessage()
-                ]);
-            }    
-        }
-    }
-
     public function delete() {
 
-        $model = DepartmentModel::where('id', $this->id)->first();
+        $model = CurriculumTemplateModel::where('id', $this->id)->first();
 
         if($model) {
             $model->delete();
             session()->flash('flash', [
                 'status' => 'success',
-                'message' => 'Department `'.$model->name.'` deleted successfully'
+                'message' => 'Curriculum Template deleted successfully'
             ]);
-            return redirect()->route('programs.departments');
+            return redirect()->route('linking.curriculum-template');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',
                 'message' => 'No records found for id `'.$this->id.'`. Unable to delete.'
             ]);
         }
+    }
+
+    public function search() {
+        echo 123;
     }
     public function render(Request $request) {
         
@@ -249,12 +241,10 @@ class CurriculumTemplate extends Component
        
         $templates = $this->find($keywords);
 
-
         $data = [
             'templates' => $templates
         ];
         
-
         return view('livewire.curriculum-template', compact('data'));
     }
 }

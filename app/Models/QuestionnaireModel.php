@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 
 
 class QuestionnaireModel extends Model
@@ -27,8 +26,7 @@ class QuestionnaireModel extends Model
     public function questionnaire_item() {
         return $this->hasMany(QuestionnaireItemModel::class, 'questionnaire_id', 'id');
     }
-    public function sluggable(): array
-    {
+    public function sluggable(): array {
         return [
             'slug' => [
                 'source' => 'name',

@@ -18,5 +18,6 @@ class CourseModel extends Model
     public function departments() {
         return $this->belongsTo(DepartmentModel::class, 'department_id', 'id');
     }
+    
   
 }

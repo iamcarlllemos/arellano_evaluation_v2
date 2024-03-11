@@ -12,7 +12,8 @@ class BranchModel extends Model
     protected $table = 'afears_branch';
     protected $fillable = [
         'name',
-        'image'
+        'image',
+        'slug'
     ];
 
     public function departments() {

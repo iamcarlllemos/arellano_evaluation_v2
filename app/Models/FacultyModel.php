@@ -25,4 +25,8 @@ class FacultyModel extends Model
         return $this->belongsTo(DepartmentModel::class, 'department_id', 'id');
     }
 
+    public function templates() {
+        return$this->hasMany(FacultyTemplateModel::class, 'template_id', 'id');
+    }
+
 }

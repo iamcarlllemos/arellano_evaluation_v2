@@ -23,18 +23,13 @@ class CurriculumTemplateController extends Controller
             $data = CurriculumTemplateModel::where('id', $id);
             
             if(!$data->exists()) {
-                return redirect()->route('programs.departments');
+                return redirect()->route('linking.curriculum-template');
             }
         } 
-
-
-        $branches = BranchModel::with('departments')->get();
-        
 
         $data = [
             'title' => 'All Curriculum Templates',
             'active' => '',
-            'branches' => $branches,
             'livewire' => [
                 'component' => 'curriculum-template',
                 'data' => [
