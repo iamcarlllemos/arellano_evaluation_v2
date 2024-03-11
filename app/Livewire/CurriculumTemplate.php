@@ -66,12 +66,12 @@ class CurriculumTemplate extends Component
 
     public function loadSubjects() {
         $data = SubjectModel::with(['courses.departments'])
-            ->when($this->course_id != '', function($subQuery) {
+            ->when(!empty($this->course_id), function($subQuery) {
                 $subQuery->whereHas('courses', function($query) {
                     $query->where('id', $this->course_id);
                 });
             })
-            ->when($this->department_id != '', function($subQuery) {
+            ->when(!empty($this->department_id), function($subQuery) {
                 $subQuery->whereHas('courses.departments', function($query) {
                     $query->where('id', $this->department_id);
                 });

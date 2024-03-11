@@ -19,4 +19,8 @@ class FacultyTemplateModel extends Model
         return $this->hasMany(CurriculumTemplateModel::class, 'id', 'template_id');
     }
 
+    public function faculty() {
+        return $this->belongsTo(FacultyModel::class, 'faculty_id', 'id');
+    }
+
 }

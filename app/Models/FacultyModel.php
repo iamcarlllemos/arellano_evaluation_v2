@@ -26,7 +26,7 @@ class FacultyModel extends Model
     }
 
     public function templates() {
-        return$this->hasMany(FacultyTemplateModel::class, 'template_id', 'id');
+        return$this->hasMany(FacultyTemplateModel::class, 'faculty_id', 'id');
     }
 
 }

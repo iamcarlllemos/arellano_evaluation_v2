@@ -39,11 +39,8 @@ class FacultyTemplate extends Component
     public $gender;
     public $image;
     public $email;
-    public object $template;
+    public $template;
     public object $curriculum_template;
-    protected $listeners = [
-        'refresh' => '$refresh'
-    ];
 
     public function mount(Request $request) {
 
@@ -52,26 +49,41 @@ class FacultyTemplate extends Component
 
         $this->id = $id;
 
-        if(in_array($action, ['template', 'connect'])) {
-            $data = FacultyModel::with(['templates', 'departments.branches'])->where('id', $id)->get()[0] ?? [];
-            $this->template = $data;
-        } else {
-            $data = FacultyModel::find($id);
-            $this->id = $id;
-            $this->department_id = $data->department_id ?? '';
-            $this->employee_number = $data->employee_number ?? '';
-            $this->firstname = $data->firstname ?? '';
-            $this->lastname = $data->lastname ?? '';
-            $this->middlename = $data->middlename ?? '';
-            $this->gender = $data->gender ?? '';
-            $this->birthday = $data->birthday ?? '';
-            $this->year_level = $data->year_level ?? '';
-            $this->image = $data->image ?? '';
-            $this->email = $data->email ?? '';
-            $this->username = $data->username ?? '';
-        }
-
+        if (in_array($action, ['template', 'connect'])) {
+            $data = FacultyModel::with(['templates.curriculum_template.subjects.courses.departments.branches', 'departments.branches'])->where('id', $id)->get()[0]->toArray();
         
+            $template_data = [];
+            foreach ($data['templates'] as $template) {
+                $courseName = $template['curriculum_template'][0]['subjects']['courses']['name'];
+                $subjectName = $template['curriculum_template'][0]['subjects']['name'];
+                $yearLevel = $template['curriculum_template'][0]['year_level'];
+                $semester = $template['curriculum_template'][0]['subject_sem'];
+                $branchName = $template['curriculum_template'][0]['subjects']['courses']['departments']['branches']['name'];
+        
+                $key = "$branchName-$courseName-$yearLevel-$semester";
+        
+                if (!isset($template_data[$key])) {
+                    $template_data[$key] = [
+                        'branch' => $branchName,
+                        'course' => $courseName,
+                        'year' => $yearLevel,
+                        'semester' => $semester,
+                        'subjects' => []
+                    ];
+                }
+        
+                $template_data[$key]['subjects'][] = $subjectName;
+            }
+        
+            $template_data = array_values($template_data);
+        
+            $data['templates'] = $template_data;
+        
+        
+            $this->template = $data;
+        }
+        
+
     }
 
     public function loadCurriculumTemplate() {
@@ -119,65 +131,6 @@ class FacultyTemplate extends Component
         return view('livewire.placeholder');
     }
 
-    public function create() {
-
-        $rules = [
-            'employee_number' => 'required|unique:afears_faculty,employee_number',
-            'department_id' => 'required|integer|exists:afears_department,id',
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'middlename' => 'string',
-            'email' => 'required|email|unique:afears_faculty,email',
-            'gender' => 'required|integer|in:1,2,3',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:5000',
-        ];
-
-        $this->validate($rules);
-
-        $temp_filename = time();
-        $extension =$this->image->getClientOriginalExtension();
-
-        $filename = $temp_filename . '.' . $extension;
-
-        $data = [
-            'department_id' => $this->department_id,
-            'employee_number' => $this->employee_number,
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'middlename' => $this->middlename,
-            'email' => $this->email,
-            'gender' => $this->gender,
-            'image' => $filename,
-        ];
-
-        try {
-
-            FacultyModel::create($data);
-            $this->image->storeAs('public/images/faculty', $filename);
-
-            session()->flash('flash', [
-                'status' => 'success',
-                'message' => 'Faculty `' . ucwords($this->firstname . ' ' . $this->lastname) . '` created successfully'
-            ]);
-
-            $this->department_id = '';
-            $this->employee_number = '';
-            $this->firstname = '';
-            $this->lastname = '';
-            $this->middlename = '';
-            $this->gender = '';
-            $this->image = '';
-            $this->email = '';
-
-        } catch (\Exception $e) {
-
-            session()->flash('flash', [
-                'status' => 'failed',
-                'message' => $e->getMessage()
-            ]);
-        }       
-    }
-
     public function toggleLink($faculty_id, $template_id) {
 
         $rules = [
@@ -209,103 +162,6 @@ class FacultyTemplate extends Component
             ]);
         }
 
-    }
-
-    public function update() {
-
-        $model = FacultyModel::where('id', $this->id)->first();
-    
-        if ($model) {
-
-            $rules = [
-                'department_id' => 'required|integer|exists:afears_department,id',
-                'employee_number' => [
-                    'required',
-                    Rule::unique('afears_faculty')->where(function($query) {
-                        return $query->where('employee_number', $this->employee_number);
-                    })->ignore($this->id)
-                ],
-                'firstname' => 'required|string',
-                'lastname' => 'required|string',
-                'middlename' => 'string',
-                'gender' => 'required|integer|in:1,2,3',
-                'email' =>  [
-                    'required',
-                    'string',
-                    'email',
-                    Rule::unique('afears_faculty')->where(function($query) {
-                        return $query->where('email', $this->email);
-                    })->ignore($this->id)
-                ],
-            ];
-    
-            $this->validate($rules);
-            
-            if($this->image instanceof TemporaryUploadedFile) {
-
-                $rules = [
-                    'image' => 'required|image|mimes:jpeg,png,jpg|max:5000'
-                ];
-
-                $this->validate($rules);
-
-                Storage::disk('public')->delete('images/faculty/' . $model->image);
-        
-                $temp_filename = time();
-                $extension = $this->image->getClientOriginalExtension();
-        
-                $filename = $temp_filename . '.' . $extension;
-        
-                $this->image->storeAs('public/images/faculty', $filename);
-                $this->image = $filename;
-                $model->image = $filename;
-
-            }
-
-
-            try {
-
-                $model->department_id = $this->department_id;
-                $model->employee_number = $this->employee_number;
-                $model->firstname = $this->firstname;
-                $model->lastname = $this->lastname;
-                $model->middlename = $this->middlename;
-                $model->gender = $this->gender;
-                $model->email = $this->email;
-                $model->save();
-    
-                session()->flash('flash', [
-                    'status' => 'success',
-                    'message' => 'Faculty `' . ucwords($this->firstname . ' ' . $this->lastname) . '` updated successfully'
-                ]);
-    
-            } catch (\Exception $e) {
-    
-                session()->flash('flash', [
-                    'status' => 'failed',
-                    'message' => $e->getMessage()
-                ]);
-            }    
-        }
-    }
-
-    public function delete() {
-
-        $model = FacultyModel::where('id', $this->id)->first();
-
-        if($model) {
-            $model->delete();
-            session()->flash('flash', [
-                'status' => 'success',
-                'message' => 'Faculty `' . ucwords($this->firstname . ' ' . $this->lastname) . '` deleted successfully'
-            ]);
-            return redirect()->route('accounts.faculty');
-        } else {
-            session()->flash('flash', [
-                'status' => 'failed',
-                'message' => 'No records found for id `'.$this->id.'`. Unable to delete.'
-            ]);
-        }
     }
     
     public function render(Request $request) {

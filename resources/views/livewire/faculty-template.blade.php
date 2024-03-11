@@ -200,30 +200,58 @@
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px] flex items-center gap-3">
                 <a wire:navigate href="{{route('linking.faculty-template')}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
-                <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'connect', 'id' => $template->id])}}" class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md">Connect</a>
+                <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'connect', 'id' => $template['id']])}}" class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md">Connect</a>
             </div>
         </div>
         <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
+            <div class="relative bg-white rounded-lg shadow-xs dark:bg-gray-700 mt-[50px]">
                 <div class="flex items-center  md:p-5 border-b rounded-t dark:border-gray-600 gap-5">
                     <div>
-                        <img src="{{asset('storage/images/faculty/'.$template->image)}}" class="w-[120px] h-[120px] rounded-lg">
+                        <img src="{{asset('storage/images/faculty/'.$template['image'])}}" class="w-[120px] h-[120px] rounded-lg">
                     </div>
                     <div class="block">
-                        <div class="font-bold text-normal">Employee #: {{$template->employee_number}}</div>
-                        <div class="font-bold text-normal">Full Name: {{ucwords($template->firstname . ' ' . $template->lastname)}}</div>
-                        <div class="font-bold text-normal">Department: {{$template['departments']->name}}</div>
-                        <div class="font-bold text-normal">Branch: {{$template['departments']['branches']->name}}</div>
+                        <div class="font-bold text-normal">Employee #: {{$template['employee_number']}}</div>
+                        <div class="font-bold text-normal">Full Name: {{ucwords($template['firstname'] . ' ' . $template['lastname'])}}</div>
+                        <div class="font-bold text-normal">Department: {{$template['departments']['name']}}</div>
+                        <div class="font-bold text-normal">Branch: {{$template['departments']['branches']['name']}}</div>
                     </div>
                 </div>
             </div>
+            @if (count($template['templates']) > 0)
+                <div class="grid grid-cols-12 gap-3">
+                    @foreach ($template['templates'] as $template)
+                    <div class="col-span-6">
+                        <div class="relative bg-white rounded-lg shadow-xs dark:bg-gray-700 mt-4 p-5">
+                            <div class="block">
+                                <div class="font-medium text-sm">Branch: {{$template['branch']}}</div>
+                                <div class="font-medium text-sm">Course: {{$template['course']}}</div>
+                                <div class="font-medium text-sm">Year Level: {{to_ordinal($template['year'], 'year')}}</div>
+                                <div class="font-medium text-sm">Semester: {{to_ordinal($template['semester'], 'semester')}}</div>
+                                <div id="accordion-collapse" data-accordion="collapse">
+                                    <h2 id="accordion-collapse-heading-1">
+                                      <button type="button" class="flex items-center justify-between w-full px-3 font-medium rtl:text-right text-gray-500 border focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                                        <span>Subjects</span>
+                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                                        </svg>
+                                      </button>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            @else
+                
+            @endif
         </div>
     @elseif($form['action'] === 'connect')
         <h1 class="text-3xl font-semibold">{{$form['title']['template']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['template']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px] flex items-center gap-3">
-                <a wire:navigate href="{{route('linking.faculty-template')}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'template', 'id' => $template['id']])}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         <div class="m-auto relative max-h-full">
@@ -280,9 +308,9 @@
                                 </ul>
                                 <div class="flex justify-end mt-8 mb-1">
                                     @if($curriculum_templates->is_exists)
-                                        <button wire:click='toggleLink({{$template->id}}, {{$curriculum_templates->id}})' class="border bg-transparent border-slate-900 py-1 px-6 text-dark text-sm font-bold rounded-md">Unlink</button>
+                                        <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-transparent border-slate-900 py-1 px-6 text-dark text-sm font-bold rounded-md">Unlink</button>
                                     @else
-                                        <button wire:click='toggleLink({{$template->id}}, {{$curriculum_templates->id}})' class="border bg-slate-900 border-slate-900 py-1 px-6 text-white text-sm font-bold rounded-md">Link</button>
+                                        <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-slate-900 border-slate-900 py-1 px-6 text-white text-sm font-bold rounded-md">Link</button>
                                     @endif
                                 </div>
                             </div>
