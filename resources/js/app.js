@@ -2,7 +2,7 @@ import './bootstrap'
 import 'jstree'
 import '@selectize/selectize/dist/css/selectize.default.css'
 import '@selectize/selectize/dist/js/selectize.min.js'
-import '/node_modules/flowbite/dist/flowbite.min.js'
+import 'flowbite/dist/flowbite.min.js'
 
 import $ from 'jquery';
 
@@ -115,4 +115,25 @@ function dropdown() {
             $('.dropdown').addClass('hidden');
         }
     });
+}
+
+multi_select();
+
+function multi_select() {
+    let selected_card = 0;
+
+    $(document).on('click', '.multi-select', function(e) {
+        const checkbox = $(this).find('input[type="checkbox"]');
+
+
+        const state = !checkbox.prop('checked');
+
+        selected_card += state ? 1 : -1;
+
+        checkbox.prop('checked', state);
+        $(this).toggleClass('border-sky-500', checkbox.prop('checked'));
+
+        $('.multi-select-actions').toggleClass('hidden', selected_card === 0);
+
+    });    
 }

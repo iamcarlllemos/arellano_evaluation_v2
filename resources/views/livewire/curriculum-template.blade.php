@@ -336,6 +336,11 @@
             </div>
             <div class="col-span-12 mt-5">
                 <div>
+                    @script
+                        <script>
+                            jstree_init();
+                        </script>
+                    @endscript
                     @if(count($data['templates']['results']) > 0)
                         <div class="jstree" wire:loading.class='hide' wire:ignore>
                             <ul>

@@ -219,23 +219,26 @@
             </div>
             @if (count($template['templates']) > 0)
                 <div class="grid grid-cols-12 gap-3">
-                    @foreach ($template['templates'] as $template)
-                    <div class="col-span-6">
+                    @foreach ($template['templates'] as $key => $template)
+                    <div class="col-span-12">
                         <div class="relative bg-white rounded-lg shadow-xs dark:bg-gray-700 mt-4 p-5">
                             <div class="block">
-                                <div class="font-medium text-sm">Branch: {{$template['branch']}}</div>
-                                <div class="font-medium text-sm">Course: {{$template['course']}}</div>
-                                <div class="font-medium text-sm">Year Level: {{to_ordinal($template['year'], 'year')}}</div>
-                                <div class="font-medium text-sm">Semester: {{to_ordinal($template['semester'], 'semester')}}</div>
-                                <div id="accordion-collapse" data-accordion="collapse">
-                                    <h2 id="accordion-collapse-heading-1">
-                                      <button type="button" class="flex items-center justify-between w-full px-3 font-medium rtl:text-right text-gray-500 border focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
-                                        <span>Subjects</span>
-                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                                        </svg>
-                                      </button>
-                                    </h2>
+                                <div class="font-medium text-sm">Branch: <span class="underline">{{$template['branch']}}</span></div>
+                                <div class="font-medium text-sm">Course: <span class="underline">{{$template['course']}}</span></div>
+                                <div class="font-medium text-sm">Year Level: <span class="underline">{{to_ordinal($template['year'], 'year')}}</span></div>
+                                <div class="font-medium text-sm">Semester: <span class="underline">{{to_ordinal($template['semester'], 'semester')}}</span></div>
+                                <hr class="mt-2 mb-3">
+                                @script
+                                    <script>
+                                        jstree_init();
+                                    </script>
+                                @endscript
+                                <div class="jstree mt-2">
+                                    <ul>
+                                        @foreach ($template['subjects'] as $template)
+                                            <li class="text-xs font-bold">{{$template}}</li>  
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -243,7 +246,17 @@
                     @endforeach
                 </div>
             @else
-                
+                <div class="col-span-12 mt-5">
+                    <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                        <span class="font-medium">No records found.</span>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
     @elseif($form['action'] === 'connect')
@@ -289,10 +302,16 @@
         </div>
         <div wire:poll='loadCurriculumTemplate'>
             <div class="grid grid-cols-12 gap-4 mt-5">
+                <div class="col-span-12 flex justify-end">
+                    <div class="multi-select-actions mt-5 mb-5 hidden items-center gap-5" wire:ignore.self>
+                        <button wire:navigate class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md mx-1">Unlink Selected</button>
+                        <button wire:navigate class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md mx-1">Link Selected</button>
+                    </div>
+                </div>
                 @if($curriculum_template->count() > 0) 
                     @foreach($curriculum_template as $curriculum_templates)
-                        <div class="col-span-4">
-                            <div class="border w-full p-4 bg-white shadow-xs rounded-lg">
+                        <div class="col-span-4 cursor-pointer relative">
+                            <div class="border-2 w-full p-4 bg-white shadow-xs rounded-lg h-[250px] multi-select" wire:ignore.self>
                                 <div class="text-normal font-bold">{{$curriculum_templates['subjects']->name}}</div>
                                 <div class="text-xs font-medium">{{$curriculum_templates['subjects']->code}}</div>
                                 <hr class="my-2">
@@ -306,13 +325,14 @@
                                         {{to_ordinal($curriculum_templates->subject_sem, 'semester')}}
                                     </li>
                                 </ul>
-                                <div class="flex justify-end mt-8 mb-1">
-                                    @if($curriculum_templates->is_exists)
-                                        <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-transparent border-slate-900 py-1 px-6 text-dark text-sm font-bold rounded-md">Unlink</button>
-                                    @else
-                                        <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-slate-900 border-slate-900 py-1 px-6 text-white text-sm font-bold rounded-md">Link</button>
-                                    @endif
-                                </div>
+                                <input type="checkbox" name="template" id="template" class="hidden">
+                            </div>
+                            <div class="flex justify-end absolute bottom-5 right-5 z-50">
+                                @if($curriculum_templates->is_exists)
+                                    <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-transparent border-slate-900 py-1 px-6 text-dark text-sm font-bold rounded-md">Unlink</button>
+                                @else
+                                    <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-slate-900 border-slate-900 py-1 px-6 text-white text-sm font-bold rounded-md">Link</button>
+                                @endif
                             </div>
                         </div>
                     @endforeach
