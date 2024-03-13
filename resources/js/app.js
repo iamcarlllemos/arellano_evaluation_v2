@@ -6,15 +6,16 @@ import 'flowbite/dist/flowbite.min.js'
 
 import $ from 'jquery';
 
-
 window.$ = $;
 window.read_more = read_more;
 window.jstree_init = jstree_init;
 
 $(function () { 
+
     dropdown();
     hideAlert();
     scrollTopError();
+    
     jstree_init();
     
     $('.selectize').each(function () {
@@ -28,6 +29,14 @@ $(function () {
     });
 
     $('.selectize-input').addClass('bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500');
+
+    $(document).on("reinitializeJstree", function () {
+        $('.jstree').jstree('destroy');
+        setTimeout(function() {
+            jstree_init();
+        }, 1);
+    });
+
 });
 
 function jstree_init() {
@@ -123,17 +132,21 @@ function multi_select() {
     let selected_card = 0;
 
     $(document).on('click', '.multi-select', function(e) {
-        const checkbox = $(this).find('input[type="checkbox"]');
-
-
-        const state = !checkbox.prop('checked');
+        const checkbox = $(this);
+        const state = checkbox.prop('checked');
+        const container = checkbox.closest('.card-parent');
 
         selected_card += state ? 1 : -1;
 
         checkbox.prop('checked', state);
-        $(this).toggleClass('border-sky-500', checkbox.prop('checked'));
+        container.toggleClass('border-sky-500', state);
 
         $('.multi-select-actions').toggleClass('hidden', selected_card === 0);
+    });
 
-    });    
+    $(document).on('click', '#toggle-action', function() {
+        $('.card-parent').removeClass('border-sky-500');
+        $('.multi-select-actions').addClass('hidden');
+        selected_card = 0;
+    });
 }

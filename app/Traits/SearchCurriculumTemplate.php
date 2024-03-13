@@ -27,7 +27,7 @@ trait SearchCurriculumTemplate {
         return $search;
     }
 
-    public function run_query(int $course = null, int $year_level = null, int $semester = null) {
+    public function run_query( $course = null,  $year_level = null,  $semester = null) {
 
         $data = CurriculumTemplateModel::with(['departments', 'courses', 'subjects'])
         ->when($course, function ($query) use ($course) {

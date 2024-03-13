@@ -2,7 +2,7 @@
     @if($form['action'] === 'create')
         <h1 class="text-3xl font-semibold">{{$form['title']['create']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mb-10">
+        <div class="w-100 flex justify-between items-center gap-2">
             <div class="mt-[29px]">
                 <a wire:navigate href="{{route('linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
@@ -21,12 +21,12 @@
                             <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Department <span class="text-red-900">*</span></label>
                             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='department_id' wire:change='loadDepartments($event.target.value)'>
                                 @if(count($departments) > 0)
-                                    <option value=""> - CHOOSE - </option>
+                                    <option value="null"> - CHOOSE - </option>
                                     @foreach($departments as $department)
                                         <option value="{{$department->id}}">{{$department->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value=""> - CREATE DEPARTMENT FIRST - </option>
+                                    <option value="null"> - CREATE DEPARTMENT FIRST - </option>
                                 @endif
                             </select>
                             @error('department_id')
@@ -37,12 +37,12 @@
                             <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Course <span class="text-red-900">*</span></label>
                             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='course_id' wire:change='loadCourses($event.target.value)'>
                                 @if(count($courses) > 0)
-                                    <option value=""> - CHOOSE - </option>
+                                    <option value="null"> - CHOOSE - </option>
                                     @foreach($courses as $course)
                                         <option value="{{$course->id}}">{{'(' . $course->code . ') - ' . $course->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value=""> - CHOOSE DEPARTMENT FIRST - </option>
+                                    <option value="null"> - CHOOSE DEPARTMENT FIRST - </option>
                                 @endif
                             </select>
                             @error('course_id')
@@ -53,12 +53,12 @@
                             <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Subject <span class="text-red-900">*</span></label>
                             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='subject_id' wire:change='loadCourses($event.target.value)'>
                                 @if(count($subjects) > 0)
-                                    <option value=""> - CHOOSE - </option>
+                                    <option value="null"> - CHOOSE - </option>
                                     @foreach($subjects as $subject)
                                         <option value="{{$subject->id}}">{{'(' . $subject->code . ') - ' . $subject->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value=""> - CHOOSE DEPARTMENT, COURSE FIRST - </option>
+                                    <option value="null"> - CHOOSE DEPARTMENT, COURSE FIRST - </option>
                                 @endif
                             </select>
                             @error('subject_id')
@@ -271,8 +271,8 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5">
-            <div>
+        <div class="w-100 flex justify-between items-center gap-2">
+            <div class="mt-[29px]">
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
         </div>
@@ -291,11 +291,11 @@
                                 <p class="text-sm text-wslate-600 font-bold">Filter Option.</p>
                             </div>
                         </div>
-                        <form wire:submit="search" class="p-4 md:p-5">
+                        <div class="p-4 md:p-5">
                             <div class="grid grid-cols-12 gap-3">
                                 <div class="col-span-12">
                                     <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Course</label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='course_id'>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model.live='search.course'>
                                         @if(count($courses) > 0)
                                             <option value=""> - CHOOSE - </option>
                                             @foreach($courses as $course)
@@ -308,7 +308,7 @@
                                 </div>
                                 <div class="col-span-6">
                                     <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Year</label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='year_level'>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model.live='search.year'>
                                         <option value=""> - CHOOSE - </option>
                                         <option value="1">(1st) First Year</option>
                                         <option value="2">(2nd) Second Year</option>
@@ -317,32 +317,22 @@
                                     </select>
                                 </div>
                                 <div class="col-span-6">
-                                    <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Year</label>
-                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='subject_sem'>
+                                    <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Semester</label>
+                                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model.live='search.semester'>
                                         <option value=""> - CHOOSE - </option>
                                         <option value="1">(1st) First Semester</option>
                                         <option value="2">(2nd) Second Semester</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="flex justify-end mt-5 pb-5 pe-5">
-                                <button id="form-button" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Proceed
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>  
             </div>
             <div class="col-span-12 mt-5">
                 <div>
-                    @script
-                        <script>
-                            jstree_init();
-                        </script>
-                    @endscript
                     @if(count($data['templates']['results']) > 0)
-                        <div class="jstree" wire:loading.class='hide' wire:ignore>
+                        <div class="jstree">
                             <ul>
                                 @foreach ($data['templates']['results'] as $department)
                                     <li>

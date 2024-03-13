@@ -40,6 +40,7 @@ class FacultyTemplate extends Component
     public $image;
     public $email;
     public $template;
+    public $link_multiple = [];
     public object $curriculum_template;
 
     public function mount(Request $request) {
@@ -129,6 +130,47 @@ class FacultyTemplate extends Component
 
     public function placeholder() {
         return view('livewire.placeholder');
+    }
+
+    public function toggleLinkMultiple($isTrue) {
+        $dirty = $this->link_multiple;
+    
+        $cleaned = [];
+
+        foreach($dirty as $dirt) {
+            $d = explode(',', $dirt);
+            $cleaned[] = [
+                'faculty_id'=> $d[0],
+                'template_id' => $d[1]
+            ];
+        }
+
+        if(count($cleaned) > 0) {
+            foreach($cleaned as $clean) {
+                $rules = [
+                    'faculty_id' => 'required|exists:afears_faculty,id',
+                    'template_id' => 'required|exists:afears_curriculum_template,id'
+                ];
+        
+                $validator = Validator::make($clean, $rules);
+    
+                if($validator->fails()) {
+                    dd(123);
+                }
+    
+            }
+            if($isTrue) {
+                FacultyTemplateModel::insert($cleaned);
+
+            } else {
+                $facultyIds = array_column($cleaned, 'faculty_id');
+                $templateIds = array_column($cleaned, 'template_id');
+                FacultyTemplateModel::whereIn('faculty_id', $facultyIds)
+                    ->whereIn('template_id', $templateIds)
+                    ->delete();
+            }
+            $this->link_multiple = [];
+        }
     }
 
     public function toggleLink($faculty_id, $template_id) {

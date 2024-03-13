@@ -20,7 +20,11 @@ class CurriculumTemplate extends Component
 
     public $form;
     public $select;
-    public $search;
+    public $search = [
+        'course' => '',
+        'year' => '',
+        'semester' => ''
+    ];
 
     public $id;
     public $departments = [];
@@ -126,17 +130,13 @@ class CurriculumTemplate extends Component
                 foreach($courses_dirty as $item) {
                     $courses[] = (object)[
                         'id' => $item->id,
-                        'name' => '[' . strtoupper($item->code) . '] ' . $item->name . ' - (' . $item['departments']['branches']->name . ')'
+                        'name' => $item->name . ' (' . strtoupper($item->code) . ') '
                     ];
                 }
 
                 $this->courses = $courses;
             }
         }
-
- 
-
-        
     }
 
     public function placeholder() {
@@ -232,19 +232,20 @@ class CurriculumTemplate extends Component
             }
         }
 
-
         $keywords = [
-            'course' => $request->input('course'),
-            'year_level' => $request->input('year_level'),
-            'semester' => $request->input('semester')
+            'course' => $this->search['course'] ?? 0,
+            'year_level' => $this->search['year'] ?? 0,
+            'semester' => $this->search['semester'] ?? 0
         ];
+
+        $this->dispatch('reinitializeJstree');
        
         $templates = $this->find($keywords);
 
         $data = [
             'templates' => $templates
         ];
-        
+
         return view('livewire.curriculum-template', compact('data'));
     }
 }

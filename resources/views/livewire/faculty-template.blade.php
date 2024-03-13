@@ -303,15 +303,18 @@
         <div wire:poll='loadCurriculumTemplate'>
             <div class="grid grid-cols-12 gap-4 mt-5">
                 <div class="col-span-12 flex justify-end">
-                    <div class="multi-select-actions mt-5 mb-5 hidden items-center gap-5" wire:ignore.self>
-                        <button wire:navigate class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md mx-1">Unlink Selected</button>
-                        <button wire:navigate class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md mx-1">Link Selected</button>
+                    <div class="multi-select-actions mt-5 mb-5 flex items-center gap-3 hidden" wire:ignore.self>
+                        <button id="toggle-action" wire:click.prevent='toggleLinkMultiple(false)' class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md">Unlink Selected</button>
+                        <button id="toggle-action" wire:click.prevent='toggleLinkMultiple(true)' class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Link Selected</button>
                     </div>
                 </div>
                 @if($curriculum_template->count() > 0) 
                     @foreach($curriculum_template as $curriculum_templates)
-                        <div class="col-span-4 cursor-pointer relative">
-                            <div class="border-2 w-full p-4 bg-white shadow-xs rounded-lg h-[250px] multi-select" wire:ignore.self>
+                        <div class="col-span-4 relative">
+                            <div class="card-parent border-2 w-full p-4 bg-white shadow-xs rounded-lg h-[250px]" wire:ignore.self>
+                                <div class="absolute top-5 right-5 cursor-pointer">
+                                    <input type="checkbox" value="{{$template['id'] . ',' . $curriculum_templates->id}}" wire:model='link_multiple' value="1" class="cursor-pointer multi-select w-3 h-3">
+                                </div>
                                 <div class="text-normal font-bold">{{$curriculum_templates['subjects']->name}}</div>
                                 <div class="text-xs font-medium">{{$curriculum_templates['subjects']->code}}</div>
                                 <hr class="my-2">
@@ -325,7 +328,6 @@
                                         {{to_ordinal($curriculum_templates->subject_sem, 'semester')}}
                                     </li>
                                 </ul>
-                                <input type="checkbox" name="template" id="template" class="hidden">
                             </div>
                             <div class="flex justify-end absolute bottom-5 right-5 z-50">
                                 @if($curriculum_templates->is_exists)
