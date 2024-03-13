@@ -148,6 +148,7 @@ class Department extends Component
             ]);
         }
     }
+
     public function render(Request $request) {
         
         $action = $request->input('action') ?? '';
@@ -160,6 +161,7 @@ class Department extends Component
             }
         }
 
+
         $departments = DepartmentModel::with(['branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
@@ -170,6 +172,7 @@ class Department extends Component
             ->get();
     
         $departments = $departments->isEmpty() ? [] : $departments;
+
 
         $data = [
             'branches' => BranchModel::with('departments')->get(),

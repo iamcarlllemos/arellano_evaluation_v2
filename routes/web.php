@@ -14,7 +14,7 @@ use App\Http\Controllers\QuestionnaireItemController;
 
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FacultyController;
-
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\CurriculumTemplateController;
 
 /*
@@ -65,6 +65,7 @@ Route::prefix('/')->middleware([
     Route::prefix('accounts')->group(function() {
         Route::get('/students', [StudentController::class, 'index'])->name('accounts.student');
         Route::get('/faculty', [FacultyController::class, 'index'])->name('accounts.faculty');
+        Route::get('/administrators', [AdministratorController::class, 'index'])->name('accounts.administrator');
     });
 
 });
