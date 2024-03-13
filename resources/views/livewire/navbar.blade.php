@@ -45,21 +45,23 @@
     
                                 <x-slot name="content">
                                     <div class="w-60">
-                                        <!-- Team Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Manage Team') }}
-                                        </div>
-    
-                                        <!-- Team Settings -->
-                                        <x-dropdown-link wire:navigate href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                            {{ __('Team Settings') }}
-                                        </x-dropdown-link>
-    
-                                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                            <x-dropdown-link wire:navigate href="{{ route('teams.create') }}">
-                                                {{ __('Create New Team') }}
+                                        @if(auth()->user()->is_privilege)
+                                            <!-- Team Management -->
+                                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                                {{ __('Manage Team') }}
+                                            </div>
+                                            <!-- Team Settings -->
+                                            <x-dropdown-link wire:navigate href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                                {{ __('Team Settings') }}
                                             </x-dropdown-link>
-                                        @endcan
+
+                                            @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                                <x-dropdown-link wire:navigate href="{{ route('teams.create') }}">
+                                                    {{ __('Create New Team') }}
+                                                </x-dropdown-link>
+                                            @endcan
+                                        @endif
+                                       
     
                                         <!-- Team Switcher -->
                                         @if (Auth::user()->allTeams()->count() > 1)
