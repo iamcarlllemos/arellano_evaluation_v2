@@ -123,17 +123,32 @@ class CurriculumTemplate extends Component
                 $this->subject_sem = '';
                 $this->year_level = '';
             } else {
+                
                 $courses_dirty = CourseModel::with('departments.branches')->get();
 
                 $courses = [];
 
                 foreach($courses_dirty as $item) {
-                    $courses[] = (object)[
+                    $branch_key = $item->departments->branches->id;
+                    $branch_name = $item->departments->branches->name;
+                    $key = $branch_key;
+                   
+                    if(!isset($courses[$branch_key])) {
+                        $courses[$branch_key] = [
+                            'id' => $branch_key,
+                            'name' => $branch_name,
+                            'courses' => []
+                        ];
+                    }
+
+                    $courses[$branch_key]['courses'][] = [
                         'id' => $item->id,
                         'name' => $item->name . ' (' . strtoupper($item->code) . ') '
                     ];
                 }
-
+               
+                
+                $courses = array_values($courses);
                 $this->courses = $courses;
             }
         }
@@ -217,9 +232,6 @@ class CurriculumTemplate extends Component
         }
     }
 
-    public function search() {
-        echo 123;
-    }
     public function render(Request $request) {
         
         $action = $request->input('action') ?? '';
