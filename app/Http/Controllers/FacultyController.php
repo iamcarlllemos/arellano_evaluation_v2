@@ -64,8 +64,7 @@ class FacultyController extends Controller
         }
 
         $data = [
-            'title' => 'All Faculties',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,accounts,faculties',
             'livewire' => [
                 'component' => 'faculty',
                 'data' => [

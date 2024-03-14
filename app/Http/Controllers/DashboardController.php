@@ -9,8 +9,7 @@ class DashboardController extends Controller
     public function index() {
 
         $data = [
-            'title' => '',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard, home',
             'livewire' => [
                 'component' => 'dashboard',
                 'data' => []

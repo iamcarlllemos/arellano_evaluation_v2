@@ -25,8 +25,7 @@ class SchoolYearController extends Controller
         }
 
         $data = [
-            'title' => 'All Departments',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,school year',
             'livewire' => [
                 'component' => 'school-year',   
                 'data' => [

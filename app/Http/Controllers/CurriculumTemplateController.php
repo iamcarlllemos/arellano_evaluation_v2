@@ -28,8 +28,7 @@ class CurriculumTemplateController extends Controller
         } 
 
         $data = [
-            'title' => 'All Curriculum Templates',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,linking,curriculum template',
             'livewire' => [
                 'component' => 'curriculum-template',
                 'data' => [

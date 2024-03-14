@@ -64,8 +64,7 @@ class CourseController extends Controller
         }
         
         $data = [
-            'title' => 'All Departments',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,courses',
             'livewire' => [
                 'component' => 'course',
                 'data' => [

@@ -1,5 +1,6 @@
 <aside id="sidebar" class="sidebar fixed top-0 left-0 z-40 w-[280px] md:w-[320px] h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" style="background-color: #192231">
-    <div class="overflow-y-auto py-5 h-screen">
+    @persist('scrollbar')
+    <div class="overflow-y-auto py-5 h-screen"  wire:scroll>
         <ul class="list ms-6">
             <li class="py-3">
                 <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Menu</label>
@@ -231,4 +232,5 @@
             </li>
         </ul>
     </div>
+    @endpersist
  </aside>

@@ -7,8 +7,15 @@ use Illuminate\Support\Carbon;
 
 class Dashboard extends Component
 {
+
+    public $data = [];
+
+
     public function render()
     {
+
+        $this->active = 'dashboard';
+
         $time = Carbon::now();
         $mode = strtolower($time->format('H'));
 
@@ -25,10 +32,10 @@ class Dashboard extends Component
 
         $message = $mode_string . '! ' . $name ;
 
-        $data = [
-            'message' => $message
+        $this->data = [
+            'message' => $message,
         ];
 
-        return view('livewire.dashboard', compact('data'));
+        return view('livewire.dashboard');
     }
 }

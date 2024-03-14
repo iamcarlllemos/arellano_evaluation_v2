@@ -26,8 +26,7 @@ class CriteriaController extends Controller
         }
 
         $data = [
-            'title' => 'All Criterias',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,criteria',
             'livewire' => [
                 'component' => 'criteria',
                 'data' => [

@@ -29,8 +29,7 @@ class AdministratorController extends Controller
         $branches = BranchModel::all();
 
         $data = [
-            'title' => 'All Administrators',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,accounts,administrators',
             'livewire' => [
                 'component' => 'administrator',
                 'data' => [

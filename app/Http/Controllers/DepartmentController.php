@@ -29,8 +29,7 @@ class DepartmentController extends Controller
         $branches = BranchModel::with('departments')->get();
 
         $data = [
-            'title' => 'All Departments',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,departments',
             'branches' => $branches,
             'livewire' => [
                 'component' => 'department',

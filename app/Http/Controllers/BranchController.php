@@ -24,8 +24,7 @@ class BranchController extends Controller
         }
 
         $data = [
-            'title' => 'All Branches',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,branches',
             'livewire' => [
                 'component' => 'branch',
                 'data' => [

@@ -39,8 +39,7 @@ class FacultyTemplateController extends Controller
         }
 
         $data = [
-            'title' => 'All Faculty Templates',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,linking,faculty templates',
             'livewire' => [
                 'component' => 'faculty-template',
                 'data' => [

@@ -22,8 +22,6 @@ class QuestionnaireItemController extends Controller
         $criteria = CriteriaModel::all();
 
         $data = [
-            'title' => 'All Questionnaires',
-            'active' => '',
             'livewire' => [
                 'component' => 'questionnaire-item',
                 'data' => [

@@ -68,8 +68,7 @@ class SubjectController extends Controller
         }
 
         $data = [
-            'title' => 'All Departments',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,subjects',
             'livewire' => [
                 'component' => 'subject',
                 'data' => [

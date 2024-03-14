@@ -38,8 +38,7 @@ class StudentController extends Controller
         }
 
         $data = [
-            'title' => 'All Students',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,accounts,students',
             'livewire' => [
                 'component' => 'student',
                 'data' => [

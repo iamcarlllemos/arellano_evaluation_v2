@@ -30,8 +30,7 @@ class QuestionnaireController extends Controller
         $school_year = SchoolYearModel::all();
 
         $data = [
-            'title' => 'All Questionnaires',
-            'active' => '',
+            'breadcrumbs' => 'Dashboard,programs,questionnaire',
             'livewire' => [
                 'component' => 'questionnaire',
                 'data' => [
