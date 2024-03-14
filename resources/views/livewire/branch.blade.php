@@ -2,7 +2,7 @@
     @if($form['action'] === 'create')
         <h1 class="text-3xl font-semibold">{{$form['title']['create']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mb-10">
+        <div class="w-100 flex justify-between items-center gap-2">
             <div class="mt-[29px]">
                 <a wire:navigate href="{{route('programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
@@ -10,7 +10,7 @@
         @include('components.alert')
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-wslate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
                     </div>
@@ -72,7 +72,7 @@
         @include('components.alert')
         <div class="relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-slate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
                     </div>
@@ -139,7 +139,7 @@
         @include('components.alert')
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <h3 class="text-2xl font-extrabold">Are you sure to delete?</h3>
                         <p class="text-sm text-slate-600 font-bold">Note: All data connected to this branch will also be removed. Please be advised that this action is <span class="font-bold uppercase text-red-600">irreversable.</span></p>
@@ -180,12 +180,12 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5">
+        <div class="w-100 block md:flex md:justify-between md:items-center gap-2 mt-5">
             <div>
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
-            <div>
-                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md" placeholder="Search here...">
+            <div class="mt-10 md:mt-0">
+                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
             </div>
         </div>
 
@@ -199,7 +199,7 @@
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
             @if (count($data) > 0)
                 @foreach($data as $key => $collection)
-                    <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
+                    <div class="col-span-12 md:col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
                         <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
                             <button id="dropdown-button" >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

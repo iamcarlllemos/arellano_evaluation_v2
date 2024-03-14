@@ -90,7 +90,7 @@ class FacultyController extends Controller
                                 'type' => 'text',
                                 'placeholder' => 'ex. 20-00780',
                                 'is_required' => true,
-                                'col-span' => '6',
+                                'css' => 'col-span-12 md:col-span-6',
                             ],
                             'department_id' => [
                                 'label' => 'Department',
@@ -101,35 +101,35 @@ class FacultyController extends Controller
                                     'no_data' => 'Create department first'
                                 ],
                                 'is_required' => true,
-                                'col-span' => '6',
+                                'css' => 'col-span-12 md:col-span-6',
                             ],
                             'firstname' => [
                                 'label' => 'First Name',
                                 'type' => 'text',
                                 'placeholder' => 'ex. John Paul',
                                 'is_required' => true,
-                                'col-span' => '4',
+                                'css' => 'col-span-12 md:col-span-4',
                             ],
                             'middlename' => [
                                 'label' => 'Middle Name',
                                 'type' => 'text',
                                 'placeholder' => 'ex. Mariano',
                                 'is_required' => false,
-                                'col-span' => '4',
+                                'css' => 'col-span-12 md:col-span-4',
                             ],
                             'lastname' => [
                                 'label' => 'Last Name',
                                 'type' => 'text',
                                 'placeholder' => 'ex. Llemos',
                                 'is_required' => true,
-                                'col-span' => '4',
+                                'css' => 'col-span-12 md:col-span-4',
                             ],
                             'email' => [
                                 'label' => 'Email',
                                 'type' => 'email',
                                 'placeholder' => 'Type ...',
                                 'is_required' => true,
-                                'col-span' => '6',
+                                'css' => 'col-span-12 md:col-span-6',
                             ],
                             'gender' => [
                                 'label' => 'Gender',
@@ -144,13 +144,13 @@ class FacultyController extends Controller
                                     'no_data' => 'No data'
                                 ],
                                 'is_required' => true,
-                                'col-span' => '6',
+                                'css' => 'col-span-12 md:col-span-6',
                             ],  
                             'image' => [
                                 'label' => 'Profile Image',
                                 'type' => 'file',
                                 'is_required' => true,
-                                'col-span' => '12',
+                                'css' => 'col-span-12 md:col-span-12',
                             ],
                         ]
                     ],

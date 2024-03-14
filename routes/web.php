@@ -47,13 +47,13 @@ Route::prefix('/')->middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
    
     Route::middleware('role:admin,superadmin')->prefix('programs')->group(function() {
-        Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
         Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
         Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
         Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
     });
 
     Route::middleware('role:superadmin')->prefix('programs')->group(function() {
+        Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
         Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
         Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
         Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');

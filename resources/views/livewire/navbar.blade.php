@@ -1,8 +1,8 @@
 <div class="navbar sticky top-0 z-20 flex items-center justify-between bg-white w-50 py-4 px-5 z-100 w-100">
-    <div class="greetings">
+    <div class="greetings hidden md:block">
         <h5 class="text-xl font-medium">Dashboard</h5>
     </div>
-    <div class="menu pe-4 flex items-center gap-10">
+    <div class="menu w-full md:w-100 md:pe-4 flex justify-center md:justify-end items-center gap-10">
         <ul class="list inline-flex items-center gap-5">
             <li class="relative before:absolute before:right-0 before:top-1/4 before:h-1.5 before:w-1.5 before:-translate-y-1 before:rounded-full before:bg-sky-500">
                 <a href="#" class="block p-2 bg-slate-200 rounded-full">
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div class="sm:flex sm:items-center sm:ms-6">
                     <!-- Teams Dropdown -->
                     @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                         <div class="ms-3 relative">
@@ -87,7 +87,7 @@
                             <x-slot name="trigger">
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                     <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                     </button>
                                 @else
                                     <span class="inline-flex rounded-md">

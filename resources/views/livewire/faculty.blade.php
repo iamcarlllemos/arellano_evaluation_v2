@@ -10,7 +10,7 @@
         @include('components.alert')
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-wslate-600 font-bold">Note: All <span class="text-red-900">*</span> is required.</p>
                     </div>
@@ -19,7 +19,7 @@
                     <div class="grid gap-4 mb-4 grid-cols-12">
                         @foreach($form['data'] as $key => $item) 
                             @if(in_array($item['type'], ['text', 'email', 'date', 'password']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}} 
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -30,7 +30,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-{{$item['col-span']}}"  wire:ignore.self>
+                                <div class="{{$item['css']}}"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -65,7 +65,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -113,7 +113,7 @@
         @include('components.alert')
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <p class="text-sm text-slate-600 font-bold">Note: All is required.</p>
                     </div>
@@ -122,7 +122,7 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         @foreach($form['data'] as $key => $item) 
                             @if(in_array($item['type'], ['text', 'email', 'date', 'password']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}} 
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -133,7 +133,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-{{$item['col-span']}}"  wire:ignore.self>
+                                <div class="{{$item['css']}}"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -168,7 +168,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -221,7 +221,7 @@
         @include('components.alert')
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center justify-between  md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <div class="block">
                         <h3 class="text-2xl font-extrabold">Are you sure to delete?</h3>
                         <p class="text-sm text-slate-600 font-bold">Note: All data connected to this branch will also be removed. Please be advised that this action is <span class="font-bold uppercase text-red-600">irreversable.</span></p>
@@ -231,7 +231,7 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         @foreach($form['data'] as $key => $item) 
                             @if(in_array($item['type'], ['text', 'email', 'date']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}} 
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -242,7 +242,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['select']))
-                                <div class="col-span-{{$item['col-span']}}"  wire:ignore.self>
+                                <div class="{{$item['css']}}"  wire:ignore.self>
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -277,7 +277,7 @@
                                     @enderror
                                 </div>
                             @elseif(in_array($item['type'], ['file']))
-                                <div class="col-span-{{$item['col-span']}}">
+                                <div class="{{$item['css']}}">
                                     <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
                                         {{$item['label']}}
                                         {!!$item['is_required'] == true ? '<span class="text-red-900">*</span>' : ''!!}
@@ -301,12 +301,12 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-between items-center gap-2 mt-5">
+        <div class="w-100 block md:flex justify-between items-center gap-2 mt-5">
             <div>
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
-            <div class="w-15 md:flex md:gap-3">
-                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <div class="w-100 md:flex md:gap-3 mt-10 md:mt-0">
+                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full mb-5 md:mb-0">
                     @if(count($data['branches']) > 0)
                         @if(count($data['branches']) > 1)
                             <option value=""> - All - </option>
@@ -318,7 +318,7 @@
                         <option value="">Create a branch first.</option>
                     @endif
                 </select>
-                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md" placeholder="Search here...">
+                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
             </div>
         </div>
         @if(session()->has('flash'))
@@ -330,7 +330,7 @@
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
             @if (count($data['faculty']) > 0)
                 @foreach($data['faculty'] as $faculty)
-                    <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
+                    <div class="col-span-12 md:col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
                         <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
                             <button id="dropdown-button" >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -339,9 +339,6 @@
                             </button>       
                             <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                    <li>
-                                        <a wire:navigate href="#s" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</a>
-                                    </li>
                                     <li>
                                         <a wire:navigate href="?action=update&id={{$faculty->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                     </li>

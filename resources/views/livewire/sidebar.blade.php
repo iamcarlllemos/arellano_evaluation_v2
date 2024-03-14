@@ -1,21 +1,5 @@
-<div class="sidebar w-1/4 " style="background-color: #192231">
-    <div class="flex items-center justify-between pt-5 px-5 text-cyan-400">
-        <div class="logo">
-            <img src="{{asset('images/logo-light.png')}}" alt="" srcset="" class="w-10">
-        </div>                
-        <div class="hamburger cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
-            </svg>
-        </div>
-    </div>
-    <div class="flex items-center gap-2 ps-4 py-1 w-100 mt-8 border border-slate-500 rounded-md ms-5 me-6">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-500">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
-        <input type="text" name="search" id="search" class="p-2 w-full bg-transparent border-none outline-none text-slate-50" placeholder="Find...">
-    </div>
-    <div class="overflow-y-auto mt-5">
+<aside id="sidebar" class="sidebar fixed top-0 left-0 z-40 w-[280px] md:w-[320px] h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" style="background-color: #192231">
+    <div class="overflow-y-auto py-5 h-screen">
         <ul class="list ms-6">
             <li class="py-3">
                 <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Menu</label>
@@ -97,6 +81,7 @@
             <li class="py-3">
                 <ul class="mt-3">
                     <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Programs</label>
+                    @if(auth()->user()->role === 'superadmin')
                     <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
                         <a wire:navigate href="{{route('programs.branches')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
                             <div class="p-2 rounded-lg bg-slate-800">
@@ -107,6 +92,7 @@
                             <span class="text-xs uppercase font-bold" style="font-size: 10px;">Branches</span>
                         </a>
                     </li>
+                    @endif
                     <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
                         <a wire:navigate href="{{route('programs.departments')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
                             <div class="p-2 rounded-lg bg-slate-800">
@@ -245,4 +231,4 @@
             </li>
         </ul>
     </div>
-</div>
+ </aside>

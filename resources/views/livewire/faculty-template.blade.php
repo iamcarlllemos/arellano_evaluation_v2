@@ -205,11 +205,11 @@
         </div>
         <div class="m-auto relative max-h-full">
             <div class="relative bg-white rounded-lg shadow-xs dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center  md:p-5 border-b rounded-t dark:border-gray-600 gap-5">
+                <div class="block md:flex items-center p-5 border-b rounded-t dark:border-gray-600 gap-5">
                     <div>
                         <img src="{{asset('storage/images/faculty/'.$template['image'])}}" class="w-[120px] h-[120px] rounded-lg">
                     </div>
-                    <div class="block">
+                    <div class="block mt-5 md:mt-0">
                         <div class="font-bold text-normal">Employee #: {{$template['employee_number']}}</div>
                         <div class="font-bold text-normal">Full Name: {{ucwords($template['firstname'] . ' ' . $template['lastname'])}}</div>
                         <div class="font-bold text-normal">Department: {{$template['departments']['name']}}</div>
@@ -267,42 +267,38 @@
                 <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'template', 'id' => $template['id']])}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
-        <div class="m-auto relative max-h-full">
-            <div class="relative bg-white rounded-lg shadow-xs dark:bg-gray-700 mt-[50px]">
-                <div class="flex items-center md:p-5 border-b rounded-t dark:border-gray-600 gap-5">
-                    <input type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
-                    <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @if(count($data['branches']) > 0)
-                            @if(count($data['branches']) > 1) {
-                                <option value=""> - All Branches - </option>
-                            }
-                            @endif
+        <div class="block md:flex items-center gap-5">
+            <input type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
+            <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full mt-5 md:mt-0">
+                @if(count($data['branches']) > 0)
+                    @if(count($data['branches']) > 1) {
+                        <option value=""> - All Branches - </option>
+                    }
+                    @endif
 
-                            @foreach($data['branches'] as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                            @endforeach
-                        @else
-                            <option value="">Create a branch first.</option>
-                        @endif
-                    </select>
-                    <select wire:ignore.self wire:model.live='select.year' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @if(count($data['branches']) > 0)
-                            <option value=""> - All Years - </option>
-                            <option value="1">(1st) First Year</option>
-                            <option value="2">(2nd) Second Year</option>
-                            <option value="3">(3rd) Third Year</option>
-                            <option value="4">(4th) Fourth Year</option>
-                        @else
-                            <option value="">Create a branch first.</option>
-                        @endif
-                    </select>
-                    <select wire:ignore.self wire:model.live='select.semester' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value=""> - All Semesters - </option>
-                        <option value="1">(1st) First Semester</option>
-                        <option value="2">(2nd) Second Semester</option>
-                    </select>
-                </div>
-            </div>
+                    @foreach($data['branches'] as $item)
+                            <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endforeach
+                @else
+                    <option value="">Create a branch first.</option>
+                @endif
+            </select>
+            <select wire:ignore.self wire:model.live='select.year' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full mt-5 md:mt-0">
+                @if(count($data['branches']) > 0)
+                    <option value=""> - All Years - </option>
+                    <option value="1">(1st) First Year</option>
+                    <option value="2">(2nd) Second Year</option>
+                    <option value="3">(3rd) Third Year</option>
+                    <option value="4">(4th) Fourth Year</option>
+                @else
+                    <option value="">Create a branch first.</option>
+                @endif
+            </select>
+            <select wire:ignore.self wire:model.live='select.semester' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full mt-5 md:mt-0">
+                <option value=""> - All Semesters - </option>
+                <option value="1">(1st) First Semester</option>
+                <option value="2">(2nd) Second Semester</option>
+            </select>
         </div>
         <div wire:poll='loadCurriculumTemplate'>
             <div class="grid grid-cols-12 gap-4 mt-5">
@@ -314,7 +310,7 @@
                 </div>
                 @if($curriculum_template->count() > 0) 
                     @foreach($curriculum_template as $curriculum_templates)
-                        <div class="col-span-4 relative">
+                        <div class="col-span-12 md:col-span-4 relative">
                             <div class="card-parent border-2 w-full p-4 bg-white shadow-xs rounded-lg h-[250px]" wire:ignore.self>
                                 <div class="absolute top-5 right-5 cursor-pointer">
                                     <input type="checkbox" value="{{$template['id'] . ',' . $curriculum_templates->id}}" wire:model='link_multiple' value="1" class="cursor-pointer multi-select w-3 h-3">
@@ -333,7 +329,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="flex justify-end absolute bottom-5 right-5 z-50">
+                            <div class="flex justify-end absolute bottom-5 right-5">
                                 @if($curriculum_templates->is_exists)
                                     <button wire:click='toggleLink({{$template['id']}}, {{$curriculum_templates->id}})' class="border bg-transparent border-slate-900 py-1 px-6 text-dark text-sm font-bold rounded-md">Unlink</button>
                                 @else
@@ -440,9 +436,9 @@
     @else
         <h1 class="text-3xl font-semibold">{{$form['title']['index']}}</h1>
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['index']}}</p>
-        <div class="w-100 flex justify-end items-center gap-2 mt-5">
-            <div class="w-15 md:flex md:gap-3">
-                <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <div class="w-100 block md:flex justify-end items-center gap-2 mt-5">
+            <div class="w-100 md:flex md:gap-3 mt-10 md:mt-0">
+                <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full mb-5 md:mb-0">
                     @if(count($data['branches']) > 0)
                         @if(count($data['branches']) > 1)
                             <option value=""> - All - </option>
@@ -454,7 +450,7 @@
                         <option value="">Create a branch first.</option>
                     @endif
                 </select>
-                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md" placeholder="Search here...">
+                <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
             </div>
         </div>
         @if(session()->has('flash'))
@@ -466,7 +462,7 @@
         <div wire:poll class="grid grid-cols-12 gap-3 mt-10">
             @if (count($data['faculty']) > 0)
                 @foreach($data['faculty'] as $faculty)
-                    <div class="col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
+                    <div class="col-span-12 md:col-span-4 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
                         <div wire:ignore.self class="absolute z-10 top-5 right-3 text-teal-50">
                             <button id="dropdown-button" >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

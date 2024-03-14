@@ -37,6 +37,11 @@ $(function () {
         }, 1);
     });
 
+    $(document).on('click', '#toggleSidebar', function() {
+        const sidebar = $('.sidebar');
+        sidebar.toggleClass('');
+    });
+
 });
 
 function jstree_init() {

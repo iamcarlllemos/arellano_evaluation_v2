@@ -33,9 +33,9 @@
             <!-- Page Content -->
             <main>
                 <div class="">
-                    <div class="flex">
+                    <div class="">
                         @livewire('sidebar')
-                        <div class="content w-5/6">
+                        <div class="content sm:ml-[320px]">
                             @livewire('navbar')
                             @if(!isset($slot))
                                 @yield('content')
@@ -53,5 +53,4 @@
         @livewireScripts
         
     </body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </html>
