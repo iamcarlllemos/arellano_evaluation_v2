@@ -34,7 +34,7 @@ class SubjectController extends Controller
         $courses_dirty = CourseModel::with('departments.branches')
             ->when($role == 'admin', function($query) use ($assigned_branch) {
                 $query->whereHas('departments.branches', function($subQuery) use($assigned_branch) {
-                    $query->where('branch_id', $assigned_branch);
+                    $subQuery->where('branch_id', $assigned_branch);
                 });
             })
             ->get();

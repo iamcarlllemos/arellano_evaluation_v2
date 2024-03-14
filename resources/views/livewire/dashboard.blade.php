@@ -1,24 +1,8 @@
-@extends('layouts.app')
-@section('content')
-
-<div class="px-5">
+<div>
     <div class="overview grid grid-cols-4 gap-4 mt-5">
         <div class="col-span-3">
             <div>
-                <nav class="text-xs font-medium mb-2">
-                    <ol class="list-none p-0 inline-flex">
-                        <li class="flex items-center">
-                            <a href="#" class="text-gray-500">Dashboard</a>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-gray-900">Home</span>
-                        </li>
-                    </ol>
-                </nav>
-                <h1 class="text-3xl font-semibold">Good Evening, John Doe!</h1>
+                <h1 class="text-3xl font-semibold">{{$data['message']}}</h1>
                 <p class="text-sm font-medium mt-1 text-slate-900">Here's the latest updates.</p>
             </div>
             <div class="grid grid-cols-4 gap-4 mt-5">
@@ -151,5 +135,3 @@
         </div>
     </div>
 </div>
-
-@endsection

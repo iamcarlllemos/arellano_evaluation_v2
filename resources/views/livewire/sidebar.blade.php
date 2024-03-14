@@ -67,6 +67,7 @@
                     </li>
                 </ul>
             </li>
+            @if (auth()->user()->role === 'superadmin')
             <li class="py-3">
                 <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Survey</label>
                 <ul class="mt-2">
@@ -92,6 +93,7 @@
                     </li>
                 </ul>
             </li>
+            @endif
             <li class="py-3">
                 <ul class="mt-3">
                     <label class="font-display text-xs text-slate-200 uppercase font-bold" style="font-size: 10px">Programs</label>
@@ -135,16 +137,18 @@
                             <span class="text-xs uppercase font-bold" style="font-size: 10px;">Subjects</span>
                         </a>
                     </li>
-                    <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
-                        <a wire:navigate href="{{route('programs.school-year')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
-                            <div class="p-2 rounded-lg bg-slate-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-                                </svg>                                    
-                            </div>                       
-                            <span class="text-xs uppercase font-bold" style="font-size: 10px;">School Year</span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->role === 'superadmin')
+                        <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
+                            <a wire:navigate href="{{route('programs.school-year')}}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
+                                <div class="p-2 rounded-lg bg-slate-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                                    </svg>                                    
+                                </div>                       
+                                <span class="text-xs uppercase font-bold" style="font-size: 10px;">School Year</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             <li class="py-3">
@@ -170,16 +174,18 @@
                             <span class="text-xs uppercase font-bold" style="font-size: 10px;">Faculty</span>
                         </a>
                     </li>
-                    <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
-                        <a wire:navigate href="{{ route('accounts.administrator') }}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
-                            <div class="p-2 rounded-lg bg-slate-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>                                                             
-                            </div>       
-                            <span class="text-xs uppercase font-bold" style="font-size: 10px;">Administrators</span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->role === 'superadmin')
+                        <li class="ps-3 border-l-2 border-sky-950 hover:border-sky-400 transition ease-in-out duration-400">
+                            <a wire:navigate href="{{ route('accounts.administrator') }}" class="p-2 w-100 flex items-center gap-3 text-slate-400 hover:text-sky-400">
+                                <div class="p-2 rounded-lg bg-slate-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>                                                             
+                                </div>       
+                                <span class="text-xs uppercase font-bold" style="font-size: 10px;">Administrators</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             <li class="py-3">

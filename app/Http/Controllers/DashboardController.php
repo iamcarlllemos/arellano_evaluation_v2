@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function index() {
-        return view('dashboard',);
+
+        $data = [
+            'title' => '',
+            'active' => '',
+            'livewire' => [
+                'component' => 'dashboard',
+                'data' => []
+            ]
+        ];
+
+        return view('template', compact('data'));
     }
 }
