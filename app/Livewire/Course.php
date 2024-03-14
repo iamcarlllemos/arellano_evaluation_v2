@@ -157,6 +157,9 @@ class Course extends Component
             }
         }
 
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
+
         $courses = CourseModel::with(['departments.branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
@@ -165,12 +168,53 @@ class Course extends Component
             ->when($this->select != '', function ($query) {
                 $query->where('department_id', $this->select);
             })
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('departments.branches', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('branch_id', $assigned_branch); 
+                });
+            })
             ->get();
     
         $courses = $courses->isEmpty() ? [] : $courses;
 
+        $departments_dirty = DepartmentModel::with('branches')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->where('branch_id', $assigned_branch);
+            })
+            ->get();
+
+        $departments = [];
+
+        if($role === 'admin') {
+            foreach($departments_dirty as $department) {
+                $departments[] = [
+                    'id' => $department->id,
+                    'name' => $department->name
+                ];
+            }
+        } else {
+            foreach($departments_dirty as $department) {
+                $key = $department->branches->id;
+                
+                if(!isset($departments[$key])) {
+                    $departments[$key] = [
+                        'id' => $key,
+                        'name' => $department->branches->name,
+                        'departments' => []
+                    ];
+                }
+
+                $departments[$key]['departments'][] = [
+                    'id' => $department->id,
+                    'name' => $department->name
+                ];
+            }
+        }
+
+        $departments = array_values($departments);
+
         $data = [
-            'departments' => DepartmentModel::with('branches')->get(),
+            'departments' => $departments,
             'courses' => $courses
         ];
 

@@ -259,10 +259,12 @@
             <div class="w-15 md:flex md:gap-3">
                 <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @if(count($data['branches']) > 0)
-                        <option value=""> - All - </option>
-                        @foreach($data['branches'] as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
+                            @if(count($data['branches']) > 1)
+                            <option value=""> - All - </option>
+                    @endif
+                    @foreach($data['branches'] as $item)
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endforeach
                     @else
                         <option value="">Create a branch first.</option>
                     @endif

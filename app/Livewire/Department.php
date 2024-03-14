@@ -10,12 +10,14 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\ExecuteRule;
 
 
 class Department extends Component
 {
 
     use WithFileUploads;
+    use ExecuteRule;
 
     public $form;
     public $select;
@@ -153,29 +155,32 @@ class Department extends Component
         
         $action = $request->input('action') ?? '';
 
-        if($action == 'open') {
-            $view = $request->input('view');
-            if(in_array($view, ['departments'])) {
-                $id = $request->input('id');
-                $this->select = $id;
-            }
-        }
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
 
-
-        $departments = DepartmentModel::with(['branches'])
+        $departments = DepartmentModel::with('branches')
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->when($this->select != '', function ($query) {
                 $query->where('branch_id', $this->select);
             })
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->where('branch_id', $assigned_branch);
+            })
             ->get();
     
+
         $departments = $departments->isEmpty() ? [] : $departments;
-
-
+        
+        $branches = BranchModel::with('departments')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->where('id', $assigned_branch);
+            })
+            ->get();
+            
         $data = [
-            'branches' => BranchModel::with('departments')->get(),
+            'branches' => $branches,
             'departments' => $departments
         ];
 

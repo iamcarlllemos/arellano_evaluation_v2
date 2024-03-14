@@ -11,7 +11,10 @@ class SubjectController extends Controller
     public function index(Request $request) {
 
         $action = $request->input('action') ?? '';
-        
+
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
+
         $get_data = [];
 
         if(in_array($action, ['update', 'delete'])) {
@@ -28,13 +31,40 @@ class SubjectController extends Controller
 
         $dirty = CourseModel::with(['departments.branches'])->get();
 
+        $courses_dirty = CourseModel::with('departments.branches')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('departments.branches', function($subQuery) use($assigned_branch) {
+                    $query->where('branch_id', $assigned_branch);
+                });
+            })
+            ->get();
+
         $courses = [];
         
-        foreach($dirty as $item) {
-            $courses[] = (object)[
-                'id' => $item->id,
-                'name' => $item->name . ' - (' . $item['departments']['branches']->name . ')',
-            ];
+        if($role === 'admin') {
+            foreach($courses_dirty as $course) {
+                $courses[] = [
+                    'id' => $course->id,
+                    'name' => $course->name
+                ];
+            }
+        } else {
+            foreach($courses_dirty as $course) {
+                $key = $course->departments->branches->id;
+                
+                if(!isset($courses[$key])) {
+                    $courses[$key] = [
+                        'id' => $key,
+                        'name' => $course->departments->branches->name,
+                        'courses' => []
+                    ];
+                }
+
+                $courses[$key]['courses'][] = [
+                    'id' => $course->id,
+                    'name' => $course->name
+                ];
+            }
         }
 
         $data = [

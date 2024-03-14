@@ -34,7 +34,15 @@
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
                                                 @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                    @if (array_key_exists('departments', $options))
+                                                        <optgroup label="{{$options['name']}}">
+                                                            @foreach ($options['departments'] as $departments)
+                                                                <option value="{{$departments['id']}}">{{ucwords($departments['name'])}}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @else
+                                                <option value="{{$options['id']}}">{{ucwords($options['name'])}}</option>
+                                            @endif
                                                 @endforeach
                                             @else
                                                 <option value=""> - CHOOSE - </option>
@@ -115,7 +123,15 @@
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
                                                 @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                    @if (array_key_exists('departments', $options))
+                                                        <optgroup label="{{$options['name']}}">
+                                                            @foreach ($options['departments'] as $departments)
+                                                                <option value="{{$departments['id']}}">{{ucwords($departments['name'])}}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @else
+                                                <option value="{{$options['id']}}">{{ucwords($options['name'])}}</option>
+                                            @endif
                                                 @endforeach
                                             @else
                                                 <option value=""> - CHOOSE - </option>
@@ -207,7 +223,15 @@
                                             @if($item['options']['is_from_db'])
                                                 <option value=""> - CHOOSE - </option>
                                                 @foreach($item['options']['data'] as $option_key => $options)
-                                                    <option value="{{$options->id}}">{{$options->name}}</option>
+                                                    @if (array_key_exists('departments', $options))
+                                                        <optgroup label="{{$options['name']}}">
+                                                            @foreach ($options['departments'] as $departments)
+                                                                <option value="{{$departments['id']}}">{{ucwords($departments['name'])}}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @else
+                                                <option value="{{$options['id']}}">{{ucwords($options['name'])}}</option>
+                                            @endif
                                                 @endforeach
                                             @else
                                                 <option value=""> - CHOOSE - </option>
@@ -252,11 +276,19 @@
                 <a wire:navigate href="?action=create" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
             <div class="w-full md:flex justify-end md:gap-3">
-                <select wire:ignore.self wire:model.live='select' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[30%]">
+                <select wire:ignore.self wire:model.live='select' class="text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[30%]">
                     @if(count($data['departments']) > 0)
                         <option value=""> - All - </option>
-                        @foreach($data['departments'] as $departments)
-                            <option value="{{$departments->id}}">{{ucwords($departments->name . ' - (' . $departments['branches']->name . ')')}}</option>
+                        @foreach($data['departments'] as $branches)
+                            @if (array_key_exists('departments', $branches))
+                                <optgroup label="{{$branches['name']}}">
+                                    @foreach ($branches['departments'] as $departments)
+                                        <option value="{{$departments['id']}}">{{ucwords($departments['name'])}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @else
+                                <option value="{{$branches['id']}}">{{ucwords($branches['name'])}}</option>
+                            @endif
                         @endforeach
                     @else
                         <option value="">Create a department first.</option>
@@ -282,9 +314,6 @@
                         </button>       
                         <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                <li>
-                                    <a wire:navigate href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</a>
-                                </li>
                                 <li>
                                     <a wire:navigate href="?action=update&id={{$courses->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                 </li>

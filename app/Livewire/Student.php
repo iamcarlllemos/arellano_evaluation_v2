@@ -273,6 +273,9 @@ class Student extends Component
         
         $action = $request->input('action') ?? '';
 
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
+
         $students = StudentModel::with(['courses.departments.branches'])
             ->when(strlen($this->search) >= 1, function ($sQuery) {
                 $sQuery->where(function($query) {
@@ -295,13 +298,22 @@ class Student extends Component
                     $subQuery->where('branch_id', $this->select);
                 });
             })
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('courses.departments.branches', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('branch_id', $assigned_branch);
+                });
+            })
             ->get();
        
-
+            $branches = BranchModel::with('departments')
+                ->when($role == 'admin', function($query) use ($assigned_branch) {
+                    $query->where('id', $assigned_branch);
+                })
+                ->get();
     
         $students = $students->isEmpty() ? [] : $students;
         $data = [
-            'branches' => BranchModel::with('departments')->get(),
+            'branches' => $branches,
             'students' => $students
         ];
 

@@ -273,9 +273,13 @@
                     <input type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
                     <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         @if(count($data['branches']) > 0)
-                            <option value=""> - All Branches - </option>
+                            @if(count($data['branches']) > 1) {
+                                <option value=""> - All Branches - </option>
+                            }
+                            @endif
+
                             @foreach($data['branches'] as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                             @endforeach
                         @else
                             <option value="">Create a branch first.</option>
@@ -440,7 +444,9 @@
             <div class="w-15 md:flex md:gap-3">
                 <select wire:ignore.self wire:model.live='select.branch' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @if(count($data['branches']) > 0)
-                        <option value=""> - All - </option>
+                        @if(count($data['branches']) > 1)
+                            <option value=""> - All - </option>
+                        @endif
                         @foreach($data['branches'] as $item)
                             <option value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
@@ -469,9 +475,6 @@
                             </button>       
                             <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                    <li>
-                                        <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'info', 'id' => $faculty->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Info</a>
-                                    </li>
                                     <li>
                                         <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'template', 'id' => $faculty->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Link Template</a>
                                     </li>

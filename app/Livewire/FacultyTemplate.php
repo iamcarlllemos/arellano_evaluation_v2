@@ -89,7 +89,14 @@ class FacultyTemplate extends Component
 
     public function loadCurriculumTemplate() {
         $id = $this->id;
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
         $curriculum_template = CurriculumTemplateModel::select('*')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('departments', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('branch_id', $assigned_branch);
+                });
+            })
             ->when(strlen($this->search) >= 1, function ($sQuery) {
                 $sQuery->whereHas('courses', function($subQuery) {
                     $subQuery->where('name', 'like', '%' . $this->search . '%');
@@ -209,7 +216,9 @@ class FacultyTemplate extends Component
     public function render(Request $request) {
         
         $action = $request->input('action') ?? '';
-        $id = $request->input('id');
+
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
 
         $faculty = FacultyModel::with(['departments.branches'])
             ->when(strlen($this->search) >= 1, function ($sQuery) {
@@ -228,15 +237,26 @@ class FacultyTemplate extends Component
                     $subQuery->where('branch_id', $this->select);
                 });
             })
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('departments.branches', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('branch_id', $assigned_branch);
+                });
+            })
             ->get();
        
     
         $faculty = $faculty->isEmpty() ? [] : $faculty;
 
+        $branches = BranchModel::with('departments')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->where('id', $assigned_branch);
+            })
+            ->get();
+
         $this->loadCurriculumTemplate();
 
         $data = [
-            'branches' => BranchModel::with('departments')->get(),
+            'branches' => $branches,
             'faculty' => $faculty,
         ];
 

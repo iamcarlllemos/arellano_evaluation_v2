@@ -46,26 +46,29 @@ Route::prefix('/')->middleware([
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
    
-    Route::prefix('programs')->group(function() {
+    Route::middleware('role:admin,superadmin')->prefix('programs')->group(function() {
         Route::get('/branches', [BranchController::class, 'index'])->name('programs.branches');
         Route::get('/departments', [DepartmentController::class, 'index'])->name('programs.departments');
         Route::get('/courses', [CourseController::class, 'index'])->name('programs.courses');
         Route::get('/subjects', [SubjectController::class, 'index'])->name('programs.subjects');
+    });
+
+    Route::middleware('role:superadmin')->prefix('programs')->group(function() {
         Route::get('/school-year', [SchoolYearController::class, 'index'])->name('programs.school-year');
         Route::get('/criteria', [CriteriaController::class, 'index'])->name('programs.criteria');
         Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('programs.questionnaire');
         Route::get('/questionnaire/{slug}', [QuestionnaireItemController::class, 'index'])->name('programs.questionnaire.item');
     });
 
-    Route::prefix('linking')->group(function() {
+    Route::middleware('role:admin,superadmin')->prefix('linking')->group(function() {
         Route::get('/curriculum-template', [CurriculumTemplateController::class, 'index'])->name('linking.curriculum-template');
         Route::get('/faculty-template', [FacultyTemplateController::class, 'index'])->name('linking.faculty-template');
     });
 
     Route::prefix('accounts')->group(function() {
-        Route::get('/students', [StudentController::class, 'index'])->name('accounts.student');
-        Route::get('/faculty', [FacultyController::class, 'index'])->name('accounts.faculty');
-        Route::get('/administrators', [AdministratorController::class, 'index'])->name('accounts.administrator');
+        Route::get('/students', [StudentController::class, 'index'])->name('accounts.student')->middleware('role:admin,superadmin');
+        Route::get('/faculty', [FacultyController::class, 'index'])->name('accounts.faculty')->middleware('role:admin,superadmin');
+        Route::get('/administrators', [AdministratorController::class, 'index'])->name('accounts.administrator')->middleware('role:superadmin');
     });
 
 });

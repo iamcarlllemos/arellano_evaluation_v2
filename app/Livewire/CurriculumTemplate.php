@@ -39,21 +39,51 @@ class CurriculumTemplate extends Component
     public function loadDepartments($id = null) {
 
         if($id == null) {
-            $clean = [];
-            $dirty = DepartmentModel::with('branches')->get();
 
-            foreach($dirty as $item) {
-                $clean[] = (object)[
-                    'id' => $item->id,
-                    'name' => $item->name . ' - (' . $item['branches']->name .  ')'
-                ];
-            }
-            return $this->departments = $clean;
+            $role = auth()->user()->role;
+            $assigned_branch = auth()->user()->assigned_branch;
+
+            $department_dirty = DepartmentModel::with('branches')
+                ->when($role == 'admin', function($query) use ($assigned_branch) {
+                    $query->where('branch_id', $assigned_branch); 
+                })
+                ->get();
+
+            $departments = [];
+
+            if($role === 'admin') {
+                foreach($department_dirty as $department) {
+                    $departments[] = [
+                        'id' => $department->id,
+                        'name' => $department->name
+                    ];
+                }
+            } else {
+                foreach($department_dirty as $item) {
+                    $key = $item->branches->id;
+                    if(!isset($departments[$key])) {
+                        $departments[$key] = [
+                            'id' => $key,
+                            'name' => $item->branches->name,
+                            'departments' => []
+                        ];
+                    }
+    
+                    $departments[$key]['departments'][] = [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ];
+                }
+                $departments = array_values($departments);
+            }        
+
+            return $this->departments = $departments;
         } else {
             $this->department_id = $id;
             $this->loadCourses($id);
             $this->loadSubjects();
         }
+
     }
 
     public function loadCourses($id = null) {
@@ -235,14 +265,6 @@ class CurriculumTemplate extends Component
     public function render(Request $request) {
         
         $action = $request->input('action') ?? '';
-
-        if($action == 'open') {
-            $view = $request->input('view');
-            if(in_array($view, ['departments'])) {
-                $id = $request->input('id');
-                $this->select = $id;
-            }
-        }
 
         $keywords = [
             'course' => $this->search['course'] ?? 0,

@@ -21,12 +21,20 @@
                             <label class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">Department <span class="text-red-900">*</span></label>
                             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model='department_id' wire:change='loadDepartments($event.target.value)'>
                                 @if(count($departments) > 0)
-                                    <option value="null"> - CHOOSE - </option>
-                                    @foreach($departments as $department)
-                                        <option value="{{$department->id}}">{{$department->name}}</option>
+                                    <option value=""> - CHOOSE - </option>
+                                    @foreach($departments as $branches)
+                                        @if (array_key_exists('departments', $branches))
+                                            <optgroup label="{{$branches['name']}}">
+                                                @foreach ($branches['departments'] as $departments)
+                                                    <option value="{{$departments['id']}}">{{ucwords($departments['name'])}}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @else
+                                            <option value="{{$branches['id']}}">{{ucwords($branches['name'])}}</option>
+                                        @endif
                                     @endforeach
                                 @else
-                                    <option value="null"> - CREATE DEPARTMENT FIRST - </option>
+                                    <option value="null"> - NO DATA - </option>
                                 @endif
                             </select>
                             @error('department_id')
@@ -42,7 +50,7 @@
                                         <option value="{{$course->id}}">{{'(' . $course->code . ') - ' . $course->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value="null"> - CHOOSE DEPARTMENT FIRST - </option>
+                                    <option value="null"> - NO DATA- </option>
                                 @endif
                             </select>
                             @error('course_id')
@@ -58,7 +66,7 @@
                                         <option value="{{$subject->id}}">{{'(' . $subject->code . ') - ' . $subject->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value="null"> - CHOOSE DEPARTMENT, COURSE FIRST - </option>
+                                    <option value="null"> - NO DATA - </option>
                                 @endif
                             </select>
                             @error('subject_id')
@@ -299,9 +307,9 @@
                                         @if(count($courses) > 0)
                                             <option value=""> - ALL - </option>
                                             @foreach($courses as $branch)
-                                                <optgroup label="{{$branch['name']}}" class="text-xs font-bold uppercase">
+                                                <optgroup label="{{$branch['name']}}">
                                                     @foreach ($branch['courses'] as $course)
-                                                        <option class=" font-medium capitalize" value="{{$course['id']}}">{{$course['name']}}</option>
+                                                        <option value="{{$course['id']}}">{{$course['name']}}</option>
                                                     @endforeach
                                                 </optgroup>
                                             @endforeach

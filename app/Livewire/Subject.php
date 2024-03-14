@@ -7,11 +7,14 @@ use App\Models\SubjectModel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Traits\ExecuteRule;
 
 
 class Subject extends Component
 {
 
+    use ExecuteRule;
+    
     public $form;
     public $select;
     public $search;
@@ -156,6 +159,9 @@ class Subject extends Component
             }
         }
 
+        $role = auth()->user()->role;
+        $assigned_branch = auth()->user()->assigned_branch;
+
         $subjects = SubjectModel::with(['courses.departments.branches'])
             ->when(strlen($this->search) >= 1, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
@@ -164,12 +170,54 @@ class Subject extends Component
             ->when($this->select != '', function ($query) {
                 $query->where('course_id', $this->select);
             })
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('courses.departments.branches', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('id', $assigned_branch);
+                });
+            })
             ->get();
             
         $subjects = $subjects->isEmpty() ? [] : $subjects;
 
+        $courses_dirty = CourseModel::with('departments.branches')
+            ->when($role == 'admin', function($query) use ($assigned_branch) {
+                $query->whereHas('departments.branches', function($subQuery) use ($assigned_branch) {
+                    $subQuery->where('id', $assigned_branch);
+                });
+            })->get();
+
+        $courses = [];
+
+        if($role === 'admin') {
+            foreach($courses_dirty as $course) {
+                $courses[] = [
+                    'id' => $course->id,
+                    'name' => $course->name
+                ];
+            }
+        } else {
+            foreach($courses_dirty as $course) {
+                $key = $course->departments->branches->id;
+                
+                if(!isset($courses[$key])) {
+                    $courses[$key] = [
+                        'id' => $key,
+                        'name' => $course->departments->branches->name,
+                        'courses' => []
+                    ];
+                }
+
+                $courses[$key]['courses'][] = [
+                    'id' => $course->id,
+                    'name' => $course->name
+                ];
+            }
+        }
+
+        $courses = array_values($courses);
+
         $data = [
-            'courses_select' => CourseModel::with(['departments.branches'])->get(),
+            'courses' => $courses,
             'subjects' => $subjects
         ];
 
