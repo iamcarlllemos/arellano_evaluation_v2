@@ -49,23 +49,91 @@ class QuestionnaireController extends Controller
                             'delete' => 'Permanently delete selected questionnaire'
                         ],
                         'action' => $action,
-                        'data' => [
-                            'school_year_id' => [
-                                'label' => 'School Year',
-                                'type' => 'select',
-                                'placeholder' => '',
-                                'options' => [
-                                    'is_from_db' => true,
-                                    'data' => $school_year,
-                                    'no_data' => 'Create school year first'
+                        'index' => [
+                            'title' => 'All Questionnaires',
+                            'subtitle' => 'List of all questionnaires created.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Questionnaire',
+                            'subtitle' => 'Create or add new criteria.',
+                            'data' => [
+                                'school_year_id' => [
+                                    'label' => 'School Year',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $school_year,
+                                        'no_data' => 'Create school year first'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
+                                ],
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
                                 ]
-                            ],
-                            'name' => [
-                                'label' => 'Name',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
                             ]
-                        ]
+                        ],
+                        'update' => [
+                            'title' => 'Update Questionnaire',
+                            'subtitle' => 'Create or add new criteria.',
+                            'data' => [
+                                'school_year_id' => [
+                                    'label' => 'School Year',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $school_year,
+                                        'no_data' => 'Create school year first'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
+                                ],
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
+                                ]
+                            ]
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Questionnaire',
+                            'subtitle' => 'Create or add new criteria.',
+                            'data' => [
+                                'school_year_id' => [
+                                    'label' => 'School Year',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $school_year,
+                                        'no_data' => 'Create school year first'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12'
+                                ],
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12'
+                                ]
+                            ]
+                        ],
                     ],
                 ]
             ]

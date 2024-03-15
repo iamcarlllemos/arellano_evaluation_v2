@@ -22,23 +22,12 @@ class QuestionnaireItemController extends Controller
         $criteria = CriteriaModel::all();
 
         $data = [
+            'breadcrumbs' => 'Dashboard,programs,questionnaire',
             'livewire' => [
                 'component' => 'questionnaire-item',
                 'data' => [
                     'lazy' => false,
                     'form' => [
-                        'title' => [
-                            'index' => 'All Questionnaires',
-                            'create' => 'Create Questionnaire',
-                            'update' => 'Update Questionnaire',
-                            'delete' => 'Delete Questionnaire'
-                        ],
-                        'subtitle' => [
-                            'index' => 'List of all questionnaires created.',
-                            'create' => 'Create or add new questionnaire.',
-                            'update' => 'Apply changed to selected questionnaire.',
-                            'delete' => 'Permanently delete selected questionnaire'
-                        ],
                         'data' => [
                             'questionnaire_id' => [
                                 'label' => 'Questionnaire ',

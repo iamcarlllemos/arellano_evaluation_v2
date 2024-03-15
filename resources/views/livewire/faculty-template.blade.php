@@ -319,6 +319,7 @@
                                 <div class="text-xs font-medium">{{$curriculum_templates['subjects']->code}}</div>
                                 <hr class="my-2">
                                 <ul class="list-disc px-4">
+                                    <li class="text-xs font-medium">{{$curriculum_templates['departments']['branches']->name}}</li>
                                     <li class="text-xs font-medium">{{$curriculum_templates['departments']->name}}</li>
                                     <li class="text-xs font-medium">{{'(' . $curriculum_templates['courses']->code . ') ' .$curriculum_templates['courses']->name}}</li>
                                     <li class="text-xs font-medium">

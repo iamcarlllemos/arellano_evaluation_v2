@@ -49,20 +49,20 @@ class CourseController extends Controller
                 $key = $department->branches->id;
                 
                 if(!isset($departments[$key])) {
-                    $departments[$key] = [
+                    $departments[$key] = (object) [
                         'id' => $key,
                         'name' => $department->branches->name,
                         'departments' => []
                     ];
                 }
 
-                $departments[$key]['departments'][] = [
+                $departments[$key]->departments[] = (object) [
                     'id' => $department->id,
                     'name' => $department->name
                 ];
             }
         }
-        
+
         $data = [
             'breadcrumbs' => 'Dashboard,programs,courses',
             'livewire' => [
@@ -70,41 +70,116 @@ class CourseController extends Controller
                 'data' => [
                     'lazy' => false,
                     'form' => [
-                        'title' => [
-                            'index' => 'All Course',
-                            'create' => 'Create Course',
-                            'update' => 'Update Course',
-                            'delete' => 'Delete Course'
-                        ],
-                        'subtitle' => [
-                            'index' => 'List of all courses created.',
-                            'create' => 'Create or add new courses.',
-                            'update' => 'Apply changed to selected course.',
-                            'delete' => 'Permanently delete selected course'
-                        ],
                         'action' => $action,
-                        'data' => [
-                            'department_id' => [
-                                'label' => 'Department Name',
-                                'type' => 'select',
-                                'placeholder' => 'Type...',
-                                'options' => [
-                                    'is_from_db' => true,
-                                    'data' => $departments,
-                                    'no_data' => 'Creat department first.'
-                                ]
-                            ],
-                            'code' => [
-                                'label' => 'Course Code',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
-                            ],
-                            'name' => [
-                                'label' => 'Course Name',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
-                            ],
-                        ]
+                        'index' => [
+                            'title' => 'All Courses',
+                            'subtitle' => 'Lists of all create courses.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Course',
+                            'subtitle' => 'Create or add new courses.',
+                            'data' => [
+                                'department_id' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'departments',
+                                        'data' => $departments,
+                                        'no_data' => 'Creat department first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Course Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
+                        'update' => [
+                            'title' => 'Update Course',
+                            'subtitle' => 'Apply changes to selected course.',
+                            'data' => [
+                                'department_id' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'departments',
+                                        'data' => $departments,
+                                        'no_data' => 'Creat department first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Course Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Course',
+                            'subtitle' => 'Permanently delete selected course.',
+                            'data' => [
+                                'department_id' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'departments',
+                                        'data' => $departments,
+                                        'no_data' => 'Creat department first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Course Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
                     ],
                 ]
             ]

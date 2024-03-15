@@ -32,24 +32,51 @@ class CriteriaController extends Controller
                 'data' => [
                     'lazy' => false,
                     'form' => [
-                        'title' => [
-                            'index' => 'All Criterias',
-                            'create' => 'Create Criteria',
-                            'update' => 'Update Criteria',
-                            'delete' => 'Delete Criteria'
-                        ],
-                        'subtitle' => [
-                            'index' => 'List of all criterias created.',
-                            'create' => 'Create or add new criteria.',
-                            'update' => 'Apply changed to selected criteria.',
-                            'delete' => 'Permanently delete selected criteria'
-                        ],
                         'action' => $action,
-                        'data' => [
-                            'name' => [
-                                'label' => 'Name',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
+                        'index' => [
+                            'title' => 'All Criterias',
+                            'subtitle' => 'List of all criterias created.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Criteria',
+                            'subtitle' => 'Create or add new criteria.',
+                            'data' => [
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
+                                ]
+                            ]
+                        ],
+                        'update' => [
+                            'title' => 'Update Criteria',
+                            'subtitle' => 'Apply changes to selected criteria.',
+                            'data' => [
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12'
+                                ]
+                            ]
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Criteria',
+                            'subtitle' => 'Permanently delete selected criteria.',
+                            'data' => [
+                                'name' => [
+                                    'label' => 'Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12'
+                                ]
                             ]
                         ]
                     ],

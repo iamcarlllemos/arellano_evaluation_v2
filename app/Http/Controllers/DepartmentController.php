@@ -36,34 +36,90 @@ class DepartmentController extends Controller
                 'data' => [
                     'lazy' => false,
                     'form' => [
-                        'title' => [
-                            'index' => 'All Departments',
-                            'create' => 'Create Department',
-                            'update' => 'Update Department',
-                            'delete' => 'Delete Department'
-                        ],
-                        'subtitle' => [
-                            'index' => 'Lists of all departments created.',
-                            'create' => 'Create or add new departments.',
-                            'update' => 'Apply changed to selected branch.',
-                            'delete' => 'Permanently delete selected banch'
-                        ],
                         'action' => $action,
-                        'data' => [
-                            'branch_id' => [
-                                'label' => 'Branch Name',
-                                'type' => 'select',
-                                'placeholder' => '',
-                                'options' => [
-                                    'is_from_db' => true,
-                                    'data' => $branches,
-                                    'no_data' => 'Create branch first.'
-                                ]
-                            ],  
-                            'name' => [
-                                'label' => 'Department Name',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
+                        'index' => [
+                            'title' => 'All Departments',
+                            'subtitle' => 'Lists of all departments created.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Department',
+                            'subtitle' => 'Create or add new departments.',
+                            'data' => [
+                                'branch_id' => [
+                                    'label' => 'Branch Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $branches,
+                                        'no_data' => 'Create branch first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],  
+                                'name' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ],
+                        ],
+                        'update' => [
+                            'title' => 'Update Department',
+                            'subtitle' => 'Apply changes to selected department.',
+                            'data' => [
+                                'branch_id' => [
+                                    'label' => 'Branch Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $branches,
+                                        'no_data' => 'Create branch first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],  
+                                'name' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ],
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Department',
+                            'subtitle' => 'Permanently delete selected department.',
+                            'data' => [
+                                'branch_id' => [
+                                    'label' => 'Branch Name',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $branches,
+                                        'no_data' => 'Create branch first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],  
+                                'name' => [
+                                    'label' => 'Department Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
                             ],
                         ],
                     ],

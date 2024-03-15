@@ -53,14 +53,14 @@ class SubjectController extends Controller
                 $key = $course->departments->branches->id;
                 
                 if(!isset($courses[$key])) {
-                    $courses[$key] = [
+                    $courses[$key] = (object)[
                         'id' => $key,
                         'name' => $course->departments->branches->name,
                         'courses' => []
                     ];
                 }
 
-                $courses[$key]['courses'][] = [
+                $courses[$key]->courses[] = (object) [
                     'id' => $course->id,
                     'name' => $course->name
                 ];
@@ -74,41 +74,119 @@ class SubjectController extends Controller
                 'data' => [
                     'lazy' => false,
                     'form' => [
-                        'title' => [
-                            'index' => 'All Subjects',
-                            'create' => 'Create Subject',
-                            'update' => 'Update Subject',
-                            'delete' => 'Delete Subject'
-                        ],
-                        'subtitle' => [
-                            'index' => 'List of all subjects created.',
-                            'create' => 'Create or add new subject.',
-                            'update' => 'Apply changed to selected subject.',
-                            'delete' => 'Permanently delete selected subject'
-                        ],
                         'action' => $action,
-                        'data' => [
-                            'course_id' => [
-                                'label' => 'Course Name',
-                                'type' => 'select',
-                                'placeholder' => 'Type...',
-                                'options' => [
-                                    'is_from_db' => true,
-                                    'data' => $courses,
-                                    'no_data' => 'Create course first.'
-                                ]
-                            ],
-                            'code' => [
-                                'label' => 'Subject Code',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
-                            ],
-                            'name' => [
-                                'label' => 'Subject Name',
-                                'type' => 'text',
-                                'placeholder' => 'Type...',
-                            ],
-                        ]
+                        'index' => [
+                            'title' => 'All Subjects',
+                            'subtitle' => 'List of all subjects created.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Subjects',
+                            'subtitle' => 'Create or add new subjects.',
+                            'data' => [
+                                'course_id' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'select',
+                                    'placeholder' => 'Write something...',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'courses',
+                                        'data' => $courses,
+                                        'no_data' => 'Create course first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Subject Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Subject Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
+                        'update' => [
+                            'title' => 'Update Subjects',
+                            'subtitle' => 'Apply changes to selected subject.',
+                            'data' => [
+                                'course_id' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'select',
+                                    'placeholder' => 'Write something...',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'courses',
+                                        'data' => $courses,
+                                        'no_data' => 'Create course first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Subject Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Subject Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Subject',
+                            'subtitle' => 'Permanently delete selected subject.',
+                            'data' => [
+                                'course_id' => [
+                                    'label' => 'Course Name',
+                                    'type' => 'select',
+                                    'placeholder' => 'Write something...',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'courses',
+                                        'data' => $courses,
+                                        'no_data' => 'Create course first.'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                                'code' => [
+                                    'label' => 'Subject Code',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                                'name' => [
+                                    'label' => 'Subject Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'Write something...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12',
+                                ],
+                            ]
+                        ],
                     ],
                 ]
             ]

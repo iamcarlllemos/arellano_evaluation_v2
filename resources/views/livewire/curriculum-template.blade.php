@@ -314,7 +314,7 @@
                                                 </optgroup>
                                             @endforeach
                                         @else
-                                            <option value=""> - Create courses first. - </option>
+                                            <option value=""> - Create or add atleast one curriculum template. - </option>
                                         @endif
                                     </select>
                                 </div>

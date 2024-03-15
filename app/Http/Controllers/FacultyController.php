@@ -49,14 +49,14 @@ class FacultyController extends Controller
                 $key = $department->branches->id;
                 
                 if(!isset($departments[$key])) {
-                    $departments[$key] = [
+                    $departments[$key] = (object) [
                         'id' => $key,
                         'name' => $department->branches->name,
                         'departments' => []
                     ];
                 }
 
-                $departments[$key]['departments'][] = [
+                $departments[$key]->departments[] = (object) [
                     'id' => $department->id,
                     'name' => $department->name
                 ];
@@ -83,75 +83,259 @@ class FacultyController extends Controller
                             'delete' => 'Permanently delete selected faculty'
                         ],
                         'action' => $action,
-                        'data' => [
-                            'employee_number' => [
-                                'label' => 'Employee Number',
-                                'type' => 'text',
-                                'placeholder' => 'ex. 20-00780',
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-6',
-                            ],
-                            'department_id' => [
-                                'label' => 'Department',
-                                'type' => 'select',
-                                'options' => [
-                                    'is_from_db' => true,
-                                    'data' => $departments,
-                                    'no_data' => 'Create department first'
+                        'index' => [
+                            'title' => 'All Faculties',
+                            'subtitle' => 'List of all faculties created.'
+                        ],
+                        'create' => [
+                            'title' => 'Create Faculty',
+                            'subtitle' => 'Create or add new faculty.',
+                            'data' => [
+                                'employee_number' => [
+                                    'label' => 'Employee Number',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. 20-00780',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
                                 ],
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-6',
-                            ],
-                            'firstname' => [
-                                'label' => 'First Name',
-                                'type' => 'text',
-                                'placeholder' => 'ex. John Paul',
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-4',
-                            ],
-                            'middlename' => [
-                                'label' => 'Middle Name',
-                                'type' => 'text',
-                                'placeholder' => 'ex. Mariano',
-                                'is_required' => false,
-                                'css' => 'col-span-12 md:col-span-4',
-                            ],
-                            'lastname' => [
-                                'label' => 'Last Name',
-                                'type' => 'text',
-                                'placeholder' => 'ex. Llemos',
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-4',
-                            ],
-                            'email' => [
-                                'label' => 'Email',
-                                'type' => 'email',
-                                'placeholder' => 'Type ...',
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-6',
-                            ],
-                            'gender' => [
-                                'label' => 'Gender',
-                                'type' => 'select',
-                                'options' => [
-                                    'is_from_db' => false,
-                                    'data' => [
-                                        '1' => 'Male',
-                                        '2' => 'Female',
-                                        '3' => 'Prefer not to say'
+                                'department_id' => [
+                                    'label' => 'Department',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => 'departments',
+                                        'data' => $departments,
+                                        'no_data' => 'Create department first'
                                     ],
-                                    'no_data' => 'No data'
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
                                 ],
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-6',
-                            ],  
-                            'image' => [
-                                'label' => 'Profile Image',
-                                'type' => 'file',
-                                'is_required' => true,
-                                'css' => 'col-span-12 md:col-span-12',
-                            ],
-                        ]
+                                'firstname' => [
+                                    'label' => 'First Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. John Paul',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'middlename' => [
+                                    'label' => 'Middle Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Mariano',
+                                    'required' => false,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'lastname' => [
+                                    'label' => 'Last Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Llemos',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'email' => [
+                                    'label' => 'Email',
+                                    'type' => 'email',
+                                    'placeholder' => 'Type ...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'gender' => [
+                                    'label' => 'Gender',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => false,
+                                        'group' => '',
+                                        'data' => [
+                                            '1' => 'Male',
+                                            '2' => 'Female',
+                                            '3' => 'Prefer not to say'
+                                        ],
+                                        'no_data' => 'No data'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],  
+                                'image' => [
+                                    'label' => 'Profile Image',
+                                    'type' => 'file',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-12',
+                                ],
+                            ]
+                        ],
+                        'update' => [
+                            'title' => 'Update Faculty',
+                            'subtitle' => 'Apply changes to selected faculty',
+                            'data' => [
+                                'employee_number' => [
+                                    'label' => 'Employee Number',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. 20-00780',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'department_id' => [
+                                    'label' => 'Department',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $departments,
+                                        'no_data' => 'Create department first'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'firstname' => [
+                                    'label' => 'First Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. John Paul',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'middlename' => [
+                                    'label' => 'Middle Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Mariano',
+                                    'required' => false,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'lastname' => [
+                                    'label' => 'Last Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Llemos',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'email' => [
+                                    'label' => 'Email',
+                                    'type' => 'email',
+                                    'placeholder' => 'Type ...',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'gender' => [
+                                    'label' => 'Gender',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => false,
+                                        'group' => '',
+                                        'data' => [
+                                            '1' => 'Male',
+                                            '2' => 'Female',
+                                            '3' => 'Prefer not to say'
+                                        ],
+                                        'no_data' => 'No data'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],  
+                                'image' => [
+                                    'label' => 'Profile Image',
+                                    'type' => 'file',
+                                    'required' => true,
+                                    'disabled' => false,
+                                    'css' => 'col-span-12 md:col-span-12',
+                                ],
+                            ]
+                        ],
+                        'delete' => [
+                            'title' => 'Delete Faculty',
+                            'subtitle' => 'Permanently delete selected faculty',
+                            'data' => [
+                                'employee_number' => [
+                                    'label' => 'Employee Number',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. 20-00780',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'department_id' => [
+                                    'label' => 'Department',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => true,
+                                        'group' => '',
+                                        'data' => $departments,
+                                        'no_data' => 'Create department first'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'firstname' => [
+                                    'label' => 'First Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. John Paul',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'middlename' => [
+                                    'label' => 'Middle Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Mariano',
+                                    'required' => false,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'lastname' => [
+                                    'label' => 'Last Name',
+                                    'type' => 'text',
+                                    'placeholder' => 'ex. Llemos',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-4',
+                                ],
+                                'email' => [
+                                    'label' => 'Email',
+                                    'type' => 'email',
+                                    'placeholder' => 'Type ...',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],
+                                'gender' => [
+                                    'label' => 'Gender',
+                                    'type' => 'select',
+                                    'options' => [
+                                        'is_from_db' => false,
+                                        'group' => '',
+                                        'data' => [
+                                            '1' => 'Male',
+                                            '2' => 'Female',
+                                            '3' => 'Prefer not to say'
+                                        ],
+                                        'no_data' => 'No data'
+                                    ],
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-6',
+                                ],  
+                                'image' => [
+                                    'label' => 'Profile Image',
+                                    'type' => 'file',
+                                    'required' => true,
+                                    'disabled' => true,
+                                    'css' => 'col-span-12 md:col-span-12',
+                                ],
+                            ]
+                        ],
                     ],
                 ]
             ]

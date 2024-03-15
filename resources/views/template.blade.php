@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="px-5">
-    <div class="mt-5">
+    <div class="mt-5 pb-8">
         <nav class="text-xs font-medium mb-2">
             <ol class="list-none p-0 inline-flex mt-4">
                 @php

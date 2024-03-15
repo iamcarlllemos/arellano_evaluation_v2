@@ -15,6 +15,7 @@ class CourseModel extends Model
         'name',
         'code'
     ];
+    
     public function departments() {
         return $this->belongsTo(DepartmentModel::class, 'department_id', 'id');
     }
