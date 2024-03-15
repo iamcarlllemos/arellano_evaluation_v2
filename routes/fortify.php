@@ -28,7 +28,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         if ($enableViews) {
             Route::get(RoutePath::for('admilogin', '/login'), [AuthenticatedSessionController::class, 'create'])
                 ->middleware(['guest:'.config('fortify.guard')])
-                ->name('login');
+                ->name('admin.login');
         }
 
         $limiter = config('fortify.limiters.login');
@@ -42,7 +42,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             ]));
 
         Route::any(RoutePath::for('signout', '/signout'), [AuthenticatedSessionController::class, 'destroy'])
-            ->name('signout');
+            ->name('admin.signout');
 
         if (Features::enabled(Features::resetPasswords())) {
             if ($enableViews) {
@@ -68,7 +68,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             if ($enableViews) {
                 Route::get(RoutePath::for('register', '/register'), [RegisteredUserController::class, 'create'])
                     ->middleware(['guest:'.config('fortify.guard')])
-                    ->name('register');
+                    ->name('admin.register');
             }
 
             Route::post(RoutePath::for('register', '/register'), [RegisteredUserController::class, 'store'])

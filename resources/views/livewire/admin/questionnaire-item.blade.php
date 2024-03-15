@@ -3,7 +3,7 @@
     <p class="text-sm font-medium mt-1 text-slate-900">List of all items in questionnaire created.</p>
     <div class="w-full flex justify-between items-center gap-2">
         <div class="mt-[29px]">
-            <a wire:navigate href="{{route('programs.questionnaire')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+            <a wire:navigate href="{{route('admin.programs.questionnaire')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
         </div>
     </div>
     <div class="mt-10">

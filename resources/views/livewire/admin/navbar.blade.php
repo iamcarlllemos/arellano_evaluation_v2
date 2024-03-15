@@ -121,10 +121,10 @@
                                 <div class="border-t border-gray-200"></div>
     
                                 <!-- Authentication -->
-                                <form method="POST" action="{{ route('signout') }}" x-data>
+                                <form method="POST" action="{{ route('admin.signout') }}" x-data>
                                     @csrf
     
-                                    <x-dropdown-link wire:navigate href="{{ route('signout') }}"
+                                    <x-dropdown-link wire:navigate href="{{ route('admin.signout') }}"
                                              @click.prevent="$root.submit();">
                                         {{ __('Sign Out') }}
                                     </x-dropdown-link>

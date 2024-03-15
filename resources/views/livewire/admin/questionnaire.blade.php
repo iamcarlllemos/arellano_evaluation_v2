@@ -4,7 +4,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form[$form['action']]['subtitle']}}</p>
         <div class="w-100 flex justify-between items-center gap-2">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('programs.questionnaire')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.programs.questionnaire')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -130,7 +130,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['index']['subtitle']}}</p>
         <div class="w-100 block md:flex justify-between items-center gap-2 mt-5">
             <div>
-                <a wire:navigate href="{{route('programs.questionnaire', ['action' => 'create'])}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
+                <a wire:navigate href="{{route('admin.programs.questionnaire', ['action' => 'create'])}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Create</a>
             </div>
             <div class="w-100 md:flex justify-end md:gap-3 mt-10 md:mt-0">
                 <input wire:ignore.self type="search" wire:model.live="search" class="bg-transparent rounded-md w-full" placeholder="Search here...">
@@ -154,10 +154,10 @@
                         <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                 <li>
-                                    <a wire:navigate href="{{route('programs.questionnaire', ['action' => 'update', 'slug' => $questionnaire->slug])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
+                                    <a wire:navigate href="{{route('admin.programs.questionnaire', ['action' => 'update', 'slug' => $questionnaire->slug])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                 </li>
                                 <li>
-                                    <a wire:navigate href="{{route('programs.questionnaire', ['action' => 'delete', 'slug' => $questionnaire->slug])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                    <a wire:navigate href="{{route('admin.programs.questionnaire', ['action' => 'delete', 'slug' => $questionnaire->slug])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
                                 </li>
                             </ul>
                         </div>             
@@ -171,7 +171,7 @@
                             </div>
                             <hr>
                             <div class="flex justify-end mt-3">
-                                <a wire:navigate  href="{{route('programs.questionnaire.item', ['slug' => $questionnaire->slug])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm mt-3 font-bold rounded-lg">Open</a>
+                                <a wire:navigate  href="{{route('admin.programs.questionnaire.item', ['slug' => $questionnaire->slug])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm mt-3 font-bold rounded-lg">Open</a>
                             </div>
                         </div>
                         <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">

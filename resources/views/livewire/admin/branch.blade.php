@@ -4,7 +4,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form[$form['action']]['subtitle']}}</p>
         <div class="w-100 flex justify-between items-center gap-2">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.programs.branches')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -155,10 +155,10 @@
                             <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                     <li>
-                                        <a wire:navigate href="{{route('programs.branches', ['action' => 'update', 'id' => $collection->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
+                                        <a wire:navigate href="{{route('admin.programs.branches', ['action' => 'update', 'id' => $collection->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
                                     </li>
                                     <li>
-                                        <a wire:navigate href="{{route('programs.branches', ['action' => 'delete', 'id' => $collection->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                        <a wire:navigate href="{{route('admin.programs.branches', ['action' => 'delete', 'id' => $collection->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
                                     </li>
                                 </ul>
                             </div>             

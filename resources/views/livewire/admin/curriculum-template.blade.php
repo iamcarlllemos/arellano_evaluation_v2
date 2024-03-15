@@ -4,7 +4,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
         <div class="w-100 flex justify-between items-center gap-2">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -146,7 +146,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['delete']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.curriculum-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')

@@ -4,7 +4,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['create']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -99,7 +99,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['update']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -199,8 +199,8 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['template']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px] flex items-center gap-3">
-                <a wire:navigate href="{{route('linking.faculty-template')}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
-                <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'connect', 'id' => $template['id']])}}" class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md">Connect</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template')}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template', ['action' => 'connect', 'id' => $template['id']])}}" class="border border-slate-900 py-2 px-6 text-dark text-sm font-bold rounded-md">Connect</a>
             </div>
         </div>
         <div class="m-auto relative max-h-full">
@@ -264,7 +264,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['template']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px] flex items-center gap-3">
-                <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'template', 'id' => $template['id']])}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template', ['action' => 'template', 'id' => $template['id']])}}" class="border border-slate-900 bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         <div class="block md:flex items-center gap-5">
@@ -359,7 +359,7 @@
         <p class="text-sm font-medium mt-1 text-slate-900">{{$form['subtitle']['delete']}}</p>
         <div class="w-100 flex justify-between items-center gap-2 mb-10">
             <div class="mt-[29px]">
-                <a wire:navigate href="{{route('linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+                <a wire:navigate href="{{route('admin.linking.faculty-template')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
             </div>
         </div>
         @include('components.alert')
@@ -473,7 +473,7 @@
                             <div wire:ignore.self id="drodown" class="dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                     <li>
-                                        <a wire:navigate href="{{route('linking.faculty-template', ['action' => 'template', 'id' => $faculty->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Link Template</a>
+                                        <a wire:navigate href="{{route('admin.linking.faculty-template', ['action' => 'template', 'id' => $faculty->id])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Link Template</a>
                                     </li>
                                 </ul>
                             </div>             
