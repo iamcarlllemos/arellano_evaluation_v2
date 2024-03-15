@@ -1,21 +1,26 @@
 <?php
 
-use App\Http\Controllers\FacultyTemplateController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\SchoolYearController;
-use App\Http\Controllers\CriteriaController;
-use App\Http\Controllers\QuestionnaireController;
-use App\Http\Controllers\QuestionnaireItemController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\SchoolYearController;
+use App\Http\Controllers\Admin\CriteriaController;
+use App\Http\Controllers\Admin\QuestionnaireController;
+use App\Http\Controllers\Admin\QuestionnaireItemController;
+use App\Http\Controllers\Admin\FacultyTemplateController;
 
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\FacultyController;
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\CurriculumTemplateController;
+
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\AdministratorController;
+use App\Http\Controllers\Admin\CurriculumTemplateController;
+
+use App\Http\Controllers\User\LoginController as UserLoginController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,11 +43,11 @@ require_once __DIR__ . '/jetstream.php';
 // ADMIN
 
 
-Route::prefix('/')->middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function() {
+Route::prefix('admin')->middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function() {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
    
@@ -70,5 +75,16 @@ Route::prefix('/')->middleware([
         Route::get('/faculty', [FacultyController::class, 'index'])->name('accounts.faculty')->middleware('role:admin,superadmin');
         Route::get('/administrators', [AdministratorController::class, 'index'])->name('accounts.administrator')->middleware('role:superadmin');
     });
-
 });
+
+Route::prefix('user')->group(function() {
+    Route::get('login', [UserLoginController::class, 'index'])->name('user.index');
+    Route::post('login', [UserLoginController::class, 'login'])->name('user.login');
+    Route::any('logout', [UserLoginController::class, 'logout'])->name('user.logout');
+
+    Route::middleware('students')->group(function() {
+        Route::get('dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+    });
+});
+
