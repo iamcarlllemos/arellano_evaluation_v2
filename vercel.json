@@ -6,7 +6,7 @@
     "routes": [
         {
             "src": "/storage/(.*)",
-            "dest": "/public/storage/"
+            "dest": "/public/storage/$1"
         },
         {
             "src": "/build/(.*)",
