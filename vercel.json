@@ -1,35 +1,34 @@
 {
     "version": 2,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
+      "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
     "routes": [
-        {
-            "src": "/storage/(.*)",
-            "dest": "/public/storage/"
-        },
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/"
-        },
-        {
-            "src": "/resources/(.*)",
-            "dest": "/public/resources/"
-        },
-        {
-            "src": "/favicon/(.*)",
-            "dest": "/public/favicon/"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
+      {
+        "src": "/build/(.*)",
+        "dest": "/public/build/"
+      },
+      {
+        "src": "/resources/(.*)",
+        "dest": "/public/resources/"
+      },
+      {
+        "src": "/favicon/(.*)",
+        "dest": "/public/favicon/"
+      },
+      {
+        "src": "/storage/(.*)",
+        "dest": "/api/index.php"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/api/index.php"
+      }
     ],
     "env": {
       "APP_NAME": "Tempestas",
       "APP_ENV": "production",
       "APP_DEBUG": "false",
-  
       "APP_CONFIG_CACHE": "/tmp/config.php",
       "APP_EVENTS_CACHE": "/tmp/events.php",
       "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -43,4 +42,5 @@
       "SSR_TEMP_PATH": "/tmp/ssr",
       "NODE_PATH": "node"
     }
-} 
+  }
+  
