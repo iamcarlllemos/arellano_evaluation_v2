@@ -26,8 +26,16 @@ class StudentModel extends Authenticatable
         'password',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     public function courses() {
         return $this->belongsTo(CourseModel::class, 'course_id', 'id');
+    }
+
+    public function template() {
+        return $this->hasMany(CurriculumTemplateModel::class, 'id');
     }
 
 }

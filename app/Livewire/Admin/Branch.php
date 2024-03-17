@@ -23,9 +23,6 @@ class Branch extends Component
     public $name;
     public $image;
 
-   
-
-
     public function mount(Request $request) {
         $id = $request->input('id');
         $data = BranchModel::find($id);

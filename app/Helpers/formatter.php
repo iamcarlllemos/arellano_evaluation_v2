@@ -30,7 +30,7 @@ if (!function_exists('to_ordinal')) {
     }
 }
 
-if(!function_exists('to_status')) {
+if(!function_exists('to_status_')) {
     function to_status($number) {
         if(!is_numeric($number)) {
             return $number;
@@ -78,6 +78,25 @@ if(!function_exists('to_status')) {
 
         return $status;
 
+    }
+}
+
+if(!function_exists('gender')) {
+    function to_gender($val) {
+        switch($val) {
+            case 1: 
+                return 'Male';
+                break;
+            case 2:
+                return 'Female';
+                break;
+            case 3:
+                return 'Prefered not to say';
+                break;
+            default:
+                return 'Undefined';
+                break;
+        }
     }
 }
 

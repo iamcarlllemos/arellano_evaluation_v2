@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function index() {
-        return view('user.template');
+        
+        $data = [
+            'breadcrumbs' => 'Dashboard,home',
+            'livewire' => [
+                'component' => 'user.dashboard',
+                'data' => []
+            ]
+        ];
+
+        return view('user.template', compact('data'));
     }
 }

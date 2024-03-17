@@ -80,9 +80,9 @@
                                         {!!($item['required']) ? '<span class="text-red-900">*</span>' : ''!!}
                                     </label>
                                     @if ($image && !method_exists($image, 'getClientOriginalExtension'))
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                        <img src="{{ asset('storage/images/students/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
                                     @elseif(session()->has('flash') && session('flash')['status'] == 'success')
-                                        <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                        <img src="{{ asset('storage/images/students/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
                                     @endif       
                                     <div class="flex items-center justify-center w-full mt-3">
                                         <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">

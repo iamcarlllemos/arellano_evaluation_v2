@@ -1,0 +1,256 @@
+<div>
+    <h1 class="text-3xl font-semibold">Start Evaluation</h1>
+    <p class="text-sm font-medium mt-1 text-slate-900">Start evaluating.</p>
+    <div class="w-100 flex justify-between items-center gap-2">
+        <div class="mt-[29px]">
+            <a wire:navigate href="{{route('user.dashboard')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+        </div>
+    </div>
+    <div class="mt-10">
+        <ol class="flex items-center w-full bg-white border rounded-lg shadow text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
+            <li class="flex items-center text-blue-600 dark:text-blue-500">
+                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+                    1
+                </span>
+                Choose <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
+                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
+                </svg>
+            </li>
+            <li class="flex items-center">
+                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                    2
+                </span>
+                Evaluate <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
+                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
+                </svg>
+            </li>
+            <li class="flex items-center">
+                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                    3
+                </span>
+                Review <span class="hidden sm:inline-flex sm:ms-2">Responses</span>
+                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
+                </svg>
+            </li>
+            <li class="flex items-center">
+                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                    4
+                </span>
+                Finished <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
+            </li>
+        </ol>
+    </div>
+    <pre>
+    {{print_r(session('response')['step']);}}
+    </pre>
+    <div class="bg-white border shadow rounded-lg mt-5 p-8">
+        @if (session()->has('response') && session('response')['step'] == 1)
+            <h4 class="text-2xl font-bold">Faculty Name &amp; Schedule</h4>
+            <p class="my-2 text-sm font-medium">Note: Please ensure that the faculty and schedule align with the details provided in your registration form. This evaluation will be part of your <span class="uppercase font-bold underline">clearance requirements</span>.</p>
+            <form wire:submit="move(2)" class="mt-10">
+                <div class="grid gap-4 mb-4 grid-cols-12">
+                    @foreach($form[$form['action']]['data'] as $key => $item) 
+                        @if(in_array($item['type'], ['text', 'email', 'date', 'time', 'password']))
+                            <div class="{{$item['css']}}">
+                                <label for="{{$key}}" 
+                                    class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" 
+                                    style="font-size: 12px">
+                                    {{$item['label']}} 
+                                    {!!($item['required']) ? '<span class="text-red-900">*</span>' : ''!!}
+                                </label>
+                                <input type="{{$item['type']}}" wire:model="{{$key}}" 
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                                    placeholder="{{$item['placeholder']}}"
+                                    {{($item['disabled']) ? 'disabled' : '' }}
+                                    >
+                                @error($key)
+                                    <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                                @enderror
+                            </div>
+                        @elseif(in_array($item['type'], ['select']))
+                            <div class="{{$item['css']}}" >
+                                <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                    {{$item['label']}}
+                                    {!!($item['required']) ? '<span class="text-red-900">*</span>' : ''!!}
+                                </label>
+                                <select 
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                    wire:model="{{$key}}"
+                                    {{($item['disabled']) ? 'disabled' : ''}}>
+                                    @if(count($item['options']['data']) > 0)
+                                        @if($item['options']['is_from_db'])
+                                            <option value=""> - CHOOSE - </option>
+                                            @foreach($item['options']['data'] as $option_key => $options)
+                                                @if (property_exists($options, $item['options']['group']))
+                                                    <optgroup label="{{$options->name}}">
+                                                        @foreach ($options->{$item['options']['group']} as $data)
+                                                            <option value="{{$data->id}}">{{ucwords($data->name)}}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @else
+                                                    <option value="{{$options->id}}">{{ucwords($options->name)}}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option value=""> - CHOOSE - </option>
+                                            @foreach($item['options']['data'] as $option_key => $options)
+                                                <option value="{{$option_key}}">{{$options}}</option>
+                                            @endforeach
+                                        @endif
+                                    @else
+                                        <option value=""> - {{$item['options']['no_data']}} - </option>
+                                    @endif
+                                </select>
+                                @error($key)
+                                    <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                                @enderror
+                            </div>
+                        @elseif(in_array($item['type'], ['file']))
+                            <div class="{{$item['css']}}">
+                                <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase" style="font-size: 12px">
+                                    {{$item['label']}}
+                                    {!!($item['required']) ? '<span class="text-red-900">*</span>' : ''!!}
+                                </label>
+                                @if ($image && !method_exists($image, 'getClientOriginalExtension'))
+                                    <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                @elseif(session()->has('flash') && session('flash')['status'] == 'success')
+                                    <img src="{{ asset('storage/images/branches/' . $image) }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">
+                                @endif       
+                                <div class="flex items-center justify-center w-full mt-3">
+                                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                            </svg>
+                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or GIF (MAX. 5MB)</p>
+                                        </div>
+                                        <input 
+                                            id="dropzone-file" 
+                                            wire:model="{{$key}}" 
+                                            type="{{$item['type']}}" 
+                                            class="hidden" 
+                                            {{($item['disabled']) ? 'disabled' : ''}}
+                                        />
+                                    </label>
+                                </div>                  
+                                <div wire:loading wire:target="{{$key}}">Uploading...</div>
+                                @if ($image && method_exists($image, 'getClientOriginalExtension') && in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg']))
+                                    <label for="{{$key}}" class="block mb-1 font-extrabold text-gray-900 dark:text-white uppercase mt-5" style="font-size: 12px">Image Preview</label>
+                                    <img src="{{ $image->temporaryUrl() }}" class="w-[200px] h-[150px] object-cover object-center rounded-lg">    
+                                @endif    
+                                @error($key)
+                                    <p class="text-xs text-red-500 font-bold mt-2">{{$message}}</p>
+                                @enderror
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                <label class="text-gray-700 mt-2 font-bold" style="font-size: 14px">Note: Make sure schedule is <span class="uppercase underline">appropriate</span> to your registration form.</label>
+                <div class="flex justify-end mt-10">
+                    <button 
+                        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                        Next
+                    </button>
+                </div>
+            </form>
+            </div>
+        @elseif(session()->has('response') && session('response')['step'] == 2)
+            <h4 class="text-2xl font-bold">Evaluation Form</h4>
+            <div class="p-4 mt-5 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                <div class="flex items-center">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                      </svg>
+                      <span class="font-bold uppercase">Rating Legend!</span>
+                </div>
+                <hr class="mt-2">
+                <ul class="mx-1 mt-2">
+                    <li><span class="uppercase font-bold">4. Strongly Agree</span> - <span class="font-semibold underline">Exemplary, passionate, dedicated.</span></li>
+                    <li><span class="uppercase font-bold">3. Agree</span> - <span class="font-semibold underline">Competent, engaging lectures.</span></li>
+                    <li><span class="uppercase font-bold">2. Neutral</span> - <span class="font-semibold underline">Adequate, neither impressive nor disappointing.</span></li>
+                    <li><span class="uppercase font-bold">1. Disgree</span> - <span class="font-semibold underline">Lacks expertise, outdated methods.</span></li>
+                </ul>
+            </div>
+            <div class="">
+                <div class="p-4 mt-5 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
+                    <h1 class="text-1xl font-bold uppercase">{{$questionnaire->name}}</h1>
+                </div>
+                <form wire:submit='move(3)'>
+                    @forelse ($questionnaire->sorted_items as $item)
+                        <div class="mt-5" role="alert">
+                            <div class="px-6 py-2 text-sm text-blue-800 rounded-t-lg border bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
+                                <div class="flex items-center justify-between my-3 me-2 font-bold ">
+                                    <div class="uppercase">{{ucwords($item['criteria_name'])}}</div>
+                                    <div class="flex items-center">
+                                        <div style="margin-left: 108px;">4</div>
+                                        <div style="margin-left: 108px;">3</div>
+                                        <div style="margin-left: 108px;">2</div>
+                                        <div style="margin-left: 108px;">1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            @foreach($item['item'] as $index => $questionnaire)
+                                <div class="bg-white border-b border-r border-l px-6 py-5{{ $loop->last ? ' rounded-b-lg shadow' : '' }}">
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm font-medium text-justify">{{$questionnaire['name']}}</div>
+                                        <div class="flex items-center">
+                                            <div class="flex-fill text-center" style="margin-left: 100px;">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="4" class="">
+                                            </div>
+                                        
+                                            <div class="flex-fill text-center" style="margin-left: 100px;">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="3" class="">
+                                            </div>
+                                        
+                                            <div class="flex-fill text-center" style="margin-left: 100px;">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="2" class="">
+                                            </div>
+                                        
+                                            <div class="flex-fill text-center" style="margin-left: 100px;">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="1" class="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if(in_array($questionnaire['id'], session('error') ?? []))
+                                        <label class="text-red-900 uppercase font-bold mt-3" style="font-size:12px">*This field is required</label>
+                                    @enderror
+                                    
+                                </div>
+                            @endforeach
+                        </div>
+                    @empty
+                        <div class="col-span-12">
+                            <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Info</span>
+                                <div>
+                                <span class="font-medium">No records found.</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforelse
+                    <div class="flex justify-between mt-10">
+                        <button 
+                            wire:click='move(1)'
+                            class="inline-flex items-center border border-sky-700 text-slate-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                            Previous
+                        </button>
+                        <button wire:click='move(3)'
+                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                            Next
+                        </button>
+                    </div>
+                </form>
+            </div>
+        @endif
+    </div>
+</div>

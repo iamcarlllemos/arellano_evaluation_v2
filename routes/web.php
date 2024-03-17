@@ -20,6 +20,10 @@ use App\Http\Controllers\Admin\CurriculumTemplateController;
 
 use App\Http\Controllers\User\LoginController as UserLoginController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\SubjectController as UserSubjectController;
+use App\Http\Controllers\User\EvaluateController as UserEvaluateController;
+
+
 
 
 /*
@@ -78,13 +82,14 @@ Route::prefix('admin')->middleware([
 });
 
 Route::prefix('user')->group(function() {
-    Route::get('login', [UserLoginController::class, 'index'])->name('admin.user.index');
-    Route::post('login', [UserLoginController::class, 'login'])->name('admin.user.login');
-    Route::any('logout', [UserLoginController::class, 'logout'])->name('admin.user.logout');
+    Route::get('login', [UserLoginController::class, 'index'])->name('user.index');
+    Route::post('login', [UserLoginController::class, 'login'])->name('user.login');
+    Route::any('logout', [UserLoginController::class, 'logout'])->name('user.logout');
 
     Route::middleware('students')->group(function() {
         Route::get('dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
-
+        Route::get('subject', [UserSubjectController::class, 'index'])->name('user.subject');
+        Route::get('subject/evaluate/start', [UserEvaluateController::class, 'index'])->name('user.evaluate');
     });
 });
 

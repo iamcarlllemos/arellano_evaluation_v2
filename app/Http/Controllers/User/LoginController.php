@@ -20,12 +20,16 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $input = $request->only('username', 'password');
+        $credentials = $request->only('username', 'password');
 
-        if(Auth::guard('users')->attempt($input)) {
-            $users = StudentModel::where('username', $request->input('username'))->first();
-            Auth::guard('users')->login($users);
-            return redirect()->route('user.dashboard');
+        if(Auth::guard('users')->attempt($credentials)) {
+            $user = Auth::guard('users')->user();
+            if($user) {
+                Auth::guard('users')->login($user);
+                return redirect()->route('user.dashboard');
+            } else {
+                return redirect()->back()->with('error', 'User not found');
+            }
         } 
 
         return redirect()->back()->with('error', 'username or password is invalid');

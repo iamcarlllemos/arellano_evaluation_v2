@@ -29,7 +29,16 @@ class QuestionnaireController extends Controller
 
         }
 
-        $school_year = SchoolYearModel::all();
+        $school_year = [];
+
+        $dirty_sy = SchoolYearModel::all();
+
+        foreach($dirty_sy as $year) {
+            $school_year[] = (object) [
+                'id' => $year->id,
+                'name' => 'SY: ' . $year->start_year . ' - ' . $year->end_year . ' ('.$year->name.')',
+            ];
+        }
 
         $data = [
             'breadcrumbs' => 'Dashboard,programs,questionnaire',

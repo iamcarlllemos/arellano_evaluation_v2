@@ -250,6 +250,7 @@ class Faculty extends Component
             ->get();
 
         $faculty = $faculty->isEmpty() ? [] : $faculty;
+        
         $data = [
             'branches' => $branches,
             'faculty' => $faculty
