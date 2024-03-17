@@ -20,7 +20,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->integer('is_superadmin');
+            $table->integer('role');
+            $table->integer('assigned_branch');
             $table->timestamps();
         });
     }
