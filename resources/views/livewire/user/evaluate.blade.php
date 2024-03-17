@@ -1,9 +1,9 @@
 <div>
     <h1 class="text-3xl font-semibold">Start Evaluation</h1>
-    <p class="text-sm font-medium mt-1 text-slate-900">Start evaluating.</p>
+    <p class="text-sm font-medium mt-1 text-slate-900 w-[75%]">Faculty evaluation aims to improve teaching quality, support professional development, enhance student learning, ensure accountability, and satisfy stakeholderss.</p>
     <div class="w-100 flex justify-between items-center gap-2">
         <div class="mt-[29px]">
-            <a wire:clic='go_back' wire:navigate href="{{route('user.dashboard')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+            <button wire:click='go_back' class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</button>
         </div>
     </div>
     <div class="mt-10">
@@ -11,7 +11,7 @@
             $step = session('response')['step'] ?? 1;
         @endphp
 
-        <ol class="flex justify-center items-center gap-10 w-full bg-white border rounded-lg shadow text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
+        <ol class="flex justify-center gap-5 items-center w-full bg-white border rounded-lg shadow text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
             @for ($i = 1; $i <= 4; $i++)
                 @php
                     $isActive = $i <= $step;
@@ -36,7 +36,7 @@
                             Finished!
                         @endif
                     </span>
-                    <span class="hidden sm:inline-flex sm:ms-1 me-5"></span>
+                    <span class="hidden sm:inline-flex"></span>
                     <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180 {{ $arrowColor }}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
                     </svg>

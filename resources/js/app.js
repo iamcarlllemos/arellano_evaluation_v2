@@ -97,8 +97,6 @@ function read_more(elem) {
             $(this).text('Read More');
         }
     });
-    
-    
 }
 
 function scrollTopError() {
@@ -155,3 +153,15 @@ function multi_select() {
         selected_card = 0;
     });
 }
+
+Livewire.on('leaving', (data) => {
+    if(data[0].has_saved) {
+        const result = window.confirm("This page is asking you to confirm that you want to leave — saved informations you’ve entered may not be saved.");
+        if(result) {
+            window.location.href= data[0].route;
+        }
+    } else {
+        window.location.href= data[0].route;
+    }
+   
+});

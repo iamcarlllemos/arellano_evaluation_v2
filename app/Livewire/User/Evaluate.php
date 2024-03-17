@@ -272,6 +272,36 @@ class Evaluate extends Component
         }
     }
 
+    public function faculty_info($data) {
+        $faculty_id = $data['faculty_id'];
+        $evaluate_id = $this->evaluate;
+
+        $faculty = FacultyModel::find($faculty_id);
+        $subject = FacultyTemplateModel::with('faculty.templates.curriculum_template.subjects')->where(function($query) {
+            $query->where('template_id', $this->template_id);
+        })->get()[0];
+
+        $evaluate = SchoolYearModel::find($evaluate_id);
+
+        $this->faculty['name'] = $faculty->firstname . ' ' . $faculty->lastname;
+        $this->faculty['subject'] = $subject->faculty->templates[0]->curriculum_template[0]->subjects->name . ' (' .
+            $subject->faculty->templates[0]->curriculum_template[0]->subjects->code . ')';
+        $this->faculty['schedule'] = to_hour($data['start_time']) . ' - ' . to_hour($data['end_time']);
+        $this->faculty['academic_year'] = $evaluate->start_year . ' - ' . $evaluate->end_year;
+    }
+
+    public function go_back() {
+        $data = session('response');
+        if (count($data) > 1) {
+            $this->dispatch('leaving', ['has_saved' => true, 'route' => route('user.subject', ['evaluate' => $this->evaluate, 'semester' => $this->semester])]);
+            $this->get_questionnaires();
+        } else {
+            $this->dispatch('leaving', ['has_saved' => true, 'route' => route('user.subject', ['evaluate' => $this->evaluate, 'semester' => $this->semester])]);
+            $this->get_questionnaires();
+        }
+
+    }
+
     public function mount(Request $request) {
 
         $evaluate = $request->input('evaluate');
@@ -354,24 +384,6 @@ class Evaluate extends Component
             $this->is_responded(4);
 
         }
-    }
-
-    public function faculty_info($data) {
-        $faculty_id = $data['faculty_id'];
-        $evaluate_id = $this->evaluate;
-
-        $faculty = FacultyModel::find($faculty_id);
-        $subject = FacultyTemplateModel::with('faculty.templates.curriculum_template.subjects')->where(function($query) {
-            $query->where('template_id', $this->template_id);
-        })->get()[0];
-
-        $evaluate = SchoolYearModel::find($evaluate_id);
-
-        $this->faculty['name'] = $faculty->firstname . ' ' . $faculty->lastname;
-        $this->faculty['subject'] = $subject->faculty->templates[0]->curriculum_template[0]->subjects->name . ' (' .
-            $subject->faculty->templates[0]->curriculum_template[0]->subjects->code . ')';
-        $this->faculty['schedule'] = to_hour($data['start_time']) . ' - ' . to_hour($data['end_time']);
-        $this->faculty['academic_year'] = $evaluate->start_year . ' - ' . $evaluate->end_year;
     }
 
     public function render()
