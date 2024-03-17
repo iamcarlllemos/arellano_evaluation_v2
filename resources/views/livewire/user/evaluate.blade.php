@@ -308,19 +308,19 @@
                                         <div class="text-sm font-medium text-justify">{{$questionnaire['name']}}</div>
                                         <div class="flex items-center">
                                             <div class="flex-fill text-center" style="margin-left: 100px;">
-                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="4" class="">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="4" disabled>
                                             </div>
                                         
                                             <div class="flex-fill text-center" style="margin-left: 100px;">
-                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="3" class="">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="3" disabled>
                                             </div>
                                         
                                             <div class="flex-fill text-center" style="margin-left: 100px;">
-                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="2" class="">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="2" disabled>
                                             </div>
                                         
                                             <div class="flex-fill text-center" style="margin-left: 100px;">
-                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="1" class="">
+                                                <input type="radio" wire:model="responses.{{$questionnaire['id']}}" value="1" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -344,15 +344,29 @@
                             </div>
                         </div>
                     @endforelse
+                    <div class="mb-4 mt-5">
+                        <div class="p-4 text-sm text-blue-800 border-t border-r border-l rounded-t-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
+                            <h1 class="text-1xl font-bold uppercase">User Comments <span class="text-xs">(optional)</span></h1>
+                        </div>
+                        <div class="bg-white p-4 border shadow-lg rounded-b text-sm font-medium">
+                            <textarea 
+                                wire:model='comments'
+                                name="comments" 
+                                id="comnents" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 resize-none" rows="8" 
+                                placeholder="Write something..."></textarea>
+                        </div>
+                    </div>
                 </form>
+                
                 <div class="flex justify-between mt-10">
                     <button 
-                        wire:click='move(1)'
+                        wire:click='move(2)'
                         class="inline-flex items-center border border-sky-700 text-slate-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                         Previous
                     </button>
-                    <button wire:click='move(3)'
+                    <button wire:click='move(4)'
                         class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                         Next

@@ -72,6 +72,8 @@ class Evaluate extends Component
         } else if($step == 3) {
             $this->get_questionnaires();
             $this->step03($step, $this->responses);
+        } else if($step == 4) {
+
         }
     }
 
@@ -123,13 +125,18 @@ class Evaluate extends Component
             $data = session('response');
             $data['record'] = $responses;
             session()->put('response', $data);
+        } else {
+            $data = session('response');
+            $data['step'] = $step;
+            $data['record'] = $responses;
+            session()->put('response', $data);
+            $this->faculty_info(session('response.faculty'));
         }
-        
-        $data = session('response');
-        $data['step'] = $step;
-        $data['record'] = $responses;
-        session()->put('response', $data);
+    
+    }
 
+    public function step04($step, $responses) {
+        
     }
 
     public function get_questionnaires() {
