@@ -3,52 +3,52 @@
     <p class="text-sm font-medium mt-1 text-slate-900">Start evaluating.</p>
     <div class="w-100 flex justify-between items-center gap-2">
         <div class="mt-[29px]">
-            <a wire:navigate href="{{route('user.dashboard')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
+            <a wire:clic='go_back' wire:navigate href="{{route('user.dashboard')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
         </div>
     </div>
     <div class="mt-10">
-        <ol class="flex items-center w-full bg-white border rounded-lg shadow text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
-            <li class="flex items-center text-blue-600 dark:text-blue-500">
-                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                    1
-                </span>
-                Choose <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
-                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
-                </svg>
-            </li>
-            <li class="flex items-center">
-                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                    2
-                </span>
-                Evaluate <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
-                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
-                </svg>
-            </li>
-            <li class="flex items-center">
-                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                    3
-                </span>
-                Review <span class="hidden sm:inline-flex sm:ms-2">Responses</span>
-                <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
-                </svg>
-            </li>
-            <li class="flex items-center">
-                <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                    4
-                </span>
-                Finished <span class="hidden sm:inline-flex sm:ms-2">Faculty</span>
-            </li>
+        @php
+            $step = session('response')['step'] ?? 1;
+        @endphp
+
+        <ol class="flex justify-center items-center gap-10 w-full bg-white border rounded-lg shadow text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
+            @for ($i = 1; $i <= 4; $i++)
+                @php
+                    $isActive = $i <= $step;
+                    $class = $isActive ? 'text-blue-600 dark:text-blue-500' : 'text-gray-500 dark:text-gray-400';
+                    $borderClass = $isActive ? 'border-blue-600 dark:border-blue-500' : 'border-gray-500 dark:border-gray-400';
+                    $textColor = $isActive ? 'text-blue-600 dark:text-blue-500' : 'text-gray-500 dark:text-gray-400';
+                    $arrowColor = $isActive ? 'text-blue-600 dark:text-blue-500' : 'text-gray-500 dark:text-gray-400';
+                @endphp
+
+                <li class="flex items-center">
+                    <span class="flex items-center justify-center w-5 h-5 me-2 text-xs border {{ $borderClass }} rounded-full shrink-0 {{ $class }}">
+                        {{ $i }}
+                    </span>
+                    <span class="{{ $textColor }}">
+                        @if ($i == 1)
+                            Choose Faculty
+                        @elseif ($i == 2)
+                            Evaluation Form
+                        @elseif ($i == 3)
+                            Preview Responses
+                        @else
+                            Finished!
+                        @endif
+                    </span>
+                    <span class="hidden sm:inline-flex sm:ms-1 me-5"></span>
+                    <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180 {{ $arrowColor }}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
+                    </svg>
+                </li>
+            @endfor
         </ol>
+
     </div>
     <pre>
-    {{print_r(session('response')['step']);}}
     </pre>
     <div class="bg-white border shadow rounded-lg mt-5 p-8">
         @if (session()->has('response') && session('response')['step'] == 1)
-            {{print_r(session('response'))}}
             <h4 class="text-2xl font-bold">Faculty Name &amp; Schedule</h4>
             <p class="my-2 text-sm font-medium">Note: Please ensure that the faculty and schedule align with the details provided in your registration form. This evaluation will be part of your <span class="uppercase font-bold underline">clearance requirements</span>.</p>
             <form wire:submit="move(2)" class="mt-10">
@@ -178,7 +178,6 @@
                 </ul>
             </div>
             <div class="">
-                {{print_r(session('response'))}}
                 <div class="p-4 mt-5 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
                     <h1 class="text-1xl font-bold uppercase">{{$questionnaire->name}}</h1>
                 </div>
@@ -284,7 +283,6 @@
                 </ul>
             </div>
             <div class="">
-                {{print_r(session('response'))}}
                 <div class="p-4 mt-5 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
                     <h1 class="text-1xl font-bold uppercase">{{$questionnaire->name}}</h1>
                 </div>
@@ -354,15 +352,17 @@
                                 name="comments" 
                                 id="comnents" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 resize-none" rows="8" 
-                                placeholder="Write something..."></textarea>
+                                placeholder="Write something..."
+                                {{session('response')['faculty']['is_preview'] ? 'disabled' : '' }}
+                                ></textarea>
                         </div>
                     </div>
                 </form>
                 
-                <div class="flex justify-between mt-10">
+                <div class="flex justify-{{session('response')['faculty']['is_preview'] ? 'end' : 'between'}} mt-10">
                     <button 
                         wire:click='move(2)'
-                        class="inline-flex items-center border border-sky-700 text-slate-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        class="inline-flex items-center border border-sky-700 text-slate-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 {{session('response')['faculty']['is_preview'] ? 'hidden' : '456'}}"
                         >
                         Previous
                     </button>
@@ -374,7 +374,34 @@
                 </div>
             </div>
         @elseif(session()->has('response') && session('response')['step'] == 4)
-
+            <div class="px-5">
+                <h4 class="text-2xl uppercase font-bold">Thank you for your evaluation</h4>
+                <h6 class="text-md mt-1 mb-3 font-medium">Your response has been recorded.</h6>
+                <hr class="my-3">
+                <p class="text-sm text-slate-900 font-medium">Thank you for completing the faculty evaluation. Your feedback is valuable in enhancing the teaching and learning experience. Your participation contributes to the continuous improvement of our educational environment. We appreciate your time and thoughtful responses.</p>
+                <p class="mt-3 text-sm text-slate-900 font-medium">Please note: The QR code provided below serves as a means to trace your response. It can be utilized as evidence of your submission, a prerequisite for clearance requirements.</p>                            
+                <div class="mt-5">
+                    {{session('response')['faculty']['qr_code']}}
+                </div>
+                <div class="mt-5">
+                    <p class="text-xs uppercase font-bold">Reference: #{{session('response')['faculty']['reference']}}</p>
+                    <p class="text-xs uppercase font-bold text-slate-800">Submitted {{session('response')['faculty']['date_submitted']}}</p>
+                </div>
+                <div class="flex justify-between mt-10">
+                    <button 
+                        wire:click='move(3)'
+                        class="inline-flex items-center border border-sky-700 text-slate-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                        Previous
+                    </button>
+                    <a wire:navigate
+                        href="{{route('user.subject', ['evaluate' => $evaluate, 'semester' => $semester])}}"
+                        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                        Return Subjects
+                    </a>
+                </div>
+            </div>
         @endif
     </div>
 </div>

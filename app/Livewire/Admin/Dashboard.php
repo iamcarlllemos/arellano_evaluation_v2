@@ -19,6 +19,8 @@ class Dashboard extends Component
         $time = Carbon::now();
         $mode = strtolower($time->format('H'));
 
+        $mode_string = '';
+
         if ($mode >= 5 && $mode < 12) {
             $mode_string = "good morning";
         } elseif ($mode >= 12 && $mode < 18) {

@@ -5,6 +5,7 @@ namespace App\Livewire\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 use App\Models\QuestionnaireModel;
 use App\Models\QuestionnaireItemModel;
@@ -13,6 +14,11 @@ use App\Models\FacultyModel;
 use App\Models\FacultyTemplateModel;
 use App\Models\SchoolYearModel;
 
+use App\Models\CurriculumTemplateModel;
+use App\Models\ResponseModel;
+use App\Models\ResponseItemModel;
+
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use Livewire\Component;
 
@@ -23,7 +29,7 @@ class Evaluate extends Component
     
     public $evaluate;
     public $semester;
-    public $subject;
+    public $template_id;
 
     public $step;
     public $faculty_id;
@@ -32,6 +38,9 @@ class Evaluate extends Component
 
     public $start_time;
     public $end_time;
+    public $comments;
+
+    public $is_exists = false;
 
     public $questionnaire;
     public $responses = [];
@@ -71,13 +80,15 @@ class Evaluate extends Component
             session()->put('response', $data);
         } else if($step == 3) {
             $this->get_questionnaires();
+            $this->is_responded(3);
             $this->step03($step, $this->responses);
         } else if($step == 4) {
-
+            $this->step04($step);
         }
     }
 
     public function step02() {
+
         $rules = [
             'faculty_id' => 'required|exists:afears_faculty,id|integer',
             'start_time' => 'required',
@@ -90,19 +101,28 @@ class Evaluate extends Component
 
         if(array_key_exists('faculty', $response)) {
             $response['faculty'] = [
+                'is_preview' => false,
+                'user_id' => auth()->guard('users')->user()->id,
+                'evaluation_id' => $this->evaluate,
                 'faculty_id' => $this->faculty_id,
+                'template_id' => $this->template_id,
+                'semester' => $this->semester,
                 'start_time' => $this->start_time,
-                'end_time' => $this->end_time
+                'end_time' => $this->end_time,
             ];
             session()->put('response', $response);
         } else {
             $data['response'] = [
                 'step' => 2,
                 'faculty' => [
+                    'is_preview' => false,
+                    'user_id' => auth()->guard('users')->user()->id,
+                    'evaluation_id' => $this->evaluate,
                     'faculty_id' => $this->faculty_id,
+                    'template_id' => $this->template_id,
+                    'semester' => $this->semester,
                     'start_time' => $this->start_time,
                     'end_time' => $this->end_time,
-                    'evaluate_id' => $this->evaluate
                 ]
             ];
 
@@ -132,17 +152,41 @@ class Evaluate extends Component
             session()->put('response', $data);
             $this->faculty_info(session('response.faculty'));
         }
-    
+
     }
 
-    public function step04($step, $responses) {
-        
+    public function step04($step) {
+        $data = session('response');
+        if(!$data['faculty']['is_preview']) {
+            if (array_key_exists('step', $data) && array_key_exists('faculty', $data) && array_key_exists('record', $data)) {
+                $data['faculty']['comment'] = $this->comments ?? '';
+                
+                $inserted = ResponseModel::create($data['faculty']);
+    
+                $response_items = [];
+    
+                foreach($data['record'] as $key => $value) {
+                    $response_items[] = [
+                        'response_id' => $inserted->id,
+                        'questionnaire_id' => $key,
+                        'response_rating' => $value
+                    ];
+                }
+    
+                ResponseItemModel::insert($response_items);    
+            }
+        } 
+
+        $data['step'] = $step;
+        session()->put('response', $data);
+        $this->is_responded(4);
+
     }
 
     public function get_questionnaires() {
         $data = QuestionnaireModel::with('school_year', 'questionnaire_item.criteria')->where(function($query) {
             $query->whereHas('school_year', function($subQuery) {
-                $subQuery->where('semester', 1);
+                $subQuery->where('semester', $this->semester);
             });
         })->get()[0];
         
@@ -167,8 +211,7 @@ class Evaluate extends Component
         $data['sorted_items'] = array_values($sorted_item);
 
         $this->questionnaire = $data;
-        
-
+    
     }
 
     public function remember_responses() {
@@ -180,22 +223,71 @@ class Evaluate extends Component
         }
     }
 
+    public function is_responded($step) {
+        
+        $user_id = auth()->guard('users')->user()->id;
+        $response_items = ResponseModel::with('items')->where('user_id', $user_id)
+            ->where('evaluation_id', $this->evaluate)
+            ->where('template_id', $this->template_id)
+            ->where('semester', $this->semester);
+
+        if($response_items->exists()) {
+
+            $this->is_exists = true;
+            $data = $response_items->get()[0];
+            $this->comments = $data->comment;
+
+            $reference = 'au_afears_response_'.$data->id;
+
+            $response = session('response');
+            $response['step'] = $step;
+            $response['faculty'] = [
+                'is_preview' => true,
+                'user_id' => $data->user_id,
+                'evaluation_id' => $data->evaluation_id,
+                'faculty_id' => $data->faculty_id,
+                'template_id' => $data->template_id,
+                'semester' => $data->semester,
+                'start_time' => $data->start_time,
+                'end_time' => $data->end_time,
+                'comment' => $data->comment,
+                'date_submitted' => Carbon::parse($data->created_at)->diffForHumans(),
+                'reference' => $reference,
+                'qr_code' => QrCode::generate($reference)
+            ];
+
+
+            $items = [];
+
+            foreach($data['items'] as $item) {
+                $items[$item->questionnaire_id] = $item->response_rating;
+            }
+
+            $response['record'] = $items;
+            
+            session()->put('response', $response);
+            $this->faculty_info($response['faculty']);
+            $this->remember_responses();
+
+        }
+    }
+
     public function mount(Request $request) {
 
         $evaluate = $request->input('evaluate');
         $semester = $request->input('semester');
-        $subject = $request->input('subject');
+        $template_id = $request->input('template');
 
         $this->evaluate = $evaluate;
         $this->semester = $semester;
-        $this->subject = $subject;
+        $this->template_id = $template_id;
 
         $this->step = session('response')['step'];
 
         $input = [
             'id' => $evaluate,
             'semester' => $semester,
-            'subject' => $subject
+            'template_id' => $template_id
         ];
 
         $rules = [
@@ -212,10 +304,10 @@ class Evaluate extends Component
                 'required',
                 'integer'
             ],
-            'subject' => [
+            'template_id' => [
                 'required',
                 'integer',
-                'exists:afears_subject,id'
+                'exists:afears_curriculum_template,id'
             ] 
         ];
 
@@ -224,6 +316,7 @@ class Evaluate extends Component
         if($validate->fails()) {
             return redirect()->route('user.dashboard');
         }
+
 
         if(session()->has('response')) {
             $saved = session('response');
@@ -237,6 +330,10 @@ class Evaluate extends Component
 
         }
 
+        if(!empty($this->step) && $this->step != 3) {
+            $this->is_responded(4);
+        }
+
         if($this->step == 2) {
             $this->get_questionnaires();
             $this->remember_responses();
@@ -244,6 +341,18 @@ class Evaluate extends Component
             $this->get_questionnaires();
             $this->remember_responses();
             $this->faculty_info(session('response.faculty'));
+        } else if($this->step == 4) {
+
+            if(!$this->is_exists) {
+                $data['response'] = [
+                    'step' => $this->step
+                ];
+
+                session($data);
+            }
+
+            $this->is_responded(4);
+
         }
     }
 
@@ -253,10 +362,9 @@ class Evaluate extends Component
 
         $faculty = FacultyModel::find($faculty_id);
         $subject = FacultyTemplateModel::with('faculty.templates.curriculum_template.subjects')->where(function($query) {
-            $query->whereHas('faculty.templates.curriculum_template.subjects', function($subQuery) {
-                $subQuery->where('id', $this->subject);
-            });
+            $query->where('template_id', $this->template_id);
         })->get()[0];
+
         $evaluate = SchoolYearModel::find($evaluate_id);
 
         $this->faculty['name'] = $faculty->firstname . ' ' . $faculty->lastname;

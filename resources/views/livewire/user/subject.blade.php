@@ -6,7 +6,7 @@
             <a wire:navigate href="{{route('user.dashboard')}}" class="bg-slate-900 py-2 px-6 text-white text-sm font-bold rounded-md">Go Back</a>
         </div>
     </div>
-    <div class="grid grid-cols-12 gap-4 mt-10">
+    <div class="grid grid-cols-12 gap-4 mt-10" wire:poll>
         @forelse ($subjects as $item)
             <div class="col-span-12 md:col-span-6 bg-slate-100 shadow-lg rounded-lg text-dark relative overflow-hidden">                        
                 <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative w-full">
@@ -14,23 +14,29 @@
                     <div class="p-5 absolute bottom-0 left-0 w-full">
                         <h5 class="text-2xl font-bold tracking-tight text-white uppercase whitespace-break-spaces line-clamp-1">{{$item->subjects->name}}</h5>
                         <p class="text text-white font-bold line-clamp-2">{{$item->subjects->code}}</p>
-                        @if ($item->is_exists)
-                            <span class="uppercase px-4 mt-3 p-2 inline-flex justify-center items-center bg-green-100 text-green-800 text-xs font-medium rounded-full dark:bg-green-900 dark:text-green-300">
-                                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                                Response recorded
-                            </span>
-                        @else
-                            <span class="uppercase px-4 mt-3 p-2 inline-flex justify-center items-center bg-red-100 text-red-800 text-xs font-medium rounded-full dark:bg-red-900 dark:text-red-300">
-                                <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
-                                No response yet
-                            </span>
-                        @endif
-                        <hr class="my-4">
-                        @if (!$item->is_exists)
-                            <div class="mt-3 flex justify-end">
-                                <a wire:navigate href="{{route('user.evaluate', ['evaluate' => $evaluate, 'subject' => $item->subjects->id, 'semester' => $semester, 'step' => 1])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm font-bold rounded-lg uppercase">Start</a>
-                            </div>
-                        @endif
+                        <div wire:ignore>
+                            @if ($item->is_exists)
+                                <span class="uppercase px-4 mt-3 p-2 inline-flex justify-center items-center bg-green-100 text-green-800 text-xs font-medium rounded-full dark:bg-green-900 dark:text-green-300">
+                                    <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                                    Response recorded
+                                </span>
+                            @else
+                                <span class="uppercase px-4 mt-3 p-2 inline-flex justify-center items-center bg-red-100 text-red-800 text-xs font-medium rounded-full dark:bg-red-900 dark:text-red-300">
+                                    <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                                    No response yet
+                                </span>
+                            @endif
+                            <hr class="my-4">
+                            @if (!$item->is_exists)
+                                <div class="mt-3 flex justify-end">
+                                    <a wire:navigate href="{{route('user.evaluate', ['evaluate' => $evaluate, 'template' => $item->id, 'semester' => $semester, 'step' => 1])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm font-bold rounded-lg uppercase">Start</a>
+                                </div>
+                            @else
+                                <div class="mt-3 flex justify-end">
+                                    <a wire:navigate href="{{route('user.evaluate', ['evaluate' => $evaluate, 'template' => $item->id, 'semester' => $semester, 'step' => 1])}}" class=" bg-orange-100 text-orange-800 p-2 px-4 text-sm font-bold rounded-lg uppercase">View Response</a>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="absolute top-6 left-5 p-4 rounded-full text-slate-100 backdrop-blur-sm bg-white/30">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">

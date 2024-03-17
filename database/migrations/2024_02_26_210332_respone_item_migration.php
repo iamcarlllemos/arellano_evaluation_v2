@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('response_id')
                 ->constrained('afears_response')
                 ->onDelete('cascade');
-            $table->integer('questionaire_id');
+            $table->integer('questionnaire_id');
             $table->integer('response_rating');
         });
     }
