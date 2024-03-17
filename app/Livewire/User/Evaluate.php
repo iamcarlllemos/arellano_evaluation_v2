@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\QuestionnaireModel;
 use App\Models\QuestionnaireItemModel;
 
+use App\Models\FacultyModel;
+use App\Models\FacultyTemplateModel;
+use App\Models\SchoolYearModel;
+
 
 use Livewire\Component;
 
@@ -19,18 +23,18 @@ class Evaluate extends Component
     
     public $evaluate;
     public $semester;
+    public $subject;
+
     public $step;
-    public $faculty_name;
+    public $faculty_id;
+
+    public $faculty = [];
+
     public $start_time;
     public $end_time;
 
     public $questionnaire;
     public $responses = [];
-
-    public function get_faculty() {
-
-    }
-
 
     public function validate_step() {
         $data = [
@@ -52,19 +56,59 @@ class Evaluate extends Component
     }
 
     public function move($step) {
-        if($step == 2) {
+        if($step == 1) {
+            $data = session('response');
+            $data['step'] = $step;
+            $this->step = $step;
+            session()->put('response', $data);
+        } else if($step == 2) {
+            $this->remember_responses();
             $this->get_questionnaires();
+            $this->step02();
             $data = session('response');
             $data['step'] = $step;
             $this->step = $step;
             session()->put('response', $data);
         } else if($step == 3) {
-            $this->store_step_3($step, $this->responses);
             $this->get_questionnaires();
+            $this->step03($step, $this->responses);
         }
     }
 
-    public function store_step_3($step, $responses) {
+    public function step02() {
+        $rules = [
+            'faculty_id' => 'required|exists:afears_faculty,id|integer',
+            'start_time' => 'required',
+            'end_time' => 'required'
+        ];
+
+        $this->validate($rules);
+
+        $response = session('response');
+
+        if(array_key_exists('faculty', $response)) {
+            $response['faculty'] = [
+                'faculty_id' => $this->faculty_id,
+                'start_time' => $this->start_time,
+                'end_time' => $this->end_time
+            ];
+            session()->put('response', $response);
+        } else {
+            $data['response'] = [
+                'step' => 2,
+                'faculty' => [
+                    'faculty_id' => $this->faculty_id,
+                    'start_time' => $this->start_time,
+                    'end_time' => $this->end_time,
+                    'evaluate_id' => $this->evaluate
+                ]
+            ];
+
+            session($data);
+        }
+    }
+
+    public function step03($step, $responses) {
         $dirty_item_id = array_keys($responses);
         
         $questionnaire_id = $this->questionnaire->id;
@@ -76,8 +120,16 @@ class Evaluate extends Component
 
         if(!empty($imposter)) {
             session()->flash('error', $imposter);
+            $data = session('response');
+            $data['record'] = $responses;
+            session()->put('response', $data);
         }
         
+        $data = session('response');
+        $data['step'] = $step;
+        $data['record'] = $responses;
+        session()->put('response', $data);
+
     }
 
     public function get_questionnaires() {
@@ -112,19 +164,31 @@ class Evaluate extends Component
 
     }
 
+    public function remember_responses() {
+        $response = session('response');
+        if(array_key_exists('record', $response)) {
+            foreach($response['record'] as $item => $value) {
+                $this->responses[$item] = $value;
+            }
+        }
+    }
+
     public function mount(Request $request) {
 
         $evaluate = $request->input('evaluate');
         $semester = $request->input('semester');
+        $subject = $request->input('subject');
 
         $this->evaluate = $evaluate;
         $this->semester = $semester;
+        $this->subject = $subject;
 
         $this->step = session('response')['step'];
 
         $input = [
             'id' => $evaluate,
             'semester' => $semester,
+            'subject' => $subject
         ];
 
         $rules = [
@@ -141,6 +205,11 @@ class Evaluate extends Component
                 'required',
                 'integer'
             ],
+            'subject' => [
+                'required',
+                'integer',
+                'exists:afears_subject,id'
+            ] 
         ];
 
         $validate = Validator::make($input, $rules);
@@ -152,9 +221,9 @@ class Evaluate extends Component
         if(session()->has('response')) {
             $saved = session('response');
             
-            if(array_key_exists('step_1', $saved)) {
-                $data = session('response.step_1');
-                $this->faculty_name = $data['faculty_name'];
+            if(array_key_exists('faculty', $saved)) {
+                $data = session('response.faculty');
+                $this->faculty_id = $data['faculty_id'];
                 $this->start_time = $data['start_time'];
                 $this->end_time = $data['end_time'];
             }
@@ -163,27 +232,31 @@ class Evaluate extends Component
 
         if($this->step == 2) {
             $this->get_questionnaires();
+            $this->remember_responses();
+        } else if ($this->step == 3) {
+            $this->get_questionnaires();
+            $this->remember_responses();
+            $this->faculty_info(session('response.faculty'));
         }
     }
 
+    public function faculty_info($data) {
+        $faculty_id = $data['faculty_id'];
+        $evaluate_id = $this->evaluate;
 
-    public function save(Request $request) {
-        if($this->validate_step()) {
-            switch($this->step) {
-                case 1:
-                    $this->step1();
-                    break;
-                case 2:
-                    
-                    break;
-                case 3:
-    
-                    break;
-                case 4:
-    
-                    break;
-            }
-        }
+        $faculty = FacultyModel::find($faculty_id);
+        $subject = FacultyTemplateModel::with('faculty.templates.curriculum_template.subjects')->where(function($query) {
+            $query->whereHas('faculty.templates.curriculum_template.subjects', function($subQuery) {
+                $subQuery->where('id', $this->subject);
+            });
+        })->get()[0];
+        $evaluate = SchoolYearModel::find($evaluate_id);
+
+        $this->faculty['name'] = $faculty->firstname . ' ' . $faculty->lastname;
+        $this->faculty['subject'] = $subject->faculty->templates[0]->curriculum_template[0]->subjects->name . ' (' .
+            $subject->faculty->templates[0]->curriculum_template[0]->subjects->code . ')';
+        $this->faculty['schedule'] = to_hour($data['start_time']) . ' - ' . to_hour($data['end_time']);
+        $this->faculty['academic_year'] = $evaluate->start_year . ' - ' . $evaluate->end_year;
     }
 
     public function render()

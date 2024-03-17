@@ -55,7 +55,7 @@ class EvaluateController extends Controller
                             'title' => 'Create Course',
                             'subtitle' => 'Create or add new courses.',
                             'data' => [
-                                'faculty_name' => [
+                                'faculty_id' => [
                                     'label' => 'Faculty Name',
                                     'type' => 'select',
                                     'options' => [

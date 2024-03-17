@@ -28,7 +28,7 @@
                         <hr class="my-4">
                         @if (!$item->is_exists)
                             <div class="mt-3 flex justify-end">
-                                <a wire:navigate href="{{route('user.evaluate', ['evaluate' => $evaluate, 'semester' => $semester, 'step' => 1])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm font-bold rounded-lg uppercase">Start</a>
+                                <a wire:navigate href="{{route('user.evaluate', ['evaluate' => $evaluate, 'subject' => $item->subjects->id, 'semester' => $semester, 'step' => 1])}}" class=" bg-blue-100 text-blue-800 p-2 px-4 text-sm font-bold rounded-lg uppercase">Start</a>
                             </div>
                         @endif
                     </div>

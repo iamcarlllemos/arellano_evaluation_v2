@@ -1,5 +1,12 @@
 <?php
 
+if (!function_exists('to_hour')) {
+    function to_hour($hour) {
+        $hour = DateTime::createFromFormat('H:i', $hour);
+        return $hour->format('h:i A');
+    }
+}
+
 if (!function_exists('to_ordinal')) {
     function to_ordinal($number, $string)
     {
