@@ -158,7 +158,7 @@ class SchoolYear extends Component
                 'status' => 'success',
                 'message' => 'School year `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.school-year');
+            return redirect()->route('admin.programs.school-year');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

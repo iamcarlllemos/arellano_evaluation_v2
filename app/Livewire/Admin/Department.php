@@ -142,7 +142,7 @@ class Department extends Component
                 'status' => 'success',
                 'message' => 'Department `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.departments');
+            return redirect()->route('admin.programs.departments');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

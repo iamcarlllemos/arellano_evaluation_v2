@@ -261,7 +261,7 @@ class Student extends Component
                 'status' => 'success',
                 'message' => 'Student `' . ucwords($this->firstname . ' ' . $this->lastname) . '` deleted successfully'
             ]);
-            return redirect()->route('accounts.student');
+            return redirect()->route('admin.accounts.student');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

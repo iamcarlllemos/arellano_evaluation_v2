@@ -148,7 +148,7 @@ class Branch extends Component
                 'status' => 'success',
                 'message' => 'Branch `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.branches');
+            return redirect()->route('admin.programs.branches');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

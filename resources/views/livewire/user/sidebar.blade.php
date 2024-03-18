@@ -1,5 +1,5 @@
 <aside id="sidebar" class="sidebar fixed top-0 left-0 z-40 w-[280px] md:w-[320px] h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" style="background-color: #192231">
-    <img src="{{asset('storage/images/logo-banner.png')}}" alt="" srcset="" class="px-3 w-100 h-[100px] md:h-[110px] mt-8 mb-5">
+    <img src="{{asset('/images/logo-banner.png')}}" alt="" srcset="" class="px-3 w-100 h-[100px] md:h-[110px] mt-8 mb-5">
     @persist('scrollbar')
     <div class="overflow-y-auto py-2" wire:scroll style="height: calc(100vh - 160px)">
         <ul class="list ms-6">

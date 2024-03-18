@@ -220,7 +220,7 @@ class Administrator extends Component
                 'status' => 'success',
                 'message' => 'User `' . ucwords($this->firstname . ' ' . $this->lastname) . '` deleted successfully'
             ]);
-            return redirect()->route('accounts.administrator');
+            return redirect()->route('admin.accounts.administrator');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

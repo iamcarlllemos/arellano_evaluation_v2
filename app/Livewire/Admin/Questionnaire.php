@@ -132,7 +132,7 @@ class Questionnaire extends Component
                 'status' => 'success',
                 'message' => 'Questionnaire `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.questionnaire');
+            return redirect()->route('admin.programs.questionnaire');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

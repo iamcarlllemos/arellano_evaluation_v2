@@ -176,7 +176,7 @@ class QuestionnaireItem extends Component
             $this->criteria_id = $data->criteria_id;
             $this->item = $data->item;
         } else {
-            return redirect()->route('programs.questionnaire');
+            return redirect()->route('admin.programs.questionnaire');
         }
        
     }

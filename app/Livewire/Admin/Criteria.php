@@ -119,7 +119,7 @@ class Criteria extends Component
                 'status' => 'success',
                 'message' => 'Criteria `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.criteria');
+            return redirect()->route('admin.programs.criteria');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

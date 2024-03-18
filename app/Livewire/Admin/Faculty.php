@@ -203,7 +203,7 @@ class Faculty extends Component
                 'status' => 'success',
                 'message' => 'Faculty `' . ucwords($this->firstname . ' ' . $this->lastname) . '` deleted successfully'
             ]);
-            return redirect()->route('accounts.faculty');
+            return redirect()->route('admin.accounts.faculty');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

@@ -253,7 +253,7 @@ class CurriculumTemplate extends Component
                 'status' => 'success',
                 'message' => 'Curriculum Template deleted successfully'
             ]);
-            return redirect()->route('linking.curriculum-template');
+            return redirect()->route('admin.linking.curriculum-template');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

@@ -139,7 +139,7 @@ class Subject extends Component
                 'status' => 'success',
                 'message' => 'Subject `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.subjects');
+            return redirect()->route('admin.programs.subjects');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',

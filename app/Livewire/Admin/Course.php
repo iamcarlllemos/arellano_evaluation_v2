@@ -137,7 +137,7 @@ class Course extends Component
                 'status' => 'success',
                 'message' => 'Course `'.$model->name.'` deleted successfully'
             ]);
-            return redirect()->route('programs.courses');
+            return redirect()->route('admin.programs.courses');
         } else {
             session()->flash('flash', [
                 'status' => 'failed',
