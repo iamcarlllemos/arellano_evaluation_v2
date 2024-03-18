@@ -26,7 +26,7 @@ class LoginController extends Controller
             $user = Auth::guard('users')->user();
             if($user) {
                 Auth::guard('users')->login($user);
-                return redirect()->route('user.dashboard');
+                return redirect()->route('admin.dashboard');
             } else {
                 return redirect()->back()->with('error', 'User not found');
             }
